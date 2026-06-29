@@ -1,0 +1,10 @@
+repositories:
+  azure_kinect_ros_driver:
+    type: git
+    url: https://github.com/microsoft/Azure_Kinect_ROS_Driver.git
+    version: humble
+  kinova_jaco2:
+    type: git
+    url: https://github.com/RRL-ALeRT/kinova-ros2.git
+    version: humble
+  

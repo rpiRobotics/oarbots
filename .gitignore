@@ -1,0 +1,7 @@
+# Ignore default directories created by colcon
+build/
+install/
+log/
+
+# Ignore Visual Studio Code local configuration
+.vscode/
