@@ -1,2 +1,0 @@
-ExecStart=
-ExecStart=/home/robot/ros2_ws/src/dingo_bringup/script/dingo_bringup.sh
