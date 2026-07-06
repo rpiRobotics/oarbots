@@ -6,7 +6,7 @@ set -e
 # Source the global ROS 2 installation
 source /opt/ros/jazzy/setup.bash
 
-# Source your local workspace using absolute paths
+# Source the local workspace
 source /home/robot/ros2_ws/install/local_setup.bash
 
 # Execute the launch file
