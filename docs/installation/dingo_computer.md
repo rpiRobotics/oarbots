@@ -6,7 +6,7 @@
 
 ## Downloading Code
 
-1. Run 
+Run 
 
 ```bash
 mkdir ~/ros2_ws && cd ~/ros2_ws
@@ -14,7 +14,7 @@ mkdir ~/ros2_ws && cd ~/ros2_ws
 
 This creates the directory `ros2_ws` in the `/home/robot` directory.
 
-2. Run
+Run
 
 ```bash
 git clone https://github.com/rpiRobotics/oarbots .
@@ -24,7 +24,7 @@ This copies the repository contents into `~/ros2_ws`. To verify, run `ls` and yo
 
 ## Installing Dependencies
 
-3. To instal 3'rd party dependencies *not* available through package managers, run
+To instal 3'rd party dependencies *not* available through package managers, run
 
 ```bash
 cd src && vcs import < ../packages.repos .
@@ -38,7 +38,7 @@ cd ..
 
 to get back to the `ros2_ws` directory.
 
-4. To install dependencies that *are* available through package managers, run
+To install dependencies that *are* available through package managers, run
 
 ```bash
 rosdep install --from-paths src --ignore-src -y
