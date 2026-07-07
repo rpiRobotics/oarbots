@@ -59,5 +59,16 @@ rosdep update
 
 to setup and update rosdep's dependency list.
 
+## Building the packages
+
+At this point, you should be able to run
+
+```bash
+colcon build --packages-select dingo_tf_relay
+```
+
+in the `~/ros2_ws` directory. No errors should occur.
+
 ## Configuring the Dingo Robot
 
+Replace the contents of `/etc/clearpath/robot.yaml` with the contents of [robot.yaml](robot.yaml), making sure to replace any filler content (i.e. replace `<LAST_FOUR_OF_SERIAL_HERE>`, `<NAMESPACE_HERE>`, etc.).

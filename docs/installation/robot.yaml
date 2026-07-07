@@ -1,0 +1,20 @@
+serial_number: do100-<LAST_FOUR_OF_SERIAL_HERE>
+version: 0
+system:
+  hosts:
+    - hostname: cpr-do100-<LAST_FOUR_OF_SERIAL_HERE>
+      ip: 192.168.131.1
+  ros2:
+    namespace: <NAMESPACE_HERE>
+    workspaces:
+      - /home/robot/ros2_ws/install/setup.bash
+platform:
+  mcu:
+    protocol: proton
+  extras:
+    launch:
+      - path: launch/dingo_tf_relay.launch.py
+        package: dingo_tf_relay
+        args:
+          dingo_namespace: <NAMESPACE_HERE>
+          dingo_frame_prefix: <NAMESPACE_HERE>/
