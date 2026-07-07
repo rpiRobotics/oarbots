@@ -10,8 +10,13 @@ jobs:
       - uses: ros-tooling/setup-ros@v0.7
         with:
           required-ros-distributions: jazzy
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            packages.repos
+          sparse-checkout-cone-mode: false
       - uses: ros-tooling/action-ros-ci@v0.3
         with:
           package-name: oarbots
           target-ros2-distro: jazzy
-          vcs-repo-file-url: packages.repos
+          vcs-repo-file-url: $GITHUB_WORKSPACE/packages.repos
