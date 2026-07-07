@@ -15,7 +15,7 @@ jobs:
           sparse-checkout: |
             packages.repos
           sparse-checkout-cone-mode: false
-      - uses: ros-tooling/action-ros-ci@v0.3
+      - uses: ros-tooling/action-ros-ci@v0.4
         with:
           package-name: oarbots
           target-ros2-distro: jazzy
