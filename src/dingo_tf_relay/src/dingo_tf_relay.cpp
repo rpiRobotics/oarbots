@@ -2,7 +2,7 @@
 
 DingoTfRelay::DingoTfRelay() : Node("dingo_tf_relay")
 {
-    // Delcare both arguments
+    // Delcare both parameters
     rcl_interfaces::msg::ParameterDescriptor dingo_namespace_description = rcl_interfaces::msg::ParameterDescriptor{};
     dingo_namespace_description.description = "Namespace used by the Clearpath Dingo robot";
     this->dingo_namespace = declare_parameter<std::string>("dingo_namespace", "", dingo_namespace_description, false);
