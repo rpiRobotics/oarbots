@@ -11,12 +11,24 @@ jobs:
         uses: ros-tooling/setup-ros@v0.7
         with:
           required-ros-distributions: jazzy
+
       - name: Checkout packages.repos
         uses: actions/checkout@v7
         with:
           sparse-checkout: |
             packages.repos
           sparse-checkout-cone-mode: false
+
+      - name: Download Azure Kinect packages
+        run: |
+          wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-dev/libk4a1.4-dev_1.4.1_amd64.deb
+          wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4/libk4a1.4_1.4.1_amd64.deb
+          wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4abt1.1-dev/libk4abt1.1-dev_1.1.2_amd64.deb
+          wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4abt1.1/libk4abt1.1_1.1.2_amd64.deb
+
+      - name: Install Azure Kinect packages
+        run: sudo apt install -y ./*.deb
+
       - name: CI
         uses: ros-tooling/action-ros-ci@v0.4
         with:
