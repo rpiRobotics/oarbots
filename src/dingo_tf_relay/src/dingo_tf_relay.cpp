@@ -8,7 +8,7 @@ DingoTfRelay::DingoTfRelay() : Node("dingo_tf_relay")
     this->dingo_namespace = declare_parameter<std::string>("dingo_namespace", "", dingo_namespace_description, false);
 
     rcl_interfaces::msg::ParameterDescriptor dingo_frame_prefix_description = rcl_interfaces::msg::ParameterDescriptor{};
-    dingo_frame_prefix_description.description = "prefix for all tf cordinate frames coming from the Clearpath Dingo robot";
+    dingo_frame_prefix_description.description = "Prefix for all tf cordinate frames coming from the Clearpath Dingo robot";
     this->dingo_frame_prefix = declare_parameter<std::string>("dingo_frame_prefix", "", dingo_frame_prefix_description);
 
 
