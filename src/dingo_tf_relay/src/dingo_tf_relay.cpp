@@ -25,7 +25,7 @@ DingoTfRelay::DingoTfRelay() : Node("dingo_tf_relay")
     }
     if (this->dingo_namespace.back() == '/')
     {
-        RCLCPP_WARN(this->get_logger(), "dingo_namespace argument has a trailing forwrard shasl. Removing for now, but it should not be included in future runs");
+        RCLCPP_WARN(this->get_logger(), "dingo_namespace argument has a trailing forward slash. Removing for now, but it should not be included in future runs");
         this->dingo_namespace.pop_back();
     }
 
