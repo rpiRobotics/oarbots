@@ -17,6 +17,5 @@ jobs:
           sparse-checkout-cone-mode: false
       - uses: ros-tooling/action-ros-ci@v0.4
         with:
-          package-name: oarbots
           target-ros2-distro: jazzy
           vcs-repo-file-url: $GITHUB_WORKSPACE/packages.repos
