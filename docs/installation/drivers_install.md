@@ -64,14 +64,4 @@ sudo apt install ./*.deb
 
 To allow Azure Kinect access without root permissions, copy the following file into the directory `/etc/udev/rules.d/`: [https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/scripts/99-k4a.rules](https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/scripts/99-k4a.rules).
 
-To verify the driver is properly installed and to learn more, follow the [usage guide](https://github.com/rpiRobotics/Azure_Kinect_ROS_Driver/blob/jazzy/docs/usage.md). 
-
-## Spacenav 6-DoF Joystick
-
-Although the ROS2 Jazzy package [ros-jazzy-spacenav](https://docs.ros.org/en/jazzy/p/spacenav/) is listed as a dependency of the nodes that use it, a daemon needs to be set up. To install, run
-
-```bash
-sudo apt install spacenavd
-```
-
-A system restart is likely required to properly startup `spacenavd`. For more details on the `spacenav` ROS2 package, see the [documentation](https://github.com/ros-drivers/joystick_drivers/tree/ros2/spacenav).
+To verify the driver is properly installed and to learn more, follow the [usage guide](https://github.com/rpiRobotics/Azure_Kinect_ROS_Driver/blob/jazzy/docs/usage.md).
