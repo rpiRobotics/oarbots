@@ -2,7 +2,13 @@
 
 ## Installing/Upgrading Dingo Robot to ROS2
 
-<!-- TODO -->
+Follow the instructions on [https://docs.clearpathrobotics.com/docs/ros/installation/robot/](https://docs.clearpathrobotics.com/docs/ros/installation/robot/). However, the following extra notes should help:
+
+- When installing from the ISO, the computer needs to be connected to the internet via Ethernet from the ETH1 port. When looking towards the two Ethernet ports on the computer (looking at the port you plug into, and not the back of the port), this is the one on the right
+- Settings from the install script should be the default/recommended ones. For the serial number, this is the last 4 digits from the writing on the top. For example, for Dingo base 2, this is: 0051
+- Firmware upgrade page will return to the "select a device" page once done; this is normal. Just exit out and continue with the instructions
+- "Step 4: Package Install" seems to be just a repeat of what you've already done, so no need to do it again
+- To test the robot, try the tutorial [Driving a Robot](https://docs.clearpathrobotics.com/docs/ros/tutorials/driving). Make sure to use the namespaced version with the correct namespace (something like `do100_0051`) *and* make sure to turn on the motors. This is the button on the front panel with an M and a circle around it with lines going out horizontally
 
 ## Downloading Code
 
