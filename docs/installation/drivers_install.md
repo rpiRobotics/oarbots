@@ -24,7 +24,7 @@ No errors should be reported.
 
 ## Azure Kinect
 
-Drivers do not come included in the [Azure_Kinect_ROS_Driver](https://github.com/microsoft/Azure_Kinect_ROS_Driver/tree/humble) package. Instead, they need to be downloaded and installed manually. 
+Drivers do not come included in the [Azure_Kinect_ROS_Driver](https://github.com/rpiRobotics/Azure_Kinect_ROS_Driver) package. Instead, they need to be downloaded and installed manually. 
 
 To download the Azure Kinect SDK, run
 
@@ -64,7 +64,7 @@ sudo apt install ./*.deb
 
 To allow Azure Kinect access without root permissions, copy the following file into the directory `/etc/udev/rules.d/`: [https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/scripts/99-k4a.rules](https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/scripts/99-k4a.rules).
 
-To verify the driver is properly installed and to learn more, follow the [usage guide](https://github.com/microsoft/Azure_Kinect_ROS_Driver/blob/humble/docs/usage.md). 
+To verify the driver is properly installed and to learn more, follow the [usage guide](https://github.com/rpiRobotics/Azure_Kinect_ROS_Driver/blob/jazzy/docs/usage.md). 
 
 ## Spacenav 6-DoF Joystick
 
