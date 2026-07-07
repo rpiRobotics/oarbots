@@ -29,8 +29,13 @@ target_include_directories(dingo_tf_relay
 )
 
 install(DIRECTORY
-  include/
+  include
   DESTINATION include/${PROJECT_NAME}
+)
+
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}
 )
 
 install(TARGETS
