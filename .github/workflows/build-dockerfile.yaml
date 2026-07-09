@@ -36,7 +36,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v7
         with:
-          file: "{context}/docker/Dockerfile"
+          file: docker/Dockerfile
           context: .
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/ros2-jazzy-base-noble:latest
