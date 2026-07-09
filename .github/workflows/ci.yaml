@@ -1,6 +1,10 @@
 name: CI
 on:
   push:
+    paths:
+      - "src/**"
+    branches:
+      - main
   pull_request:
 
 jobs:
