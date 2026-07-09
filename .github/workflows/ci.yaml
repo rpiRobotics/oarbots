@@ -17,15 +17,12 @@ jobs:
         with:
           sparse-checkout: |
             packages.repos
+            scripts/install-azure-kinect-drivers.sh
           sparse-checkout-cone-mode: false
 
       - name: Download Azure Kinect packages
-        run: |
-          wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-dev/libk4a1.4-dev_1.4.1_amd64.deb
-          wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4/libk4a1.4_1.4.1_amd64.deb
-          wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4abt1.1-dev/libk4abt1.1-dev_1.1.2_amd64.deb
-          wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4abt1.1/libk4abt1.1_1.1.2_amd64.deb
-
+        run: /bin/bash $GITHUB_WORKSPACE/scripts/install-azure-kinect-drivers.sh
+          
       - name: Install Azure Kinect packages
         run: sudo apt install -y ./*.deb
 
