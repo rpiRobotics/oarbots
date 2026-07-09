@@ -20,11 +20,8 @@ jobs:
             scripts/install-azure-kinect-drivers.sh
           sparse-checkout-cone-mode: false
 
-      - name: Download Azure Kinect packages
-        run: /bin/bash $GITHUB_WORKSPACE/scripts/install-azure-kinect-drivers.sh
-          
-      - name: Install Azure Kinect packages
-        run: sudo apt install -y ./*.deb
+      - name: Download and Install Azure Kinect Drivers
+        run: sudo /bin/bash $GITHUB_WORKSPACE/scripts/install-azure-kinect-drivers.sh
 
       - name: CI
         uses: ros-tooling/action-ros-ci@v0.4
