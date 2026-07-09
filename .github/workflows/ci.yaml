@@ -9,10 +9,10 @@ jobs:
     container:
       image: rostooling/setup-ros-docker:ubuntu-noble-latest
     steps:
-      - name: Setup ROS2 Jazzy Environment
-        uses: ros-tooling/setup-ros@v0.7
-        with:
-          required-ros-distributions: jazzy
+      # - name: Setup ROS2 Jazzy Environment
+      #   uses: ros-tooling/setup-ros@v0.7
+      #   with:
+      #     required-ros-distributions: jazzy
 
       - name: Checkout packages.repos
         uses: actions/checkout@v7
