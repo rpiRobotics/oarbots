@@ -6,7 +6,11 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
 add_executable(dingo_teleop src/dingo_teleop.cpp)
-ament_target_dependencies(dingo_teleop rclcpp geometry_msgs)
+ament_target_dependencies(
+  dingo_teleop
+  rclcpp
+  geometry_msgs
+)
 
 install(TARGETS
   dingo_teleop
