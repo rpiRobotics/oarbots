@@ -10,7 +10,7 @@ RUN apt update
 # Install Azure SDK
 
 # Install dependencies for libsoundio1
-RUN apt -y install libgl1 libxrandr2 libxinerama1 libxcursor1 libjack-jackd2-0
+RUN apt -y install libgl1 libxrandr2 libxinerama1 libxcursor1 libjack-jackd2-0 libasound2t64 libpulse0
 
 RUN mkdir /tmp/kinect
 
