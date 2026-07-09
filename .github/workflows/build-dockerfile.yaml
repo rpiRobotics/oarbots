@@ -39,4 +39,4 @@ jobs:
           file: docker/Dockerfile
           context: .
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/ros2-jazzy-base-noble:latest
+          tags: ghcr.io/${{ env.OWNER_LC }}/oarbot-jazzy-base-noble:latest
