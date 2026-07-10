@@ -18,6 +18,7 @@ jobs:
         uses: actions/checkout@v7
       
       - name: Build
+        shell: bash
         run: |
           sudo apt update
           rosdep update
@@ -26,6 +27,7 @@ jobs:
           source /opt/ros/jazzy/setup.sh && colcon build --symlink-install --cmake-args -DCMAKE_CXX_FLAGS="--coverage" -DCMAKE_C_FLAGS="--coverage"
       
       - name: Test
+        shell: bash
         run: |
           source /opt/ros/jazzy/setup.sh && colcon test --event-handlers console_direct+
           source /opt/ros/jazzy/setup.sh && colcon test-result --all
