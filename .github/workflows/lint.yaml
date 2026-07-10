@@ -20,14 +20,15 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v7
-      
+
     - name: List packages
       id: list_packages
       run: echo "packages=$(colcon list --names-only | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
 
 
     - name: Lint
-      uses: ros-tooling/action-ros-lint@master
+      uses: ros-tooling/action-ros-lint@0.1
       with:
         linter: ${{ matrix.linter }}
         package-name: ${{ steps.list_packages.outputs.packages }}
+        distribution: jazzy
