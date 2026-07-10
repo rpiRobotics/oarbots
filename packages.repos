@@ -3,7 +3,7 @@ repositories:
     type: git
     url: https://github.com/rpiRobotics/Azure_Kinect_ROS_Driver.git
     version: jazzy
-  kinova_jaco2:
+  kinova-ros2:
     type: git
-    url: https://github.com/RRL-ALeRT/kinova-ros2.git
-    version: humble
+    url: https://github.com/rpiRobotics/kinova-ros2.git
+    version: jazzy
