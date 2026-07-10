@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "docker/**"
+      - "docker/Dockerfile"
     branches:
       - main
 
