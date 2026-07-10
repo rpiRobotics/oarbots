@@ -1,0 +1,27 @@
+name: Lint
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+    container: ubuntu:noble
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+    
+    - name: Install ROS2 Jazzy
+      uses: ros-tooling/setup-ros@master
+      with:
+        required-ros-distributions: jazzy
+
+    - name: Lint
+      uses: ros-tooling/action-ros-lint@master
+      with:
+        linter: copyright
