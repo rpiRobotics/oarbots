@@ -27,7 +27,7 @@ jobs:
 
 
     - name: Lint
-      uses: ros-tooling/action-ros-lint@0.1
+      uses: ros-tooling/action-ros-lint@v0.1
       with:
         linter: ${{ matrix.linter }}
         package-name: ${{ steps.list_packages.outputs.packages }}
