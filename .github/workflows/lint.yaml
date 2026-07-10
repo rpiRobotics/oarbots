@@ -11,17 +11,23 @@ on:
 jobs:
   build-and-lint:
     runs-on: ubuntu-latest
-    container: ubuntu:noble
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-noble-ros-jazzy-desktop-latest
+    strategy:
+      fail-fast: false
+      matrix:
+          linter: [copyright, flake8, mypy, pep257, pep8, xmllint]
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
-    
-    - name: Install ROS2 Jazzy
-      uses: ros-tooling/setup-ros@master
-      with:
-        required-ros-distributions: jazzy
+      uses: actions/checkout@v7
+      
+    - name: List packages
+      id: list_packages
+      run: echo "packages=$(colcon list --names-only | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
+
 
     - name: Lint
       uses: ros-tooling/action-ros-lint@master
       with:
-        linter: copyright
+        linter: ${{ matrix.linter }}
+        package-name: ${{ steps.list_packages.outputs.packages }}
