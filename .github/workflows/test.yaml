@@ -1,0 +1,32 @@
+name: Test
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/rpirobotics/oarbot-jazzy-base-noble:latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      
+      - name: Build
+        run: |
+          sudo apt update
+          rosdep update
+          vcs import src < $GITHUB_WORKSPACE/packages.repos
+          rosdep install --from-paths src --ignore-src -y
+          source /opt/ros/jazzy/setup.sh && colcon build --symlink-install --cmake-args -DCMAKE_CXX_FLAGS="--coverage" -DCMAKE_C_FLAGS="--coverage"
+      
+      - name: Test
+        run: |
+          source /opt/ros/jazzy/setup.sh && colcon test --event-handlers console_direct+
+          source /opt/ros/jazzy/setup.sh && colcon test-result --all
+          source /opt/ros/jazzy/setup.sh && colcon test-result --verbose
