@@ -16,19 +16,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          linter: [copyright, flake8, mypy, pep257, pep8, xmllint]
+          linter: [flake8, pep257, cpplint, lint_cmake, copyright, xmllint]
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v7
+      - name: Checkout Repository
+        uses: actions/checkout@v7
 
-    - name: List packages
-      id: list_packages
-      run: echo "packages=$(colcon list --names-only | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
-
-
-    - name: Lint
-      uses: ros-tooling/action-ros-lint@v0.1
-      with:
-        linter: ${{ matrix.linter }}
-        package-name: ${{ steps.list_packages.outputs.packages }}
-        distribution: jazzy
+      - name: Run Linter
+        run: |
+          ament_${matrix.linter}
