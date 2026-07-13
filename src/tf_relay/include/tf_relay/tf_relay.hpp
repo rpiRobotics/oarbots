@@ -5,19 +5,19 @@
 #include "tf2_msgs/msg/tf_message.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 
-class DingoTfRelay : public rclcpp::Node
+class TfRelay : public rclcpp::Node
 {
 public:
-    DingoTfRelay();
+    TfRelay();
 private:
-    std::string dingo_namespace;
-    std::string dingo_frame_prefix;
+    std::string robot_namespace;
+    std::string tf_frame_prefix;
 
-    rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr dingo_namespaced_tf_subscription;
-    rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr dingo_namespaced_tf_static_subscription;
+    rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr namespaced_tf_subscription;
+    rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr namespaced_tf_static_subscription;
 
-    rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr dingo_tf_publisher;
-    rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr dingo_tf_static_publisher;
+    rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr tf_publisher;
+    rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr tf_static_publisher;
 
     std::string add_frame_prefix(const std::string &frame) const;
     void republish_incoming_message(const tf2_msgs::msg::TFMessage::SharedPtr msg, rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr publisher);

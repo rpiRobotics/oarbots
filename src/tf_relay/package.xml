@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>dingo_tf_relay</name>
+  <name>tf_relay</name>
   <version>0.0.1</version>
-  <description>Relays messages published on the Clearpath Dingo's namespaced tf topic into the global tf topic</description>
-  <maintainer email="aidan.j.oconnor@outlook.com">Aidan O'Connor</maintainer>
+  <description>Relays messages published on the a robot's namespaced tf topic into the global tf topic</description>
+  <maintainer email="oconna4@rpi.edu">Aidan O'Connor</maintainer>
   <license>Apache-2.0</license>
 
   <depend>rclcpp</depend>
