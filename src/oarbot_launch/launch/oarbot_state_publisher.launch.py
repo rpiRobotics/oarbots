@@ -44,6 +44,7 @@ def generate_launch_description() -> LaunchDescription:
             parameters=[{
                 "source_list": [
                     "kinova/j2n6s300_driver/out/joint_state",
+                    "dingo/platform/joint_states"
                     # TODO: Add more as this is built up
                 ]
             }]
