@@ -7,7 +7,7 @@ class DingoTeleop : public rclcpp::Node
 public:
     DingoTeleop() : Node("dingo_teleop")
     {
-        dingo_cmd_vel_publisher = this->create_publisher<geometry_msgs::msg::TwistStamped>("/do100_0052/cmd_vel", 10);
+        dingo_cmd_vel_publisher = this->create_publisher<geometry_msgs::msg::TwistStamped>("/dingo_three/dingo/cmd_vel", 10);
         auto handle_input = [this](geometry_msgs::msg::Twist::UniquePtr msg) -> void {
             RCLCPP_INFO(this->get_logger(), "Received twist with: (x = %lf, y = %lf, z = %lf), (a = %lf, b = %lf, c = %lf)", msg->linear.x, msg->linear.y, msg->linear.z, msg->angular.x, msg->angular.y, msg->angular.z);
 
