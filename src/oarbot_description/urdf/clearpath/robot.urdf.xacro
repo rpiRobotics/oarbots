@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="do100-0052">
+
+  <!-- Common -->
+  <xacro:include filename="$(find oarbot_description)/urdf/clearpath/common.urdf.xacro"/>
+
+  <!-- Platform -->
+  <xacro:include filename="$(find oarbot_description)/urdf/clearpath/do100/do100.urdf.xacro"/>
+  <xacro:do100 control="omni_4wd" front_wheels="mecanum" rear_wheels="mecanum"/>
+
+
+  <!-- Attachments -->
+
+
+  <!-- Links -->
+
+
+  <!-- Mounts -->
+
+
+  <!-- Sensors -->
+
+
+  <!-- Manipulators -->
+
+
+  <!-- Extras -->
+
+
+</robot>
