@@ -19,7 +19,7 @@ def generate_launch_description() -> LaunchDescription:
     oarbot_namespace_string = "oarbot_namespace"
     oarbot_namespace_argument = DeclareLaunchArgument(oarbot_namespace_string, description="namespace of the OARBot whose topics will be subscribed to; should end with a forward slash")
 
-    xacro_file = os.path.join(get_package_share_directory("kinova_description"), "urdf", "j2n6s300_standalone.xacro")
+    xacro_file = os.path.join(get_package_share_directory("oarbot_description"), "urdf", "oarbot_silver.urdf.xacro")
     urdf_file = cast(Document, xacro.process_file(xacro_file))
     robot_description = urdf_file.toprettyxml()
 

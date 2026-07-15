@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="oarbot_silver">
+    <!-- Include Clearpath and Kinova URDF files -->
+    <xacro:include filename="$(find oarbot_description)/urdf/clearpath/do100/do100.urdf.xacro"/>
+    <xacro:include filename="$(find oarbot_description)/urdf/kinova/j2n6s300_with_force_torque.urdf.xacro"/>
+
+    <!-- Show the robots -->
+    <xacro:do100 control="omni_4wd" front_wheels="mecanum" rear_wheels="mecanum"/>
+
+    <!-- This is automatically linked to the dingo by the base_parent parameter -->
+    <xacro:j2n6s300  base_parent="default_mount"/> 
+
+</robot>
