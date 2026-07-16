@@ -4,10 +4,37 @@ import xacro
 from xml.dom.minidom import Document
 
 from ament_index_python import get_package_share_directory
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch import LaunchDescription, LaunchContext
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+
+def check_namespace_trailing_forward_slash(context: LaunchContext, *args, **kwargs) -> None:
+    oarbot_namespace_text = LaunchConfiguration("oarbot_namespace").perform(context)
+
+    if (oarbot_namespace_text[-1] != "/"):
+        raise ValueError("oarbot_namespace must end in a forward slash")
+
+
+def generate_robot_state_publisher_node(context: LaunchContext, *args, **kwargs) -> list[Node]:
+    robot_description_text = LaunchConfiguration("robot_description").perform(context)
+
+    xacro_file = os.path.join(get_package_share_directory("oarbot_description"), "urdf", robot_description_text)
+    urdf_file = cast(Document, xacro.process_file(xacro_file))
+    robot_description = urdf_file.toprettyxml()
+    
+    return [
+        Node(
+            package="robot_state_publisher",
+            executable="robot_state_publisher",
+            name="robot_state_publisher",
+            namespace=LaunchConfiguration("oarbot_namespace"),
+            parameters=[{
+                "robot_description": robot_description,
+                "frame_prefix": LaunchConfiguration("oarbot_namespace")
+            }]
+        ),
+    ]
 
 def generate_launch_description() -> LaunchDescription:
     """
@@ -17,25 +44,15 @@ def generate_launch_description() -> LaunchDescription:
 
 
     oarbot_namespace_string = "oarbot_namespace"
-    oarbot_namespace_argument = DeclareLaunchArgument(oarbot_namespace_string, description="namespace of the OARBot whose topics will be subscribed to; should end with a forward slash")
+    oarbot_namespace_argument = DeclareLaunchArgument(oarbot_namespace_string, description="Namespace of the OARBot whose topics will be subscribed to; should end with a forward slash")
 
-    xacro_file = os.path.join(get_package_share_directory("oarbot_description"), "urdf", "oarbot_silver.urdf.xacro")
-    urdf_file = cast(Document, xacro.process_file(xacro_file))
-    robot_description = urdf_file.toprettyxml()
+    robot_description_string = "robot_description"
+    robot_description_argument = DeclareLaunchArgument(robot_description_string, description="Name of the robot description file placed under the oarbot_description/urdf directory")
 
 
     return LaunchDescription([
         oarbot_namespace_argument,
-        Node(
-            package="robot_state_publisher",
-            executable="robot_state_publisher",
-            name="robot_state_publisher",
-            namespace=LaunchConfiguration(oarbot_namespace_string),
-            parameters=[{
-                "robot_description": robot_description,
-                "frame_prefix": LaunchConfiguration(oarbot_namespace_string)
-            }]
-        ),
+        robot_description_argument,
         Node(
             package="joint_state_publisher",
             executable="joint_state_publisher",
@@ -49,4 +66,6 @@ def generate_launch_description() -> LaunchDescription:
                 ]
             }]
         ),
+        OpaqueFunction(function=generate_robot_state_publisher_node),
+        OpaqueFunction(function=check_namespace_trailing_forward_slash)
     ])
