@@ -43,6 +43,26 @@
         <origin xyz="-0.02 0.224 -0.025" rpy="${-PI/2} ${-PI/2} 0"/>
     </xacro:uwb_tag>
 
+    <!-- Azure Kinect Mount -->
+    <xacro:include filename="$(find oarbot_description)/urdf/custom/u_bracket.urdf.xacro"/>
+    <xacro:include filename="$(find oarbot_description)/urdf/custom/kinect_wrist_connection.urdf.xacro"/>
+    <xacro:u_bracket parent="j2n6s300_wrench">
+        <origin xyz="0.075 0 0.01525" rpy="${PI} 0 0"/>
+    </xacro:u_bracket>
+    <xacro:kinect_wrist_connection num="1" parent_link="j2n6s300_wrench">
+        <origin xyz="0.025 -0.025 -0.005" rpy="${PI/2} 0 -${PI/2}"/>
+    </xacro:kinect_wrist_connection>
+    <xacro:kinect_wrist_connection num="2" parent_link="j2n6s300_wrench">
+        <origin xyz="0.025 0.025 -0.005" rpy="${PI/2} ${PI} -${PI/2}"/>
+    </xacro:kinect_wrist_connection>
+    
+
+    <!-- Azure Kinect -->
+    <xacro:include filename="$(find oarbot_description)/urdf/microsoft/azure_kinect.urdf.xacro"/>
+    <xacro:azure_kinect parent_link="right_mount">
+        <origin xyz="0.006 0 -0.05" rpy="0 ${PI/2} 0" />
+    </xacro:azure_kinect>
+
     <!-- Hokuyo LiDAR Sensors -->
     <xacro:include filename="$(find oarbot_description)/urdf/hokuyo/hokuyo_ust.urdf.xacro"/>
 

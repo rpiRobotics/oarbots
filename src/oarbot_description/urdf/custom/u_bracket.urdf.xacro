@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<!-- GENERATED WITH ARTIFICIAL INTELLIGENCE -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="u_bracket_macro">
+
+  <!--
+    U-shaped connector bracket (xacro macro)
+    =========================================
+    Profile (viewed from the side, i.e. the "U" silhouette):
+      - Base:  5.0 cm long (0.050 m) x 4.5 mm thick (0.0045 m)
+               The 5.0 cm length INCLUDES the thickness of both side walls,
+               so the walls sit flush with the outer ends of the base.
+      - Walls: 2x identical, each 3.5 cm tall (0.035 m) x 4.5 mm thick (0.0045 m)
+
+    Depth (viewed head-on, the dimension going "into" the U): 7.9 cm (0.079 m)
+    Color: u_bracket_black (all pieces)
+
+    Mounts: located at the geometric center of each wall
+            (mid-height of the wall, mid-depth of the part).
+            Modeled here as fixed reference frames (left_mount / right_mount)
+            plus a small illustrative through-hole (4.4 mm dia, assumed;
+            change to match actual hardware) since URDF primitives cannot
+            represent a true subtracted hole.
+
+    Local link frame (u_bracket):
+      X: along the base length (the "opening direction" of the U)
+      Y: depth of the U (7.9 cm)
+      Z: height, with Z=0 at the bottom outer face of the base
+
+    Usage:
+      <xacro:u_bracket parent="some_parent_link" prefix="my_">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </xacro:u_bracket>
+
+      "prefix" is optional (defaults to empty) and lets you instantiate this
+      macro more than once in the same robot without link/joint name clashes.
+  -->
+
+  <!-- ===== Tunable dimensions ===== -->
+  <xacro:property name="base_length"       value="0.050"/>   <!-- 5.0 cm -->
+  <xacro:property name="wall_thickness"    value="0.0045"/>  <!-- 4.5 mm, applies to base and both walls -->
+  <xacro:property name="wall_height"       value="0.035"/>   <!-- 3.5 cm -->
+  <xacro:property name="depth"             value="0.079"/>   <!-- 7.9 cm -->
+  <xacro:property name="mount_hole_radius" value="0.0022"/>  <!-- assumed; update for real hardware -->
+  <xacro:property name="mount_hole_length" value="0.005"/>
+
+  <!-- ===== Derived geometry ===== -->
+  <xacro:property name="base_z_center" value="${wall_thickness/2}"/>
+  <xacro:property name="wall_z_center" value="${wall_thickness + wall_height/2}"/>
+  <xacro:property name="wall_x_offset" value="${base_length/2 - wall_thickness/2}"/>
+
+  <!-- ===== Mass / inertia estimate (generic rigid plastic, ~1050 kg/m^3) =====
+       Whole part approximated as a solid bounding box for the inertia terms.
+       Replace with accurate values (e.g. from CAD) if precision matters. -->
+  <xacro:property name="density" value="1050"/>
+  <xacro:property name="base_volume" value="${base_length*depth*wall_thickness}"/>
+  <xacro:property name="wall_volume" value="${wall_thickness*depth*wall_height}"/>
+  <xacro:property name="base_mass" value="${density*base_volume}"/>
+  <xacro:property name="wall_mass" value="${density*wall_volume}"/>
+  <xacro:property name="total_mass" value="${base_mass + 2*wall_mass}"/>
+  <xacro:property name="centroid_z"
+    value="${(base_mass*base_z_center + 2*wall_mass*wall_z_center)/total_mass}"/>
+  <xacro:property name="bbox_height" value="${wall_thickness + wall_height}"/>
+  <xacro:property name="ixx" value="${total_mass/12*(depth*depth + bbox_height*bbox_height)}"/>
+  <xacro:property name="iyy" value="${total_mass/12*(base_length*base_length + bbox_height*bbox_height)}"/>
+  <xacro:property name="izz" value="${total_mass/12*(base_length*base_length + depth*depth)}"/>
+
+  <material name="u_bracket_black">
+    <color rgba="0.05 0.05 0.05 1.0"/>
+  </material>
+
+  <xacro:macro name="u_bracket" params="parent *origin">
+
+    <joint name="parent_to_u_bracket" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="u_bracket"/>
+    </joint>
+
+    <link name="u_bracket">
+
+      <!-- ===== Base of the U ===== -->
+      <visual>
+        <origin xyz="0 0 ${base_z_center}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${base_length} ${depth} ${wall_thickness}"/>
+        </geometry>
+        <material name="u_bracket_black"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${base_z_center}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${base_length} ${depth} ${wall_thickness}"/>
+        </geometry>
+      </collision>
+
+      <!-- ===== Left wall ===== -->
+      <visual>
+        <origin xyz="${-wall_x_offset} 0 ${wall_z_center}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${wall_thickness} ${depth} ${wall_height}"/>
+        </geometry>
+        <material name="u_bracket_black"/>
+      </visual>
+      <collision>
+        <origin xyz="${-wall_x_offset} 0 ${wall_z_center}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${wall_thickness} ${depth} ${wall_height}"/>
+        </geometry>
+      </collision>
+
+      <!-- ===== Right wall ===== -->
+      <visual>
+        <origin xyz="${wall_x_offset} 0 ${wall_z_center}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${wall_thickness} ${depth} ${wall_height}"/>
+        </geometry>
+        <material name="u_bracket_black"/>
+      </visual>
+      <collision>
+        <origin xyz="${wall_x_offset} 0 ${wall_z_center}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${wall_thickness} ${depth} ${wall_height}"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 ${centroid_z}" rpy="0 0 0"/>
+        <mass value="${total_mass}"/>
+        <inertia ixx="${ixx}" ixy="0" ixz="0"
+                 iyy="${iyy}" iyz="0"
+                 izz="${izz}"/>
+      </inertial>
+
+    </link>
+
+    <!-- ===== Mount reference frame: left wall ===== -->
+    <joint name="left_mount_joint" type="fixed">
+      <origin xyz="${-wall_x_offset} 0 ${wall_z_center}" rpy="0 0 0"/>
+      <parent link="u_bracket"/>
+      <child link="left_mount"/>
+    </joint>
+
+    <link name="left_mount">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 1.5707963 0"/>
+        <geometry>
+          <cylinder radius="${mount_hole_radius}" length="${mount_hole_length}"/>
+        </geometry>
+        <material name="u_bracket_black"/>
+      </visual>
+    </link>
+
+    <!-- ===== Mount reference frame: right wall ===== -->
+    <joint name="right_mount_joint" type="fixed">
+      <origin xyz="${wall_x_offset} 0 ${wall_z_center}" rpy="0 0 0"/>
+      <parent link="u_bracket"/>
+      <child link="right_mount"/>
+    </joint>
+
+    <link name="right_mount">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 1.5707963 0"/>
+        <geometry>
+          <cylinder radius="${mount_hole_radius}" length="${mount_hole_length}"/>
+        </geometry>
+        <material name="u_bracket_black"/>
+      </visual>
+    </link>
+
+  </xacro:macro>
+
+</robot>
