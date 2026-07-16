@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="oarbot_silver">
-    <!-- Include Clearpath and Kinova URDF files -->
-    <xacro:include filename="$(find oarbot_description)/urdf/clearpath/do100/do100.urdf.xacro"/>
-    <xacro:include filename="$(find oarbot_description)/urdf/kinova/j2n6s300_with_force_torque.urdf.xacro"/>
-
     <!-- Define mateiral colors for custom components -->
     <material name="white"><color rgba="1.0 1.0 1.0 1.0" /></material>
     <material name="dark_grey"><color rgba="0.2 0.2 0.2 1.0" /></material>
@@ -13,15 +9,17 @@
     <material name="black"><color rgba="0.15 0.15 0.15 1.0" /></material>
     <material name="cyan"><color rgba="0 1.0 1.0 1.0"/></material>
     <material name="clearpath_dark_grey"><color rgba="0.2 0.2 0.2 1.0" /></material>
-
+    
     <!-- Dingo base -->
+    <xacro:include filename="$(find oarbot_description)/urdf/clearpath/do100/do100.urdf.xacro"/>
     <xacro:do100 control="omni_4wd" front_wheels="mecanum" rear_wheels="mecanum"/>
-
+    
     <!-- PVC Robot Arm Riser -->
     <xacro:include filename="$(find oarbot_description)/urdf/custom/robot_arm_riser.urdf.xacro"/>
     <xacro:robot_arm_riser parent="front_1_mount"/>
-
+    
     <!-- Kinova arm -->
+    <xacro:include filename="$(find oarbot_description)/urdf/kinova/j2n6s300_with_force_torque.urdf.xacro"/>
     <xacro:j2n6s300  base_parent="arm_mount"/> 
 
     <!--  UWB Tags -->
