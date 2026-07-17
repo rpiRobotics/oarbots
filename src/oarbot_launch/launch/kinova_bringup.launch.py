@@ -17,7 +17,7 @@ def generate_launch_description() -> LaunchDescription:
     """
     
     kinova_namespace_string = "kinova_namespace"
-    kinova_namespace_argument = DeclareLaunchArgument(kinova_namespace_string, description="Namespace all topics and nodes for the Kinova arm are published under")
+    kinova_namespace_argument = DeclareLaunchArgument(kinova_namespace_string, description="Namespace all topics and nodes the Kinova arm are published under")
 
     kinova_yaml_params = yaml_to_dict(os.path.join(get_package_share_directory("kinova_bringup"), "launch/config", "robot_parameters.yaml"))
     
