@@ -1,9 +1,7 @@
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, GroupAction, DeclareLaunchArgument
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
-from launch_ros.actions import Node, PushROSNamespace
-from launch_ros.substitutions import FindPackageShare
+from launch.actions import  DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 
 def generate_launch_description() -> LaunchDescription:
     azure_kinect_namespace_string = "azure_kinect_namespace"
