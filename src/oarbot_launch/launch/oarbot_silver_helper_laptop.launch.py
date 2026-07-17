@@ -17,5 +17,18 @@ def generate_launch_description() -> LaunchDescription:
             launch_arguments={
                 "kinova_namespace": "oarbot_silver/kinova"
             }.items()
+        ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution([
+                    FindPackageShare("oarbot_launch"),
+                    "launch",
+                    "oarbot_state_publisher.launch.py"
+                ])
+            ),
+            launch_arguments={
+                "oarbot_namespace": "oarbot_silver/",
+                "robot_description": "oarbot_silver.urdf.xacro"
+            }.items()
         )
     ])
