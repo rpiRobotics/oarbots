@@ -1,6 +1,7 @@
 [Unit]
 Description=Launch OARBot Silver ROS2 Nodes
-After=network.target
+Wants=network-online.target
+After=network-online.target
 
 [Service]
 Type=simple
