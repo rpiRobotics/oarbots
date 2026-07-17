@@ -1,0 +1,13 @@
+[Unit]
+Description=Launch OARBot Silver ROS2 Nodes
+After=network.target
+
+[Service]
+Type=simple
+User=oarbot_silver
+ExecStart=/usr/local/bin/oarbot_silver_helper_laptop_launch.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
