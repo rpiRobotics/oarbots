@@ -11,7 +11,13 @@ echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="22cd", ATTRS{idProduct}=="0000", MODE=
 followed by 
 
 ```bash
-sudo udevadm control --reload` and then `sudo udevadm trigger
+sudo udevadm control --reload
+```
+
+and then 
+
+```bash
+sudo udevadm trigger
 ```
 
 to reload the udev rules. Then, disconnect and reconnect the Jaco2 arm. To verify everything is working, build the package, source it in the terminal, and run 
@@ -64,4 +70,22 @@ sudo apt install ./*.deb
 
 To allow Azure Kinect access without root permissions, copy the following file into the directory `/etc/udev/rules.d/`: [https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/scripts/99-k4a.rules](https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/scripts/99-k4a.rules).
 
-To verify the driver is properly installed and to learn more, follow the [usage guide](https://github.com/rpiRobotics/Azure_Kinect_ROS_Driver/blob/jazzy/docs/usage.md).
+After adding this file, run
+
+```bash
+sudo udevadm control --reload
+```
+
+followed by
+
+```bash
+sudo udevadm trigger
+```
+
+To verify the driver is properly installed and to learn more, follow the [usage guide](https://github.com/rpiRobotics/Azure_Kinect_ROS_Driver/blob/jazzy/docs/usage.md). To view the Azure Kinect output without ROS2, use the command
+
+```bash
+k4aviewer
+```
+
+This launches an application that allows you to view Kinect sensor data. If you are SSH'ed into the machine connected to the Azure Kinect, make sure to SSH with the `-X` flag to enable application passthrough.
