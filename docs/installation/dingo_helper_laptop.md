@@ -45,6 +45,8 @@ to view the status of the service (some warnings are okay, but the service shoul
 DISPLAY=:2 glxinfo | grep -E "OpenGL|renderer"
 ```
 
+If you run into an error saying something like the screen is already running, it is likely there is already a display connected to :2, which is what this one is connecting to. To resolve this, modify the `.conf`, `.service`, and (for the next step) the oarbot `.sh` file to use a different display number.
+
 ## Installing the Startup Service
 
 Copy [oarbot_silver_helper_laptop_launch.service](oarbot_silver_helper_laptop_launch.service) into `/etc/systemd/system/`, and copy [oarbot_silver_helper_laptop_launch.sh](oarbot_silver_helper_laptop_launch.sh) into `/usr/local/bin/`. To make the script executable, run
