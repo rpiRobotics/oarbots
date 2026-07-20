@@ -23,6 +23,19 @@ def generate_launch_description() -> LaunchDescription:
                 PathJoinSubstitution([
                     FindPackageShare("oarbot_launch"),
                     "launch",
+                    "azure_kinect_bringup.launch.py"
+                ])
+            ),
+            launch_arguments={
+                "azure_kinect_namespace": "oarbot_silver/azure_kinect",
+                "frame_prefix": "oarbot_silver/"
+            }.items()
+        ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution([
+                    FindPackageShare("oarbot_launch"),
+                    "launch",
                     "oarbot_state_publisher.launch.py"
                 ])
             ),
