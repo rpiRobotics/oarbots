@@ -2,8 +2,8 @@
 set -e
 
 # In order for the Azure Kinect node to launch, a display needs to be connected. This can be done by SSH'ing
-# with -X, but we will use the laptop's built-in display variable to launch the node
-export DISPLAY=:1
+# with -X, but we will use a virtual display
+export DISPLAY=:2
 
 # Source the global ROS2 installation
 source /opt/ros/jazzy/setup.bash
