@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="oarbot_silver">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import oarbot_silver urdf file -->
+    <xacro:include filename="$(find oarbot_description)/urdf/oarbot_silver.urdf.xacro" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="oarbot_silver.ros2_control.xacro" />
+
+
+    <xacro:oarbot_silver_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>

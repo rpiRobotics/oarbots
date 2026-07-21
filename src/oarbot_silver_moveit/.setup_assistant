@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: oarbot_description
+    relative_path: urdf/oarbot_silver.urdf.xacro
+  srdf:
+    relative_path: config/oarbot_silver.srdf
+  package_settings:
+    author_name: Aidan O'Connor
+    author_email: oconna4@rpi.edu
+    generated_timestamp: 1784647754
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
