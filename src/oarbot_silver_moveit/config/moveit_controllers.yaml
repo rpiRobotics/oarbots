@@ -7,7 +7,9 @@ moveit_simple_controller_manager:
     - kinova_jaco_2_controller
 
   kinova_jaco_2_controller:
+    action_ns: /oarbot_silver/kinova/j2n6s300/follow_joint_trajectory
     type: FollowJointTrajectory
+    default: true
     joints:
       - j2n6s300_joint_1
       - j2n6s300_joint_2
