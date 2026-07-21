@@ -10,6 +10,12 @@
         </geometry>
         <material name="clearpath_dark_grey" />
       </visual>
+
+      <collision>
+        <geometry>
+          <box size="0.02 0.02 0.005"/>
+        </geometry>
+      </collision>
     </link>
 
     <joint name="${name}_base_joint" type="fixed">
