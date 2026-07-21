@@ -10,6 +10,15 @@
                 <material name="white" />
             </visual>
 
+            <collision>
+                <origin xyz="-0.05516 -0.0035 -0.025" rpy="0 0 0"/>
+                <geometry>
+                    <mesh
+                        scale="0.001 0.001 0.001"
+                        filename="package://oarbot_description/meshes/custom/wrist_connection.STL"/>
+                </geometry>
+            </collision>
+
             <inertial>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <mass value="0.1"/>
