@@ -9,7 +9,7 @@ public:
     KinovaTeleop() : Node("kinova_teleop")
     {
         this->latest_message = kinova_msgs::msg::PoseVelocity();
-        this->kinova_vel_publisher = this->create_publisher<kinova_msgs::msg::PoseVelocity>("/j2n6s300_driver/in/cartesian_velocity", 10);
+        this->kinova_vel_publisher = this->create_publisher<kinova_msgs::msg::PoseVelocity>("/oarbot_silver/kinova/j2n6s300_driver/in/cartesian_velocity", 10);
 
         auto handle_input = [this](geometry_msgs::msg::Twist::UniquePtr msg) -> void {
             this->latest_message.twist_linear_x = msg->linear.x;
