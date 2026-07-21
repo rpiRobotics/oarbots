@@ -27,6 +27,12 @@
                 </geometry>
                 <material name="kinect_white" />
             </visual>
+            <collision>
+                <origin xyz="0. 0. 0." />
+                <geometry>
+                    <box size="0.0994 0.0996 0.023" />
+                </geometry>
+            </collision>
         </link>
     
         <link name="camera_base">
@@ -37,6 +43,12 @@
                 </geometry>
                 <material name="kinect_grey" />
             </visual>
+            <collision>
+                <origin xyz="-0.013 0. 0." />
+                <geometry>
+                    <box size="0.026 0.103 0.039" />
+                </geometry>
+            </collision>
         </link>
     
         <link name="camera_visor">
@@ -47,6 +59,12 @@
                 </geometry>
                 <material name="kinect_black" />
             </visual>
+            <collision>
+                <origin xyz="-0.0128 0. 0." />
+                <geometry>
+                    <box size="0.026 0.101 0.037" />
+                </geometry>
+            </collision>
         </link>
     
         <joint name="camera_base_to_body" type="fixed">
