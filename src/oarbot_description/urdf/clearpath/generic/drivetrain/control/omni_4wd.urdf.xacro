@@ -4,10 +4,10 @@
   <xacro:macro name="generic_drivetrain_control_omni_4wd" params="name hardware_plugin">
 
     <!-- Gazebo Controller -->
-    <xacro:include filename="$(find oarbot_description)/urdf/clearpath/generic/gazebo.urdf.xacro"/>
+    <!-- <xacro:include filename="$(find oarbot_description)/urdf/clearpath/generic/gazebo.urdf.xacro"/> -->
 
     <!-- ROS2 controls -->
-    <ros2_control name="${name}_hardware" type="system">
+    <!-- <ros2_control name="${name}_hardware" type="system">
       <hardware>
         <plugin>${hardware_plugin}</plugin>
       </hardware>
@@ -31,7 +31,7 @@
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
-    </ros2_control>
+    </ros2_control> -->
   </xacro:macro>
 
 </robot>
