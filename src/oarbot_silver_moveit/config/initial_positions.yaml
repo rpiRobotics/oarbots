@@ -1,9 +1,15 @@
 # Default initial positions for oarbot_silver's ros2_control fake system
 
 initial_positions:
-  j2n6s300_joint_1: 0
-  j2n6s300_joint_2: 0
-  j2n6s300_joint_3: 0
-  j2n6s300_joint_4: 0
-  j2n6s300_joint_5: 0
-  j2n6s300_joint_6: 0
+  j2n6s300_joint_1: 1.489946484525617
+  j2n6s300_joint_2: 3.358340676808617
+  j2n6s300_joint_3: 5.285075141195329
+  j2n6s300_joint_4: 2.0765452651869394
+  j2n6s300_joint_5: -1.445846667402777
+  j2n6s300_joint_6: -1.301857004113245
+  j2n6s300_joint_finger_1: 0.2
+  j2n6s300_joint_finger_2: 0.2
+  j2n6s300_joint_finger_3: 0.2
+  j2n6s300_joint_finger_tip_1: 0.0
+  j2n6s300_joint_finger_tip_2: 0.0
+  j2n6s300_joint_finger_tip_3: 0.0

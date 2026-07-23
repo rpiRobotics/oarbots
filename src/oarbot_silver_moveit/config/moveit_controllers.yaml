@@ -4,12 +4,12 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 
 moveit_simple_controller_manager:
   controller_names:
-    - kinova_jaco_2_controller
+    - arm_controller
+    - gripper_controller
 
-  kinova_jaco_2_controller:
-    action_ns: /oarbot_silver/kinova/j2n6s300/follow_joint_trajectory
+  arm_controller:
+    action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
-    default: true
     joints:
       - j2n6s300_joint_1
       - j2n6s300_joint_2
@@ -17,3 +17,13 @@ moveit_simple_controller_manager:
       - j2n6s300_joint_4
       - j2n6s300_joint_5
       - j2n6s300_joint_6
+  gripper_controller:
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    joints:
+      - j2n6s300_joint_finger_1
+      - j2n6s300_joint_finger_tip_1
+      - j2n6s300_joint_finger_2
+      - j2n6s300_joint_finger_tip_2
+      - j2n6s300_joint_finger_3
+      - j2n6s300_joint_finger_tip_3

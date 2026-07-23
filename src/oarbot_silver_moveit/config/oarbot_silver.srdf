@@ -9,27 +9,74 @@
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
-    <group name="kinova_jaco_2">
-        <chain base_link="j2n6s300_link_base" tip_link="j2n6s300_wrench"/>
+    <group name="arm">
+        <chain base_link="j2n6s300_link_base" tip_link="j2n6s300_end_effector"/>
     </group>
-    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
-    <group_state name="up" group="kinova_jaco_2">
-        <joint name="j2n6s300_joint_1" value="0"/>
-        <joint name="j2n6s300_joint_2" value="3.14159"/>
-        <joint name="j2n6s300_joint_3" value="3.14159"/>
-        <joint name="j2n6s300_joint_4" value="0"/>
-        <joint name="j2n6s300_joint_5" value="0"/>
-        <joint name="j2n6s300_joint_6" value="0"/>
+    <group name="gripper">
+        <joint name="j2n6s300_joint_finger_1"/>
+        <joint name="j2n6s300_joint_finger_tip_1"/>
+        <joint name="j2n6s300_joint_finger_2"/>
+        <joint name="j2n6s300_joint_finger_tip_2"/>
+        <joint name="j2n6s300_joint_finger_3"/>
+        <joint name="j2n6s300_joint_finger_tip_3"/>
+    </group>
+
+    <group_state name="Home" group="arm">
+        <joint name="j2n6s300_joint_1" value="1.489946484525617" />
+        <joint name="j2n6s300_joint_2" value="3.358340676808617" />
+        <joint name="j2n6s300_joint_3" value="5.285075141195329" />
+        <joint name="j2n6s300_joint_4" value="2.0765452651869394" />
+        <joint name="j2n6s300_joint_5" value="-1.445846667402777" />
+        <joint name="j2n6s300_joint_6" value="-1.301857004113245" />
+    </group_state>
+    <group_state name="Retract" group="arm">
+        <joint name="j2n6s300_joint_1" value="1.5679087943829781" />
+        <joint name="j2n6s300_joint_2" value="3.663410307051047" />
+        <joint name="j2n6s300_joint_3" value="5.817336647187437" />
+        <joint name="j2n6s300_joint_4" value="1.6433862417852403" />
+        <joint name="j2n6s300_joint_5" value="-0.055929578684972725" />
+        <joint name="j2n6s300_joint_6" value="-1.4958262115802938" />
+
+        <joint name="j2n6s300_joint_finger_1" value="1.108797407149339" />
+        <joint name="j2n6s300_joint_finger_2" value="1.107565410030284" />
+        <joint name="j2n6s300_joint_finger_3" value="1.108797407149339" />
+        <joint name="j2n6s300_joint_finger_tip_1" value="0"/>
+        <joint name="j2n6s300_joint_finger_tip_2" value="0"/>
+        <joint name="j2n6s300_joint_finger_tip_3" value="0"/>
+    </group_state>
+    <group_state name="Open" group="gripper">
+        <joint name="j2n6s300_joint_finger_1" value="0.2" />
+        <joint name="j2n6s300_joint_finger_2" value="0.2" />
+        <joint name="j2n6s300_joint_finger_3" value="0.2" />
+        <joint name="j2n6s300_joint_finger_tip_1" value="0"/>
+        <joint name="j2n6s300_joint_finger_tip_2" value="0"/>
+        <joint name="j2n6s300_joint_finger_tip_3" value="0"/>
+    </group_state>
+    <group_state name="Close" group="gripper">
+        <joint name="j2n6s300_joint_finger_1" value="1.2" />
+        <joint name="j2n6s300_joint_finger_2" value="1.2" />
+        <joint name="j2n6s300_joint_finger_3" value="1.2" />
+        <joint name="j2n6s300_joint_finger_tip_1" value="0"/>
+        <joint name="j2n6s300_joint_finger_tip_2" value="0"/>
+        <joint name="j2n6s300_joint_finger_tip_3" value="0"/>
+    </group_state>
+    <group_state name="Vertical" group="arm">
+        <joint name="j2n6s300_joint_1" value="3.1415" />
+        <joint name="j2n6s300_joint_2" value="3.1415" />
+        <joint name="j2n6s300_joint_3" value="3.1415" />
+        <joint name="j2n6s300_joint_4" value="3.1415" />
+        <joint name="j2n6s300_joint_5" value="3.1415" />
+        <joint name="j2n6s300_joint_6" value="3.1415" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="gripper" parent_link="j2n6s300_wrench" group="kinova_jaco_2"/>
+    <end_effector name="end_effector" parent_link="j2n6s300_end_effector" group="gripper"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
-    <virtual_joint name="base_to_world" type="fixed" parent_frame="world" child_link="base_link"/>
+    <virtual_joint name="base_link_to_world" type="fixed" parent_frame="world" child_link="base_link"/>
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
-    <passive_joint name="rear_right_wheel_joint"/>
-    <passive_joint name="rear_left_wheel_joint"/>
-    <passive_joint name="front_right_wheel_joint"/>
     <passive_joint name="front_left_wheel_joint"/>
+    <passive_joint name="front_right_wheel_joint"/>
+    <passive_joint name="rear_left_wheel_joint"/>
+    <passive_joint name="rear_right_wheel_joint"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="camera_base" link2="camera_body" reason="Adjacent"/>
     <disable_collisions link1="camera_base" link2="camera_visor" reason="Adjacent"/>
@@ -157,6 +204,7 @@
     <disable_collisions link1="front_left_wheel_link" link2="j2n6s300_link_finger_1" reason="Never"/>
     <disable_collisions link1="front_left_wheel_link" link2="j2n6s300_link_finger_2" reason="Never"/>
     <disable_collisions link1="front_left_wheel_link" link2="j2n6s300_link_finger_3" reason="Never"/>
+    <disable_collisions link1="front_left_wheel_link" link2="j2n6s300_link_finger_tip_1" reason="Never"/>
     <disable_collisions link1="front_left_wheel_link" link2="j2n6s300_link_finger_tip_2" reason="Never"/>
     <disable_collisions link1="front_left_wheel_link" link2="j2n6s300_link_finger_tip_3" reason="Never"/>
     <disable_collisions link1="front_left_wheel_link" link2="j2n6s300_mounting" reason="Never"/>
@@ -186,10 +234,8 @@
     <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_link_6" reason="Never"/>
     <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_link_base" reason="Never"/>
     <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_link_finger_1" reason="Never"/>
-    <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_link_finger_2" reason="Never"/>
     <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_link_finger_3" reason="Never"/>
     <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_link_finger_tip_1" reason="Never"/>
-    <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_link_finger_tip_2" reason="Never"/>
     <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_link_finger_tip_3" reason="Never"/>
     <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_mounting" reason="Never"/>
     <disable_collisions link1="front_right_wheel_link" link2="j2n6s300_robot_side" reason="Never"/>
@@ -221,6 +267,7 @@
     <disable_collisions link1="hokuyo_ust_front_link" link2="j2n6s300_link_finger_3" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_front_link" link2="j2n6s300_link_finger_tip_1" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_front_link" link2="j2n6s300_link_finger_tip_2" reason="Never"/>
+    <disable_collisions link1="hokuyo_ust_front_link" link2="j2n6s300_link_finger_tip_3" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_front_link" link2="j2n6s300_mounting" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_front_link" link2="j2n6s300_robot_side" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_front_link" link2="j2n6s300_wrench" reason="Never"/>
@@ -246,10 +293,8 @@
     <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_link_6" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_link_base" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_link_finger_1" reason="Never"/>
-    <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_link_finger_2" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_link_finger_3" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_link_finger_tip_1" reason="Never"/>
-    <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_link_finger_tip_2" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_link_finger_tip_3" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_mounting" reason="Never"/>
     <disable_collisions link1="hokuyo_ust_rear_link" link2="j2n6s300_robot_side" reason="Never"/>
@@ -384,7 +429,6 @@
     <disable_collisions link1="j2n6s300_link_6" link2="u_bracket" reason="Never"/>
     <disable_collisions link1="j2n6s300_link_6" link2="wrist_connection_1_link" reason="Never"/>
     <disable_collisions link1="j2n6s300_link_6" link2="wrist_connection_2_link" reason="Never"/>
-    <disable_collisions link1="j2n6s300_link_base" link2="left_mount" reason="Never"/>
     <disable_collisions link1="j2n6s300_link_base" link2="microstrain_imu_link" reason="Never"/>
     <disable_collisions link1="j2n6s300_link_base" link2="rear_left_wheel_link" reason="Never"/>
     <disable_collisions link1="j2n6s300_link_base" link2="rear_right_wheel_link" reason="Never"/>
@@ -548,5 +592,6 @@
     <disable_collisions link1="u_bracket" link2="wrist_connection_1_link" reason="Default"/>
     <disable_collisions link1="u_bracket" link2="wrist_connection_2_link" reason="Default"/>
     <disable_collisions link1="uwb_tag_1_link" link2="uwb_tag_2_link" reason="Never"/>
+    <disable_collisions link1="uwb_tag_1_link" link2="wrist_connection_2_link" reason="Never"/>
     <disable_collisions link1="wrist_connection_1_link" link2="wrist_connection_2_link" reason="Never"/>
 </robot>
