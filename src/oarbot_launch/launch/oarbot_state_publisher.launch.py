@@ -46,8 +46,8 @@ def generate_joint_state_publisher_node(context: LaunchContext, *args, **kwargs)
             namespace=namespace_text + "no_prefix/",
             parameters=[{
                 "source_list": [
-                    "kinova/j2n6s300_driver/out/joint_state",
-                    "dingo/platform/joint_states"
+                    "/" + namespace_text + "kinova/j2n6s300_driver/out/joint_state",
+                    "/" + namespace_text + "dingo/platform/joint_states"
                     # TODO: Add more as this is built up
                 ]
             }]
