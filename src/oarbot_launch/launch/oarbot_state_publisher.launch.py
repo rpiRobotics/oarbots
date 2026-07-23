@@ -79,8 +79,8 @@ def generate_launch_description() -> LaunchDescription:
             namespace=LaunchConfiguration(oarbot_namespace_string),
             parameters=[{
                 "joint_state_prefix": LaunchConfiguration(oarbot_namespace_string),
-                "input_topic": "no_prefix/joint_states/",
-                "output_topic": "joint_states/"
+                "input_topic": "no_prefix/joint_states",
+                "output_topic": "joint_states"
             }]
         ),
         OpaqueFunction(function=check_namespace_trailing_forward_slash),
