@@ -30,8 +30,7 @@ def generate_robot_state_publisher_node(context: LaunchContext, *args, **kwargs)
             name="robot_state_publisher",
             namespace=LaunchConfiguration("oarbot_namespace"),
             parameters=[{
-                "robot_description": robot_description,
-                "frame_prefix": LaunchConfiguration("oarbot_namespace")
+                "robot_description": robot_description
             }]
         ),
     ]

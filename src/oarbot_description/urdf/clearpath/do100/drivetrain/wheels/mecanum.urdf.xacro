@@ -5,8 +5,8 @@
   <xacro:property name="do100_mecanum_wheel_mass" value="0.4" />
   <xacro:property name="do100_mecanum_wheel_width" value="0.050" />
 
-  <xacro:macro name="do100_mecanum_wheel" params="prefix side *joint_pose">
-    <link name="${prefix}_wheel_link">
+  <xacro:macro name="do100_mecanum_wheel" params="prefix tf_prefix side *joint_pose">
+    <link name="${tf_prefix}${prefix}_wheel_link">
       <visual>
         <origin xyz="0 ${side * 0.027} 0" rpy="0 0 ${PI/2}"/>
         <geometry>
@@ -31,7 +31,7 @@
 
     <gazebo>
       <plugin filename="libgz-sim-wheel-slip-system.so" name="gz::sim::systems::WheelSlip">
-        <wheel link_name="${prefix}_wheel_link">
+        <wheel link_name="${tf_prefix}${prefix}_wheel_link">
           <slip_compliance_lateral>1.0</slip_compliance_lateral>
           <slip_compliance_longitudinal>1.0</slip_compliance_longitudinal>
           <wheel_normal_force>20</wheel_normal_force>
@@ -40,7 +40,7 @@
       </plugin>
     </gazebo>
 
-    <gazebo reference="${prefix}_wheel_link">
+    <gazebo reference="${tf_prefix}${prefix}_wheel_link">
       <collision>
         <surface>
           <friction>
@@ -54,9 +54,9 @@
       </collision>
     </gazebo>
 
-    <joint name="${prefix}_wheel_joint" type="continuous">
-      <parent link="chassis_link"/>
-      <child link="${prefix}_wheel_link" />
+    <joint name="${tf_prefix}${prefix}_wheel_joint" type="continuous">
+      <parent link="${tf_prefix}chassis_link"/>
+      <child link="${tf_prefix}${prefix}_wheel_link" />
       <xacro:insert_block name="joint_pose" />
       <axis xyz="0 1 0" />
     </joint>

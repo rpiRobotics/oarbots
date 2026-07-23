@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="hokuyo_ust" params="name parent_link *origin
+  <xacro:macro name="hokuyo_ust" params="name parent_link prefix *origin
                                           ang_res:=0.25 min_ang:=-2.35619 max_ang:=2.35619
                                           update_rate:=40 min_range:=0.06 max_range:=30.0">
-    <link name="${name}_link">
+    <link name="${prefix}${name}_link">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
@@ -22,7 +22,7 @@
       </collision>
     </link>
 
-    <link name="${name}_laser">
+    <link name="${prefix}${name}_laser">
       <inertial>
         <mass value="1.1" />
         <origin xyz="0 0 0" />
@@ -32,23 +32,23 @@
       </inertial>
     </link>
 
-    <joint name="${name}_joint" type="fixed">
+    <joint name="${prefix}${name}_joint" type="fixed">
       <xacro:insert_block name="origin" />
       <parent link="${parent_link}" />
-      <child link="${name}_link" />
+      <child link="${prefix}${name}_link" />
     </joint>
 
-    <joint name="${name}_laser_joint" type="fixed">
+    <joint name="${prefix}${name}_laser_joint" type="fixed">
       <!-- This offset is from the base of the bracket to the LIDAR's focal point. -->
       <origin xyz="0 0 0.0474" rpy="0 0 0" />
-      <parent link="${name}_link" />
-      <child link="${name}_laser" />
+      <parent link="${prefix}${name}_link" />
+      <child link="${prefix}${name}_laser" />
     </joint>
 
     <xacro:property name="samples" value="${round((max_ang - min_ang) * 180 / (ang_res * pi))}"/>
 
-    <gazebo reference="${name}_laser">
-      <sensor name="${name}" type="gpu_lidar">
+    <gazebo reference="${prefix}${name}_laser">
+      <sensor name="${prefix}${name}" type="gpu_lidar">
         <update_rate>${update_rate}</update_rate>
         <visualize>true</visualize>
         <always_on>true</always_on>

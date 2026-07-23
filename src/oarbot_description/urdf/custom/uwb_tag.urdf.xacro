@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="uwb_tag">
-    <xacro:macro name="uwb_tag" params="tag_num parent *joint_pose">
+    <xacro:macro name="uwb_tag" params="tag_num parent prefix *joint_pose">
     
-        <link name="uwb_tag_${tag_num}_link">
+        <link name="${prefix}uwb_tag_${tag_num}_link">
     
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -30,9 +30,9 @@
     
         </link>
     
-        <joint name="uwb_tag_${tag_num}_joint" type="fixed">
+        <joint name="${prefix}uwb_tag_${tag_num}_joint" type="fixed">
             <parent link="${parent}"/>
-            <child link="uwb_tag_${tag_num}_link" />
+            <child link="${prefix}uwb_tag_${tag_num}_link" />
             <xacro:insert_block name="joint_pose" />
         </joint>
     

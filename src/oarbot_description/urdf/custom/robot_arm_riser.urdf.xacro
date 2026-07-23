@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_arm_riser">
-    <xacro:macro name="robot_arm_riser" params="parent">
+    <xacro:macro name="robot_arm_riser" params="prefix parent">
     
         <!-- PVC RISER LINK -->
-        <link name="robot_arm_riser_link">
+        <link name="${prefix}robot_arm_riser_link">
     
             <visual>
                 <origin xyz="0 0 0.003175" rpy="0 0 0" />
@@ -35,23 +35,23 @@
     
         </link>
     
-        <joint name="robot_arm_riser_joint" type="fixed">
+        <joint name="${prefix}robot_arm_riser_joint" type="fixed">
             <parent link="${parent}" />
-            <child link="robot_arm_riser_link" />
+            <child link="${prefix}robot_arm_riser_link" />
             <origin xyz="0 0 0" rpy="0 0 0" />
         </joint>
     
         <!-- ADD A LINK TO SPECIFY THE ARM MOUNT FRAME POSE -->
-        <link name="arm_mount" />
+        <link name="${prefix}arm_mount" />
         <!-- AND SPECIFY WHERE IS IT -->
-        <joint name="arm_mount_joint" type="fixed">
+        <joint name="${prefix}arm_mount_joint" type="fixed">
             <origin xyz="0 0 0.579525" rpy="0 0 0" />
-            <parent link="robot_arm_riser_link" />
-            <child link="arm_mount" />
+            <parent link="${prefix}robot_arm_riser_link" />
+            <child link="${prefix}arm_mount" />
         </joint>
     
         <!-- PVC RISER ARUCO MOUNT LINK -->
-        <link name="robot_arm_riser_aruco_mount_link">
+        <link name="${prefix}robot_arm_riser_aruco_mount_link">
     
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
@@ -83,14 +83,14 @@
     
         </link>
     
-        <joint name="robot_arm_riser_aruco_mount_joint" type="fixed">
+        <joint name="${prefix}robot_arm_riser_aruco_mount_joint" type="fixed">
             <parent link="${parent}" />
-            <child link="robot_arm_riser_aruco_mount_link" />
+            <child link="${prefix}robot_arm_riser_aruco_mount_link" />
             <origin xyz="0 0 0.503175" rpy="0 0 0" />
         </joint>
     
         <!-- PVC RISER UWB MOUNT LINK -->
-        <link name="robot_arm_riser_uwb_mount_link">
+        <link name="${prefix}robot_arm_riser_uwb_mount_link">
     
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
@@ -122,9 +122,9 @@
     
         </link>
     
-        <joint name="robot_arm_riser_uwb_mount_joint" type="fixed">
+        <joint name="${prefix}robot_arm_riser_uwb_mount_joint" type="fixed">
             <parent link="${parent}" />
-            <child link="robot_arm_riser_uwb_mount_link" />
+            <child link="${prefix}robot_arm_riser_uwb_mount_link" />
             <origin xyz="0 0 0.573175" rpy="0 0 0" />
         </joint>
     

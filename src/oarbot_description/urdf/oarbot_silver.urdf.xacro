@@ -9,74 +9,74 @@
     <material name="black"><color rgba="0.15 0.15 0.15 1.0" /></material>
     <material name="cyan"><color rgba="0 1.0 1.0 1.0"/></material>
     <material name="clearpath_dark_grey"><color rgba="0.2 0.2 0.2 1.0" /></material>
+
+    <xacro:property name="prefix" value="oarbot_silver/" />
     
     <!-- Dingo base -->
     <xacro:include filename="$(find oarbot_description)/urdf/clearpath/do100/do100.urdf.xacro"/>
-    <xacro:do100 control="omni_4wd" front_wheels="mecanum" rear_wheels="mecanum"/>
+    <xacro:do100 prefix="${prefix}" control="omni_4wd" front_wheels="mecanum" rear_wheels="mecanum"/>
     
     <!-- PVC Robot Arm Riser -->
     <xacro:include filename="$(find oarbot_description)/urdf/custom/robot_arm_riser.urdf.xacro"/>
-    <xacro:robot_arm_riser parent="front_1_mount"/>
+    <xacro:robot_arm_riser prefix="${prefix}" parent="${prefix}front_1_mount"/>
     
     <!-- Kinova arm -->
     <xacro:include filename="$(find oarbot_description)/urdf/kinova/j2n6s300_with_force_torque.urdf.xacro"/>
-    <link name="rotate_arm_mount"></link>
-    <joint name="rotate_arm_mount_joint" type="fixed">
+    <link name="${prefix}rotate_arm_mount"></link>
+    <joint name="${prefix}rotate_arm_mount_joint" type="fixed">
         <origin xyz="0 0 0" rpy="0 0 ${PI}"/>
-        <parent link="arm_mount" />
-        <child link="rotate_arm_mount" />
+        <parent link="${prefix}arm_mount" />
+        <child link="${prefix}rotate_arm_mount" />
     </joint>
-    <xacro:j2n6s300  base_parent="rotate_arm_mount"/> 
+    <xacro:j2n6s300 prefix="${prefix}j2n6s300" base_parent="${prefix}rotate_arm_mount"/> 
 
     <!--  UWB Tags -->
     <xacro:include filename="$(find oarbot_description)/urdf/custom/uwb_tag.urdf.xacro"/>
 
     <!-- Right UWB Tag -->
-    <xacro:uwb_tag tag_num="1" parent="robot_arm_riser_uwb_mount_link"> 
+    <xacro:uwb_tag prefix="${prefix}" tag_num="1" parent="${prefix}robot_arm_riser_uwb_mount_link"> 
         <origin xyz="0.02 -0.224 -0.025" rpy="${PI/2} ${-PI/2} 0"/>
     </xacro:uwb_tag>
 
     <!-- Left UWB Tag -->
-    <xacro:uwb_tag tag_num="2" parent="robot_arm_riser_uwb_mount_link"> 
+    <xacro:uwb_tag prefix="${prefix}" tag_num="2" parent="${prefix}robot_arm_riser_uwb_mount_link"> 
         <origin xyz="-0.02 0.224 -0.025" rpy="${-PI/2} ${-PI/2} 0"/>
     </xacro:uwb_tag>
 
     <!-- Azure Kinect Mount -->
     <xacro:include filename="$(find oarbot_description)/urdf/custom/u_bracket.urdf.xacro"/>
     <xacro:include filename="$(find oarbot_description)/urdf/custom/kinect_wrist_connection.urdf.xacro"/>
-    <xacro:u_bracket parent="j2n6s300_wrench">
+    <xacro:u_bracket prefix="${prefix}" parent="${prefix}j2n6s300_wrench">
         <origin xyz="0.075 0 0.01525" rpy="${PI} 0 0"/>
     </xacro:u_bracket>
-    <xacro:kinect_wrist_connection num="1" parent_link="j2n6s300_wrench">
+    <xacro:kinect_wrist_connection prefix="${prefix}" num="1" parent_link="${prefix}j2n6s300_wrench">
         <origin xyz="0.025 -0.025 -0.005" rpy="${PI/2} 0 -${PI/2}"/>
     </xacro:kinect_wrist_connection>
-    <xacro:kinect_wrist_connection num="2" parent_link="j2n6s300_wrench">
+    <xacro:kinect_wrist_connection prefix="${prefix}" num="2" parent_link="${prefix}j2n6s300_wrench">
         <origin xyz="0.025 0.025 -0.005" rpy="${PI/2} ${PI} -${PI/2}"/>
     </xacro:kinect_wrist_connection>
     
 
     <!-- Azure Kinect -->
     <xacro:include filename="$(find oarbot_description)/urdf/microsoft/azure_kinect.urdf.xacro"/>
-    <xacro:azure_kinect parent_link="right_mount">
+    <xacro:azure_kinect prefix="${prefix}" parent_link="${prefix}right_mount">
         <origin xyz="0.006 0 -0.05" rpy="0 ${PI/2} 0" />
     </xacro:azure_kinect>
 
     <!-- Hokuyo LiDAR Sensors -->
     <xacro:include filename="$(find oarbot_description)/urdf/hokuyo/hokuyo_ust.urdf.xacro"/>
-
     <!-- Front Sensor -->
-    <xacro:hokuyo_ust name="hokuyo_ust_front" parent_link="front_2_mount">
+    <xacro:hokuyo_ust prefix="${prefix}" name="hokuyo_ust_front" parent_link="${prefix}front_2_mount">
         <origin xyz="0.045 0 0" rpy="0 0 0"/>
     </xacro:hokuyo_ust>
-
     <!-- Rear Sensor -->
-    <xacro:hokuyo_ust name="hokuyo_ust_rear" parent_link="rear_2_mount">
+    <xacro:hokuyo_ust prefix="${prefix}" name="hokuyo_ust_rear" parent_link="${prefix}rear_2_mount">
         <origin xyz="-0.045 0 0" rpy="0 0 ${PI}"/>
     </xacro:hokuyo_ust>
 
     <!-- Microstrain IMU -->
     <xacro:include filename="$(find oarbot_description)/urdf/microstrain/microstrain_imu.urdf.xacro"/>
-    <xacro:microstrain_imu name="microstrain_imu" parent_link="default_mount">
+    <xacro:microstrain_imu prefix="${prefix}" name="microstrain_imu" parent_link="${prefix}default_mount">
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </xacro:microstrain_imu>
 </robot>

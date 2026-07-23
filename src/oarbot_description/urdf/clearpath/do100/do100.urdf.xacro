@@ -8,7 +8,7 @@
   <xacro:property name="PI" value="${math.pi}" />
 
   <!-- D0100 Platform Macro -->
-  <xacro:macro name="do100" params="control:='omni_4wd' front_wheels:='mecanum' rear_wheels:='mecanum'">
+  <xacro:macro name="do100" params="prefix control:='omni_4wd' front_wheels:='mecanum' rear_wheels:='mecanum'">
     <!-- Variables -->
     <xacro:property name="wheelbase" value="0.570" />
     <xacro:property name="track" value="0.3708" />
@@ -17,15 +17,15 @@
     <xacro:property name="dummy_inertia" value="1e-09"/>
 
     <!-- Chassis -->
-    <link name="base_link"></link>
+    <link name="${prefix}base_link"></link>
 
-    <joint name="base_link_joint" type="fixed">
+    <joint name="${prefix}base_link_joint" type="fixed">
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <parent link="base_link"/>
-      <child link="chassis_link" />
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}chassis_link" />
     </joint>
 
-    <link name="chassis_link">
+    <link name="${prefix}chassis_link">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
@@ -52,7 +52,7 @@
 
     <!-- Add wheels -->
     <xacro:include filename="$(find oarbot_description)/urdf/clearpath/do100/drivetrain/wheels.urdf.xacro"/>
-    <xacro:do100_drivetrain_wheels front_wheels="${front_wheels}" rear_wheels="${rear_wheels}"/>
+    <xacro:do100_drivetrain_wheels prefix="${prefix}" front_wheels="${front_wheels}" rear_wheels="${rear_wheels}"/>
 
     <!-- Add drivetrain -->
     <xacro:include filename="$(find oarbot_description)/urdf/clearpath/generic/drivetrain/drivetrain.urdf.xacro"/>
@@ -70,6 +70,7 @@
     </xacro:unless>
 
     <xacro:generic_drivetrain
+      prefix="${prefix}"
       name="do100"
       control="${control}"
       front_wheels="${front_wheels}"
@@ -78,20 +79,20 @@
     />
 
     <!-- Internal IMU -->
-    <link name="imu_0_link">
+    <link name="${prefix}imu_0_link">
       <inertial>
         <mass value="0.001"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <inertia ixx="${dummy_inertia}" ixy="0.0" ixz="0.0" iyy="${dummy_inertia}" iyz="0.0" izz="${dummy_inertia}"/>
       </inertial>
     </link>
-    <joint name="imu_joint" type="fixed">
-      <parent link="chassis_link" />
-      <child link="imu_0_link" />
+    <joint name="${prefix}imu_joint" type="fixed">
+      <parent link="${prefix}chassis_link" />
+      <child link="${prefix}imu_0_link" />
     </joint>
 
-    <gazebo reference="imu_0_link">
-      <sensor type="imu" name="imu_0">
+    <gazebo reference="${prefix}imu_0_link">
+      <sensor type="imu" name="${prefix}imu_0">
         <always_on>true</always_on>
         <update_rate>50</update_rate>
         <visualize>true</visualize>
@@ -101,62 +102,62 @@
     </gazebo>
 
     <!-- Mounting Hard Points -->
-    <link name="default_mount"/>
-    <link name="front_2_mount"/>
-    <link name="front_1_mount"/>
-    <link name="front_0_mount"/>
-    <link name="rear_2_mount"/>
-    <link name="rear_1_mount"/>
-    <link name="rear_0_mount"/>
+    <link name="${prefix}default_mount"/>
+    <link name="${prefix}front_2_mount"/>
+    <link name="${prefix}front_1_mount"/>
+    <link name="${prefix}front_0_mount"/>
+    <link name="${prefix}rear_2_mount"/>
+    <link name="${prefix}rear_1_mount"/>
+    <link name="${prefix}rear_0_mount"/>
 
-    <joint name="default_mount_joint" type="fixed">
+    <joint name="${prefix}default_mount_joint" type="fixed">
       <origin xyz="0 0 0.069023" rpy="0 0 0" />
-      <parent link="chassis_link"/>
-      <child link="default_mount" />
+      <parent link="${prefix}chassis_link"/>
+      <child link="${prefix}default_mount" />
     </joint>
-    <joint name="front_0_mount_joint" type="fixed">
+    <joint name="${prefix}front_0_mount_joint" type="fixed">
       <origin xyz="0.080 0 0" rpy="0 0 0" />
-      <parent link="default_mount"/>
-      <child link="front_0_mount" />
+      <parent link="${prefix}default_mount"/>
+      <child link="${prefix}front_0_mount" />
     </joint>
-    <joint name="front_1_mount_joint" type="fixed">
+    <joint name="${prefix}front_1_mount_joint" type="fixed">
       <origin xyz="0.080 0 0" rpy="0 0 0" />
-      <parent link="front_0_mount"/>
-      <child link="front_1_mount" />
+      <parent link="${prefix}front_0_mount"/>
+      <child link="${prefix}front_1_mount" />
     </joint>
-    <joint name="front_2_mount_joint" type="fixed">
+    <joint name="${prefix}front_2_mount_joint" type="fixed">
       <origin xyz="0.080 0 0" rpy="0 0 0" />
-      <parent link="front_1_mount"/>
-      <child link="front_2_mount" />
+      <parent link="${prefix}front_1_mount"/>
+      <child link="${prefix}front_2_mount" />
     </joint>
-    <joint name="rear_0_mount_joint" type="fixed">
+    <joint name="${prefix}rear_0_mount_joint" type="fixed">
       <origin xyz="-0.080 0 0" rpy="0 0 0" />
-      <parent link="default_mount"/>
-      <child link="rear_0_mount" />
+      <parent link="${prefix}default_mount"/>
+      <child link="${prefix}rear_0_mount" />
     </joint>
-    <joint name="rear_1_mount_joint" type="fixed">
+    <joint name="${prefix}rear_1_mount_joint" type="fixed">
       <origin xyz="-0.080 0 0" rpy="0 0 0" />
-      <parent link="rear_0_mount"/>
-      <child link="rear_1_mount" />
+      <parent link="${prefix}rear_0_mount"/>
+      <child link="${prefix}rear_1_mount" />
     </joint>
-    <joint name="rear_2_mount_joint" type="fixed">
+    <joint name="${prefix}rear_2_mount_joint" type="fixed">
       <origin xyz="-0.080 0 0" rpy="0 0 0" />
-      <parent link="rear_1_mount"/>
-      <child link="rear_2_mount" />
+      <parent link="${prefix}rear_1_mount"/>
+      <child link="${prefix}rear_2_mount" />
     </joint>
 
     <!-- Bumper Mounts -->
-    <link name="front_bumper_mount"/>
-    <link name="rear_bumper_mount"/>
-    <joint name="front_bumper_mount_joint" type="fixed">
+    <link name="${prefix}front_bumper_mount"/>
+    <link name="${prefix}rear_bumper_mount"/>
+    <joint name="${prefix}front_bumper_mount_joint" type="fixed">
       <origin xyz="0.34159 0 0.0345115" rpy="0 0 0" />
-      <parent link="chassis_link"/>
-      <child link="front_bumper_mount" />
+      <parent link="${prefix}chassis_link"/>
+      <child link="${prefix}front_bumper_mount" />
     </joint>
-    <joint name="rear_bumper_mount_joint" type="fixed">
+    <joint name="${prefix}rear_bumper_mount_joint" type="fixed">
       <origin xyz="-0.34159 0 0.0345115" rpy="0 0 0" />
-      <parent link="chassis_link"/>
-      <child link="rear_bumper_mount" />
+      <parent link="${prefix}chassis_link"/>
+      <child link="${prefix}rear_bumper_mount" />
     </joint>
 
   </xacro:macro>

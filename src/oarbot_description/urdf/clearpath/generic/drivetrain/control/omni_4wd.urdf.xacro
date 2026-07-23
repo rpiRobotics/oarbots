@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.org/schema" name="generic_drivetrain_control_omni_4wd">
 
-  <xacro:macro name="generic_drivetrain_control_omni_4wd" params="name hardware_plugin">
+  <xacro:macro name="generic_drivetrain_control_omni_4wd" params="prefix name hardware_plugin">
 
     <!-- Gazebo Controller -->
     <!-- <xacro:include filename="$(find oarbot_description)/urdf/clearpath/generic/gazebo.urdf.xacro"/> -->

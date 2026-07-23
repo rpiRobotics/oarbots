@@ -5,7 +5,7 @@
  -->
 
 <robot name="azure-kinect" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="azure_kinect" params="parent_link *origin">
+    <xacro:macro name="azure_kinect" params="parent_link prefix *origin">
         <material name="kinect_black">
             <color rgba="0. 0. 0. 1" />
         </material>
@@ -19,7 +19,7 @@
             <color rgba="0.9 0.9 0.9 1" />
         </material>
     
-        <link name="camera_body">
+        <link name="${prefix}camera_body">
             <visual>
                 <origin xyz="0. 0. 0." />
                 <geometry>
@@ -35,7 +35,7 @@
             </collision>
         </link>
     
-        <link name="camera_base">
+        <link name="${prefix}camera_base">
             <visual>
                 <origin xyz="-0.013 0. 0." />
                 <geometry>
@@ -51,7 +51,7 @@
             </collision>
         </link>
     
-        <link name="camera_visor">
+        <link name="${prefix}camera_visor">
             <visual>
                 <origin xyz="-0.0128 0. 0." />
                 <geometry>
@@ -67,22 +67,22 @@
             </collision>
         </link>
     
-        <joint name="camera_base_to_body" type="fixed">
-            <parent link="camera_base" />
-            <child link="camera_body" />
+        <joint name="${prefix}camera_base_to_body" type="fixed">
+            <parent link="${prefix}camera_base" />
+            <child link="${prefix}camera_body" />
             <origin xyz="-0.0757 0. 0.008" rpy="0. 0. 0." />
         </joint>
     
-        <joint name="camera_base_to_visor" type="fixed">
-            <parent link="camera_base" />
-            <child link="camera_visor" />
+        <joint name="${prefix}camera_base_to_visor" type="fixed">
+            <parent link="${prefix}camera_base" />
+            <child link="${prefix}camera_visor" />
             <origin xyz="0. 0. 0." rpy="0. 0. 0." />
         </joint>
 
-        <joint name="parent_to_camera_base" type="fixed">
+        <joint name="${prefix}parent_to_camera_base" type="fixed">
             <xacro:insert_block name="origin" />
             <parent link="${parent_link}" />
-            <child link="camera_base" />
+            <child link="${prefix}camera_base" />
         </joint>
     </xacro:macro>
 </robot>

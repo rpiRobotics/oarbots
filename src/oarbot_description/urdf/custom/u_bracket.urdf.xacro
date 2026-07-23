@@ -68,15 +68,15 @@
     <color rgba="0.05 0.05 0.05 1.0"/>
   </material>
 
-  <xacro:macro name="u_bracket" params="parent *origin">
+  <xacro:macro name="u_bracket" params="parent prefix *origin">
 
-    <joint name="parent_to_u_bracket" type="fixed">
+    <joint name="${prefix}parent_to_u_bracket" type="fixed">
       <xacro:insert_block name="origin"/>
       <parent link="${parent}"/>
-      <child link="u_bracket"/>
+      <child link="${prefix}u_bracket"/>
     </joint>
 
-    <link name="u_bracket">
+    <link name="${prefix}u_bracket">
 
       <!-- ===== Base of the U ===== -->
       <visual>
@@ -134,13 +134,13 @@
     </link>
 
     <!-- ===== Mount reference frame: left wall ===== -->
-    <joint name="left_mount_joint" type="fixed">
+    <joint name="${prefix}left_mount_joint" type="fixed">
       <origin xyz="${-wall_x_offset} 0 ${wall_z_center}" rpy="0 0 0"/>
-      <parent link="u_bracket"/>
-      <child link="left_mount"/>
+      <parent link="${prefix}u_bracket"/>
+      <child link="${prefix}left_mount"/>
     </joint>
 
-    <link name="left_mount">
+    <link name="${prefix}left_mount">
       <visual>
         <origin xyz="0 0 0" rpy="0 1.5707963 0"/>
         <geometry>
@@ -158,13 +158,13 @@
     </link>
 
     <!-- ===== Mount reference frame: right wall ===== -->
-    <joint name="right_mount_joint" type="fixed">
+    <joint name="${prefix}right_mount_joint" type="fixed">
       <origin xyz="${wall_x_offset} 0 ${wall_z_center}" rpy="0 0 0"/>
-      <parent link="u_bracket"/>
-      <child link="right_mount"/>
+      <parent link="${prefix}u_bracket"/>
+      <child link="${prefix}right_mount"/>
     </joint>
 
-    <link name="right_mount">
+    <link name="${prefix}right_mount">
       <visual>
         <origin xyz="0 0 0" rpy="0 1.5707963 0"/>
         <geometry>

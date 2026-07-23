@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="kinect_wrist_connection">
-    <xacro:macro name="kinect_wrist_connection" params="num parent_link *origin">
-        <link name="wrist_connection_${num}_link">
+    <xacro:macro name="kinect_wrist_connection" params="num parent_link prefix *origin">
+        <link name="${prefix}wrist_connection_${num}_link">
             <visual>
                 <origin xyz="-0.05516 -0.0035 -0.025" rpy="0 0 0"/>
                 <geometry>
@@ -29,10 +29,10 @@
             </inertial>
         </link>
         
-        <joint name="wrist_connection_${num}_joint" type="fixed">
+        <joint name="${prefix}wrist_connection_${num}_joint" type="fixed">
             <xacro:insert_block name="origin"/>
             <parent link="${parent_link}"/>
-            <child link="wrist_connection_${num}_link"/>
+            <child link="${prefix}wrist_connection_${num}_link"/>
         </joint>
     </xacro:macro>
 </robot>
