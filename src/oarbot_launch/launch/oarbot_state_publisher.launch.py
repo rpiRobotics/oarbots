@@ -35,10 +35,30 @@ def generate_robot_state_publisher_node(context: LaunchContext, *args, **kwargs)
         ),
     ]
 
+def generate_joint_state_publisher_node(context: LaunchContext, *args, **kwargs) -> list[Node]:
+    namespace_text = LaunchConfiguration("oarbot_namespace").perform(context)
+
+    return [
+        Node(
+            package="joint_state_publisher",
+            executable="joint_state_publisher",
+            name="joint_state_publisher",
+            namespace=namespace_text + "no_prefix/",
+            parameters=[{
+                "source_list": [
+                    "kinova/j2n6s300_driver/out/joint_state",
+                    "dingo/platform/joint_states"
+                    # TODO: Add more as this is built up
+                ]
+            }]
+        )
+    ]
+
+
 def generate_launch_description() -> LaunchDescription:
     """
     For a whole, singular OARBot, this launch file launches a joint_state_publisher and robot_state_publisher that publish 
-    coordinate frames to /tf and /tf_static as well as a robot description to a namespaced robot_description node.
+    coordinate frames to /tf and /tf_static as well as a robot description to a namespaced robot_description topic.
     """
 
 
@@ -53,18 +73,17 @@ def generate_launch_description() -> LaunchDescription:
         oarbot_namespace_argument,
         robot_description_argument,
         Node(
-            package="joint_state_publisher",
-            executable="joint_state_publisher",
-            name="joint_state_publisher",
+            package="joint_state_renamer",
+            executable="joint_state_renamer",
+            name="joint_state_renamer",
             namespace=LaunchConfiguration(oarbot_namespace_string),
             parameters=[{
-                "source_list": [
-                    "kinova/j2n6s300_driver/out/joint_state",
-                    "dingo/platform/joint_states"
-                    # TODO: Add more as this is built up
-                ]
+                "joint_state_prefix": LaunchConfiguration(oarbot_namespace_string),
+                "input_topic": "no_prefix/joint_states/",
+                "output_topic": "joint_states/"
             }]
         ),
+        OpaqueFunction(function=check_namespace_trailing_forward_slash),
         OpaqueFunction(function=generate_robot_state_publisher_node),
-        OpaqueFunction(function=check_namespace_trailing_forward_slash)
+        OpaqueFunction(function=generate_joint_state_publisher_node)
     ])
