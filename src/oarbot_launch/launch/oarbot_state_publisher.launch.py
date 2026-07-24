@@ -35,25 +35,6 @@ def generate_robot_state_publisher_node(context: LaunchContext, *args, **kwargs)
         ),
     ]
 
-def generate_joint_state_publisher_node(context: LaunchContext, *args, **kwargs) -> list[Node]:
-    namespace_text = LaunchConfiguration("oarbot_namespace").perform(context)
-
-    return [
-        Node(
-            package="joint_state_publisher",
-            executable="joint_state_publisher",
-            name="joint_state_publisher",
-            namespace=namespace_text + "no_prefix/",
-            parameters=[{
-                "source_list": [
-                    "/" + namespace_text + "kinova/j2n6s300_driver/out/joint_state",
-                    "/" + namespace_text + "dingo/platform/joint_states"
-                    # TODO: Add more as this is built up
-                ]
-            }]
-        )
-    ]
-
 
 def generate_launch_description() -> LaunchDescription:
     """
@@ -72,18 +53,41 @@ def generate_launch_description() -> LaunchDescription:
     return LaunchDescription([
         oarbot_namespace_argument,
         robot_description_argument,
+
+        Node(
+            package="joint_state_publisher",
+            executable="joint_state_publisher",
+            name="joint_state_publisher",
+            namespace=LaunchConfiguration(oarbot_namespace_string),
+            parameters=[{
+                "source_list": [
+                    "kinova/j2n6s300_driver/out/prefix_joint_state",
+                    "dingo/platform/prefix_joint_states"
+                ]
+            }]
+        ),
         Node(
             package="joint_state_renamer",
             executable="joint_state_renamer",
-            name="joint_state_renamer",
+            name="dingo_joint_state_renamer",
             namespace=LaunchConfiguration(oarbot_namespace_string),
             parameters=[{
                 "joint_state_prefix": LaunchConfiguration(oarbot_namespace_string),
-                "input_topic": "no_prefix/joint_states",
-                "output_topic": "joint_states"
+                "input_topic": "dingo/platform/joint_states",
+                "output_topic": "dingo/platform/prefix_joint_states"
+            }]
+        ),
+        Node(
+            package="joint_state_renamer",
+            executable="joint_state_renamer",
+            name="kinova_joint_state_renamer",
+            namespace=LaunchConfiguration(oarbot_namespace_string),
+            parameters=[{
+                "joint_state_prefix": LaunchConfiguration(oarbot_namespace_string),
+                "input_topic": "kinova/j2n6s300_driver/out/joint_state",
+                "output_topic": "kinova/j2n6s300_driver/out/prefix_joint_state"
             }]
         ),
         OpaqueFunction(function=check_namespace_trailing_forward_slash),
         OpaqueFunction(function=generate_robot_state_publisher_node),
-        OpaqueFunction(function=generate_joint_state_publisher_node)
     ])
