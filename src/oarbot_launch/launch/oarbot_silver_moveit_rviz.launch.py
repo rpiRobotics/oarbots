@@ -8,7 +8,7 @@ from moveit_configs_utils import MoveItConfigsBuilder
 def generate_launch_description() -> LaunchDescription:
     moveit_config = MoveItConfigsBuilder("oarbot_silver", package_name="oarbot_silver_moveit").to_moveit_configs()
     rviz_config = PathJoinSubstitution([
-        FindPackageShare("oarbot_silver_moveit"), "config", "moveit.rviz",
+        FindPackageShare("oarbot_launch"), "config", "oarbot_silver_moveit.rviz",
     ])
     return LaunchDescription([
         Node(
