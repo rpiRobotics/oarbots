@@ -15,6 +15,7 @@ Visualization Manager:
       Value: true
     - Class: moveit_rviz_plugin/MotionPlanning
       Name: MotionPlanning
+      Move Group Namespace: /oarbot_silver
       Planned Path:
         Loop Animation: true
         State Display Time: 0.05 s
