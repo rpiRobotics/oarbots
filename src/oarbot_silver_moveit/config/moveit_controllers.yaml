@@ -18,7 +18,7 @@ moveit_simple_controller_manager:
       - oarbot_silver/j2n6s300_joint_5
       - oarbot_silver/j2n6s300_joint_6
   gripper_controller:
-    action_ns: follow_joint_trajectory
+    action_ns: gripper_command
     type: GripperCommand
     joints:
       - oarbot_silver/j2n6s300_joint_finger_1

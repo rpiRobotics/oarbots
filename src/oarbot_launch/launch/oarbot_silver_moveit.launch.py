@@ -14,6 +14,16 @@ def generate_launch_description():
             namespace="oarbot_silver",
             parameters=[
                 moveit_config.to_dict()
-            ]
+            ],
+            remappings=[
+                (
+                    "arm_controller/follow_joint_trajectory",
+                    "kinova/j2n6s300/follow_joint_trajectory",
+                ),
+                (
+                    "gripper_controller/gripper_command",
+                    "kinova/j2n6s300_gripper/gripper_command",
+                ),
+            ],
         )
     ])
