@@ -1,0 +1,47 @@
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import PathJoinSubstitution
+from launch_ros.substitutions import FindPackageShare
+
+def generate_launch_description() -> LaunchDescription:
+    return LaunchDescription([
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution([
+                    FindPackageShare("oarbot_launch"),
+                    "launch",
+                    "kinova_bringup.launch.py"
+                ])
+            ),
+            launch_arguments={
+                "kinova_namespace": "oarbot_blue/kinova"
+            }.items()
+        ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution([
+                    FindPackageShare("oarbot_launch"),
+                    "launch",
+                    "azure_kinect_bringup.launch.py"
+                ])
+            ),
+            launch_arguments={
+                "azure_kinect_namespace": "oarbot_blue/azure_kinect",
+                "frame_prefix": "oarbot_blue/"
+            }.items()
+        ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution([
+                    FindPackageShare("oarbot_launch"),
+                    "launch",
+                    "oarbot_state_publisher.launch.py"
+                ])
+            ),
+            launch_arguments={
+                "oarbot_namespace": "oarbot_blue/",
+                "robot_description": "oarbot_blue.urdf.xacro"
+            }.items()
+        )
+    ])
