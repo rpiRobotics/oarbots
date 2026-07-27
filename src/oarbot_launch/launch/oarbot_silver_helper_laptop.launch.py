@@ -49,20 +49,20 @@ def generate_launch_description() -> LaunchDescription:
                 PathJoinSubstitution([
                     FindPackageShare("oarbot_launch"),
                     "launch",
-                    "kinova_action_servers.launch.py"
+                    "oarbot_silver_moveit.launch.py"
                 ])
-            ),
-            launch_arguments={
-                "kinova_namespace": "oarbot_silver/kinova/"
-            }.items()
+            )
         ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 PathJoinSubstitution([
                     FindPackageShare("oarbot_launch"),
                     "launch",
-                    "oarbot_silver_moveit.launch.py"
+                    "kinova_action_servers.launch.py"
                 ])
-            )
+            ),
+            launch_arguments={
+                "kinova_namespace": "oarbot_silver/kinova/"
+            }.items()
         )
     ])
