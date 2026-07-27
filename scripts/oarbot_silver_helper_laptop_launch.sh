@@ -8,6 +8,9 @@ export DISPLAY=:2
 # Source the global ROS2 installation
 source /opt/ros/jazzy/setup.bash
 
+# Use the correct DDS provider
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
+
 # Source your specific workspace setup file
 source ~/ros2_ws/install/local_setup.bash
 

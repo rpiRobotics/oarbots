@@ -66,10 +66,10 @@ If you run into an error saying something like the screen is already running, it
 
 ## Installing the Startup Service
 
-Copy [oarbot_silver_helper_laptop_launch.service](oarbot_silver_helper_laptop_launch.service) into `/etc/systemd/system/`, and copy [oarbot_silver_helper_laptop_launch.sh](oarbot_silver_helper_laptop_launch.sh) into `/usr/local/bin/`. To make the script executable, run
+Copy [oarbot_silver_helper_laptop_launch.service](oarbot_silver_helper_laptop_launch.service) into `/etc/systemd/system/`. To make the script (which is pointed to by the service) executable, run
 
 ```bash
-sudo chmod +x /usr/local/bin/oarbot_silver_helper_laptop_launch.sh
+sudo chmod +x /home/oarbot_silver/ros2_ws/scripts/oarbot_silver_helper_laptop_launch.sh
 ```
 
 To allow the service to automatically start on boot, run
