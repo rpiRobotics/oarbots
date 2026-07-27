@@ -32,40 +32,12 @@ No errors should be reported.
 
 Drivers do not come included in the [Azure_Kinect_ROS_Driver](https://github.com/rpiRobotics/Azure_Kinect_ROS_Driver) package. Instead, they need to be downloaded and installed manually. 
 
-To download the Azure Kinect SDK, run
+<!-- TODO: Add manual installation instructions as well -->
+
+To download the Azure Kinect SDK, from the `ros2_ws` directory, run
 
 ```bash
-wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-dev/libk4a1.4-dev_1.4.1_amd64.deb
-```
-
-and
-
-```bash
-wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4/libk4a1.4_1.4.1_amd64.deb
-```
-
-into a directory (I used ~/Downloads). Ensure these two `.deb` files are the only `.deb` files in the directory. In this same directory, install the SDK by running
-
-```bash
-sudo apt install ./*.deb
-```
-
-Next, download the body tracking SDK by running
-
-```bash
-wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4abt1.1-dev/libk4abt1.1-dev_1.1.2_amd64.deb
-```
-
-and
-
-```bash
-wget https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4abt1.1/libk4abt1.1_1.1.2_amd64.deb
-```
-
-Before installing, ensure only the body tracking `.deb` files are the only `.deb` files present in the directory (this is likely *not* the case as you just downloaded two other `.deb` files before these). In this same directory, install the body tracking SDK by running
-
-```bash
-sudo apt install ./*.deb
+sudo bash scripts/install-azure-kinect-drivers.sh
 ```
 
 To allow Azure Kinect access without root permissions, copy the following file into the directory `/etc/udev/rules.d/`: [https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/scripts/99-k4a.rules](https://github.com/microsoft/Azure-Kinect-Sensor-SDK/blob/develop/scripts/99-k4a.rules).
