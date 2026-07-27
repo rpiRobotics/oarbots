@@ -1,5 +1,11 @@
 ## Switch to CycloneDDS
 
+To install CycloneDDS, run
+
+```bash
+sudo apt install ros-jazzy-rmw-cyclonedds-cpp
+```
+
 The OARBot system uses CycloneDDS as it handles large packets like images much better than FastDDS. To switch the OARBot laptop, simply run
 
 ```bash
