@@ -56,13 +56,13 @@ def generate_launch_description() -> LaunchDescription:
                 "kinova_namespace": "oarbot_silver/kinova/"
             }.items()
         ),
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                PathJoinSubstitution([
-                    FindPackageShare("oarbot_launch"),
-                    "launch",
-                    "oarbot_silver_moveit.launch.py"
-                ])
-            )
-        )
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource(
+        #         PathJoinSubstitution([
+        #             FindPackageShare("oarbot_launch"),
+        #             "launch",
+        #             "oarbot_silver_moveit.launch.py"
+        #         ])
+        #     )
+        # )
     ])
