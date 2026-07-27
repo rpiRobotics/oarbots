@@ -6,6 +6,7 @@ system:
       ip: 192.168.131.1
   ros2:
     namespace: <NAMESPACE_HERE>
+    middleware: rmw_cyclonedds_cpp
 platform:
   mcu:
     protocol: proton

@@ -1,3 +1,20 @@
+## Switch to CycloneDDS
+
+The OARBot system uses CycloneDDS as it handles large packets like images much better than FastDDS. To switch the OARBot laptop, simply run
+
+```bash
+echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
+```
+
+followed by a restart or by running
+
+
+```bash
+source ~/.bashrc
+```
+
+to load the changes.
+
 ## Installing a Virtual Display Startup Service
 
 In order for the Azure Kinect node to run, it needs access to a display. This can be fulfilled in several ways:
