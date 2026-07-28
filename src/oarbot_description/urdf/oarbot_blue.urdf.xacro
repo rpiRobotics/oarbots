@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="oarbot_silver">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="oarbot_blue">
     <!-- Define mateiral colors for custom components -->
     <material name="white"><color rgba="1.0 1.0 1.0 1.0" /></material>
     <material name="dark_grey"><color rgba="0.2 0.2 0.2 1.0" /></material>
@@ -10,7 +10,7 @@
     <material name="cyan"><color rgba="0 1.0 1.0 1.0"/></material>
     <material name="clearpath_dark_grey"><color rgba="0.2 0.2 0.2 1.0" /></material>
 
-    <xacro:property name="prefix" value="oarbot_silver/" />
+    <xacro:property name="prefix" value="oarbot_blue/" />
     
     <!-- Dingo base -->
     <xacro:include filename="$(find oarbot_description)/urdf/clearpath/do100/do100.urdf.xacro"/>
