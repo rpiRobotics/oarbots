@@ -1,0 +1,18 @@
+[Unit]
+Description=Launch OARBot Blue ROS2 Nodes
+Wants=network-online.target graphical.target
+After=network-online.target graphical.target display-manager.service
+
+[Service]
+Type=simple
+User=oarbot_blue
+ExecStart=/home/oarbot_blue/ros2_ws/scripts/oarbot_blue_helper_laptop_launch.sh
+Restart=on-failure
+RestartSec=5
+
+KillMode=control-group
+TimeoutStopSec=10
+SendSIGKILL=yes
+
+[Install]
+WantedBy=multi-user.target
