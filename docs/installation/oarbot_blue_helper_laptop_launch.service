@@ -6,7 +6,7 @@ After=network-online.target graphical.target display-manager.service
 [Service]
 Type=simple
 User=oarbot_blue
-ExecStart=/home/oarbot_blue/ros2_ws/scripts/oarbot_blue_helper_laptop_launch.sh
+ExecStart=/usr/local/bin/oarbot_blue_helper_laptop_launch.sh
 Restart=on-failure
 RestartSec=5
 
