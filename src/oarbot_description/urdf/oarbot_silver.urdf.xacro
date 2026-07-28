@@ -60,7 +60,7 @@
     <!-- Azure Kinect -->
     <xacro:include filename="$(find oarbot_description)/urdf/microsoft/azure_kinect.urdf.xacro"/>
     <xacro:azure_kinect prefix="${prefix}" parent_link="${prefix}right_mount">
-        <origin xyz="0.006 0 -0.05" rpy="0 ${PI/2} 0" />
+        <origin xyz="0.006 0 -0.07" rpy="0 ${PI/2} 0" />
     </xacro:azure_kinect>
 
     <!-- Hokuyo LiDAR Sensors -->
