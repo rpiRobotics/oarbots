@@ -3,7 +3,7 @@ Description=Headless X server for Kinect GLX/depth engine
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/Xorg :2 -config /etc/X11/xorg-headless.conf -noreset -ac
+ExecStart=/usr/bin/Xorg :2 -config /etc/X11/xorg-headless.conf -noreset -ac -nolisten tcp
 Restart=always
 RestartSec=3
 
