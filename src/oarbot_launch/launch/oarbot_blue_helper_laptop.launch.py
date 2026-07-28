@@ -45,5 +45,18 @@ def generate_launch_description() -> LaunchDescription:
                 "oarbot_namespace": "oarbot_blue/",
                 "robot_description": "oarbot_blue.urdf.xacro"
             }.items()
+        ),
+        # TODO: Add MoveIt2 node here
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution([
+                    FindPackageShare("oarbot_launch"),
+                    "launch",
+                    "kinova_action_servers.launch.py"
+                ])
+            ),
+            launch_arguments={
+                "kinova_namespace": "oarbot_silver/kinova/"
+            }.items()
         )
     ])
