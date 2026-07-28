@@ -56,7 +56,7 @@ def generate_launch_description() -> LaunchDescription:
                 ])
             ),
             launch_arguments={
-                "kinova_namespace": "oarbot_silver/kinova/"
+                "kinova_namespace": "oarbot_blue/kinova/"
             }.items()
         )
     ])
