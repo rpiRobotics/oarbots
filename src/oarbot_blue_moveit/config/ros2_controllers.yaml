@@ -1,0 +1,46 @@
+# This config file is used by ros2_control
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+arm_controller:
+  ros__parameters:
+    joints:
+      - oarbot_blue/j2n6s300_joint_1
+      - oarbot_blue/j2n6s300_joint_2
+      - oarbot_blue/j2n6s300_joint_3
+      - oarbot_blue/j2n6s300_joint_4
+      - oarbot_blue/j2n6s300_joint_5
+      - oarbot_blue/j2n6s300_joint_6
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    allow_nonzero_velocity_at_trajectory_end: true
+gripper_controller:
+  ros__parameters:
+    joints:
+      - oarbot_blue/j2n6s300_joint_finger_1
+      - oarbot_blue/j2n6s300_joint_finger_tip_1
+      - oarbot_blue/j2n6s300_joint_finger_2
+      - oarbot_blue/j2n6s300_joint_finger_tip_2
+      - oarbot_blue/j2n6s300_joint_finger_3
+      - oarbot_blue/j2n6s300_joint_finger_tip_3
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    allow_nonzero_velocity_at_trajectory_end: true

@@ -1,0 +1,15 @@
+# Default initial positions for oarbot_blue's ros2_control fake system
+
+initial_positions:
+  oarbot_blue/j2n6s300_joint_1: -1.4774338884599887
+  oarbot_blue/j2n6s300_joint_2: 2.9247900355686225
+  oarbot_blue/j2n6s300_joint_3: 0.9923351677394475
+  oarbot_blue/j2n6s300_joint_4: -2.074164931804627
+  oarbot_blue/j2n6s300_joint_5: 1.4422766999615257
+  oarbot_blue/j2n6s300_joint_6: 1.323276941918806
+  oarbot_blue/j2n6s300_joint_finger_1: 0.2
+  oarbot_blue/j2n6s300_joint_finger_2: 0.2
+  oarbot_blue/j2n6s300_joint_finger_3: 0.2
+  oarbot_blue/j2n6s300_joint_finger_tip_1: 0
+  oarbot_blue/j2n6s300_joint_finger_tip_2: 0
+  oarbot_blue/j2n6s300_joint_finger_tip_3: 0
