@@ -81,4 +81,4 @@ Replace the contents of `/etc/clearpath/robot.yaml` with the contents of [robot.
 
 ## Switching to CycloneDDS
 
-Although the `robot.yaml` switches the Dingo the CyucloneDDS, the [profile.xml](profile.xml) file needs to be copied to `/home/robot/.cyclone/profile.xml` to allow the nodes to be accessed by an outside computer.
+Although the `robot.yaml` switches the Dingo the CycloneDDS, the [profile.xml](profile.xml) file needs to be copied to `/home/robot/.cyclone/profile.xml` to allow the nodes to be accessed by an outside computer.
