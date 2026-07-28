@@ -78,3 +78,7 @@ in the `~/ros2_ws` directory. No errors should occur.
 ## Configuring the Dingo Robot
 
 Replace the contents of `/etc/clearpath/robot.yaml` with the contents of [robot.yaml](robot.yaml), making sure to replace any filler content (i.e. replace `<LAST_FOUR_OF_SERIAL_HERE>`, `<NAMESPACE_HERE>`, etc.).
+
+## Switching to CycloneDDS
+
+Although the `robot.yaml` switches the Dingo the CyucloneDDS, the [profile.xml](profile.xml) file needs to be copied to `/home/robot/.cyclone/profile.xml` to allow the nodes to be accessed by an outside computer.

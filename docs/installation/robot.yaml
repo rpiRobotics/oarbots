@@ -8,6 +8,9 @@ system:
     namespace: <NAMESPACE_HERE>
     middleware:
       implementation: rmw_cyclonedds_cpp
+  bash:
+    env:
+      CYCLONEDDS_URI: /home/robot/.cyclone/profile.xml
 platform:
   mcu:
     protocol: proton
