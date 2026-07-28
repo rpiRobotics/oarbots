@@ -41,13 +41,13 @@
     <xacro:include filename="$(find oarbot_description)/urdf/custom/u_bracket.urdf.xacro"/>
     <xacro:include filename="$(find oarbot_description)/urdf/custom/kinect_wrist_connection.urdf.xacro"/>
     <xacro:u_bracket prefix="${prefix}" parent="${prefix}j2n6s300_wrench">
-        <origin xyz="0.075 0 0.01525" rpy="${PI} 0 0"/>
+        <origin xyz="-0.075 0 0.01525" rpy="0 ${PI} 0"/>
     </xacro:u_bracket>
     <xacro:kinect_wrist_connection prefix="${prefix}" num="1" parent_link="${prefix}j2n6s300_wrench">
-        <origin xyz="0.025 -0.025 -0.005" rpy="${PI/2} 0 -${PI/2}"/>
+        <origin xyz="-0.025 -0.025 -0.005" rpy="${PI/2} ${PI} ${PI/2}"/>
     </xacro:kinect_wrist_connection>
     <xacro:kinect_wrist_connection prefix="${prefix}" num="2" parent_link="${prefix}j2n6s300_wrench">
-        <origin xyz="0.025 0.025 -0.005" rpy="${PI/2} ${PI} -${PI/2}"/>
+        <origin xyz="-0.025 0.025 -0.005" rpy="${PI/2} 0 ${PI/2}"/>
     </xacro:kinect_wrist_connection>
     
 
