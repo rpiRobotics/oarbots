@@ -7,6 +7,9 @@ def generate_launch_description() -> LaunchDescription:
     kinova_namespace_string = "kinova_namespace"
     kinova_namespace_argument = DeclareLaunchArgument(kinova_namespace_string, description="Namespace the Kinova arm is under; all nodes and actions will also be placed under this namespace")
 
+    joint_prefix_string = "joint_prefix"
+    joint_prefix_argument = DeclareLaunchArgument(joint_prefix_string, description="Prefix added to joint names; this part of each joint name will be removed and the result should match the base joint names")
+
     return LaunchDescription([
         kinova_namespace_argument,
         Node(
@@ -16,7 +19,7 @@ def generate_launch_description() -> LaunchDescription:
             namespace=LaunchConfiguration(kinova_namespace_string),
             arguments=[
                 "j2n6s300",
-                "oarbot_silver"
+                LaunchConfiguration(joint_prefix_string)
             ]
         ),
         Node(
@@ -26,7 +29,7 @@ def generate_launch_description() -> LaunchDescription:
             namespace=LaunchConfiguration(kinova_namespace_string),
             arguments=[
                 "j2n6s300",
-                "oarbot_silver"
+                LaunchConfiguration(joint_prefix_string)
             ]
         )
     ])
