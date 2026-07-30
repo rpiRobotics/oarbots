@@ -7,24 +7,26 @@ class DingoTeleop : public rclcpp::Node
 public:
     DingoTeleop() : Node("dingo_teleop")
     {
-        dingo_cmd_vel_publisher = this->create_publisher<geometry_msgs::msg::TwistStamped>("/oarbot_silver/dingo/cmd_vel", 10);
+        this->latest_message = geometry_msgs::msg::TwistStamped();
+        dingo_cmd_vel_publisher = this->create_publisher<geometry_msgs::msg::TwistStamped>("/oarbot_blue/dingo/cmd_vel", 1);
         auto handle_input = [this](geometry_msgs::msg::Twist::UniquePtr msg) -> void {
-            RCLCPP_INFO(this->get_logger(), "Received twist with: (x = %lf, y = %lf, z = %lf), (a = %lf, b = %lf, c = %lf)", msg->linear.x, msg->linear.y, msg->linear.z, msg->angular.x, msg->angular.y, msg->angular.z);
-
-            geometry_msgs::msg::TwistStamped output = geometry_msgs::msg::TwistStamped();
-            output.twist = *msg;
-            output.header.stamp = this->get_clock()->now();
-            output.header.frame_id = "world";
-
-            this->dingo_cmd_vel_publisher->publish(output);
-            RCLCPP_INFO(this->get_logger(), "Successfully published message");
+            latest_message.twist = *msg;
+            latest_message.header.stamp = this->get_clock()->now();
+            latest_message.header.frame_id = "world";
         };
 
         input_subscription = this->create_subscription<geometry_msgs::msg::Twist>("/spacenav/twist", 10, handle_input);
+
+        this->timer = create_wall_timer(std::chrono::milliseconds(100), [this]() -> void {
+            RCLCPP_INFO(this->get_logger(), "Publishing message");
+            this->dingo_cmd_vel_publisher->publish(this->latest_message);
+        });
     }
 private:
+    geometry_msgs::msg::TwistStamped latest_message;
     rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr dingo_cmd_vel_publisher;
     rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr input_subscription;
+    rclcpp::TimerBase::SharedPtr timer;
 };
 
 int main(int argc, char **argv)
