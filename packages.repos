@@ -9,5 +9,5 @@ repositories:
     version: jazzy
   ros2-aruco-pose-estimation:
     type: git
-    url: https://github.com/AIRLab-POLIMI/ros2-aruco-pose-estimation.git
-    version: main
+    url: https://github.com/rpiRobotics/ros2-aruco-pose-estimation.git
+    version: jazzy
