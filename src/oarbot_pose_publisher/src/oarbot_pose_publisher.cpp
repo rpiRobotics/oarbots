@@ -9,6 +9,7 @@
 #include <cmath>
 
 constexpr double imu_avg_weight = 0.999;
+constexpr int max_imu_samples = 1000;
 
 constexpr double world_to_camera_base_x_meters = 0;
 constexpr double world_to_camera_base_y_meters = 0;
@@ -70,6 +71,12 @@ OarbotPosePublisher::OarbotPosePublisher() : Node("oarbot_pose_publisher")
     this->tf_buffer = std::make_unique<tf2_ros::Buffer>(this->get_clock());
     this->tf_listener = std::make_shared<tf2_ros::TransformListener>(*tf_buffer);
     this->tf_broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
+
+    // Every 60 seconds, reset the sample count to zero; this forces a re-calibration of the pose of the azure kinect from its IMU data
+    this->imu_reset_timer = this->create_wall_timer(std::chrono::seconds(60), [this]() -> void {
+        RCLCPP_DEBUG(this->get_logger(), "Re-sampling IMU data");
+        this->imu_sample_count = 0;
+    });
 }
 
 void OarbotPosePublisher::aruco_markers_callback(aruco_interfaces::msg::ArucoMarkers::SharedPtr msg)
@@ -90,6 +97,11 @@ void OarbotPosePublisher::kinect_imu_callback(sensor_msgs::msg::Imu::SharedPtr m
         return;
     }
 
+    if (this->imu_sample_count > max_imu_samples)
+    {
+        return;
+    }
+
     // Add to the exponential average of the imu data
     // Using an average helps smooth the data out
     this->kinect_imu_average.linear_acceleration.x = this->kinect_imu_average.linear_acceleration.x * imu_avg_weight + msg->linear_acceleration.x * (1.0 - imu_avg_weight);
@@ -100,6 +112,7 @@ void OarbotPosePublisher::kinect_imu_callback(sensor_msgs::msg::Imu::SharedPtr m
     this->kinect_imu_average.angular_velocity.y = this->kinect_imu_average.angular_velocity.y * imu_avg_weight + msg->angular_velocity.y * (1.0 - imu_avg_weight);
     this->kinect_imu_average.angular_velocity.z = this->kinect_imu_average.angular_velocity.z * imu_avg_weight + msg->angular_velocity.z * (1.0 - imu_avg_weight);
 
+    (this->imu_sample_count)++;
 }
 
 void OarbotPosePublisher::publish_to_tf()

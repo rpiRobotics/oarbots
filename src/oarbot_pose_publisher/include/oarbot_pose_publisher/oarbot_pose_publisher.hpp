@@ -24,6 +24,9 @@ private:
     std::unordered_map<int64_t, std::string> aruco_tag_data;
 
     bool received_imu;
+    int imu_sample_count;
+
+    rclcpp::TimerBase::SharedPtr imu_reset_timer;
 
     aruco_interfaces::msg::ArucoMarkers aruco_marker_latest;
     sensor_msgs::msg::Imu kinect_imu_average;
