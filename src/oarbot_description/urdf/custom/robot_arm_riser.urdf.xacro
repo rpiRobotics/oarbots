@@ -88,6 +88,14 @@
             <child link="${prefix}robot_arm_riser_aruco_mount_link" />
             <origin xyz="0 0 0.503175" rpy="0 0 0" />
         </joint>
+
+        <link name="${prefix}robot_arm_riser_aruco_mount_attach_link" />
+
+        <joint name="${prefix}robot_arm_riser_aruco_mount_attach_joint" type="fixed">
+            <parent link="${prefix}robot_arm_riser_aruco_mount_link" />
+            <child link="${prefix}robot_arm_riser_aruco_mount_attach_link" />
+            <origin xyz="-0.41 0 0" rpy="0 0 0" />
+        </joint>
     
         <!-- PVC RISER UWB MOUNT LINK -->
         <link name="${prefix}robot_arm_riser_uwb_mount_link">
