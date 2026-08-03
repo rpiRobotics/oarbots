@@ -41,7 +41,8 @@ private:
     void aruco_markers_callback(const aruco_interfaces::msg::ArucoMarkers::SharedPtr msg);
     void kinect_imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg);
 
-    void publish_to_tf();
+    void publish_kinect_tf();
+    void publish_oarbot_tf();
 };
 
 #endif

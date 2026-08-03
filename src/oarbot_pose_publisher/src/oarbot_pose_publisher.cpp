@@ -85,7 +85,7 @@ void OarbotPosePublisher::aruco_markers_callback(aruco_interfaces::msg::ArucoMar
     this->aruco_marker_latest = *msg;
 
     // Assuming we have a valid imu stored (if we don't, it's not a big deal), call the tf publisher
-    publish_to_tf();
+    this->publish_oarbot_tf();
 }
 
 void OarbotPosePublisher::kinect_imu_callback(sensor_msgs::msg::Imu::SharedPtr msg)
@@ -99,6 +99,7 @@ void OarbotPosePublisher::kinect_imu_callback(sensor_msgs::msg::Imu::SharedPtr m
 
     if (this->imu_sample_count > max_imu_samples)
     {
+        this->publish_kinect_tf();
         return;
     }
 
@@ -115,15 +116,9 @@ void OarbotPosePublisher::kinect_imu_callback(sensor_msgs::msg::Imu::SharedPtr m
     (this->imu_sample_count)++;
 }
 
-void OarbotPosePublisher::publish_to_tf()
+void OarbotPosePublisher::publish_kinect_tf()
 {
-    if (!this->received_imu)
-    {
-        return;
-    }
-
     // Make local variables to prevent values being overwritten halfway through
-    aruco_interfaces::msg::ArucoMarkers cur_aruco_markers = this->aruco_marker_latest;
     sensor_msgs::msg::Imu kinect_imu_latest = this->kinect_imu_average;
 
     // Set up a transform from the world to the Kinect
@@ -152,6 +147,12 @@ void OarbotPosePublisher::publish_to_tf()
 
     // Send the transform!
     this->tf_broadcaster->sendTransform(kinect_to_world_transform);
+}
+
+void OarbotPosePublisher::publish_oarbot_tf()
+{
+    // Make local variables to prevent values being overwritten halfway through
+    aruco_interfaces::msg::ArucoMarkers cur_aruco_markers = this->aruco_marker_latest;
 
     for (std::pair<const int64_t, std::string> &cur_aruco_tag_data : this->aruco_tag_data)
     {
