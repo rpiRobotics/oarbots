@@ -5,3 +5,6 @@ log/
 
 # Ignore Visual Studio Code local configuration
 .vscode/
+
+# Ignore Python virtual environment
+.venv/
