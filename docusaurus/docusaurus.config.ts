@@ -123,7 +123,7 @@ const config: Config = {
         //   ],
         // },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} RPI Robotics. Licensed under the Apache License, Version 2.0.`,
+      copyright: `Copyright © ${new Date().getFullYear()} RPI. Licensed under the Apache License, Version 2.0.`,
     },
     prism: {
       theme: prismThemes.github,
