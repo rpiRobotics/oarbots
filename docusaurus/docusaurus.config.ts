@@ -64,6 +64,7 @@ const config: Config = {
       logo: {
         alt: "My Site Logo",
         src: "img/logo.svg",
+        // Logo from: https://www.svgrepo.com/svg/192603/industrial-robot-factory
       },
       items: [
         {
