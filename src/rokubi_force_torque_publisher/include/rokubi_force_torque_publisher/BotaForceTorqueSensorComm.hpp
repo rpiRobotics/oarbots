@@ -1,3 +1,6 @@
+#ifndef BOTA_FORCE_TORQUE_SENSOR_COMM
+#define BOTA_FORCE_TORQUE_SENSOR_COMM
+
 #include <stdio.h>
 #include <stdint.h>
 
@@ -57,3 +60,6 @@ public:
   ReadFrameRes readFrame();
   RxFrame frame;
 };
+
+
+#endif
