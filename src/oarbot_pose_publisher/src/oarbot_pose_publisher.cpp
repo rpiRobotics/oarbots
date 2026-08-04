@@ -158,18 +158,18 @@ void OarbotPosePublisher::publish_oarbot_tf()
     {
         try
         {   
-            // Get the transform from the base_link to robot_arm_riser_aruco_mount_attach_link
-            geometry_msgs::msg::TransformStamped cur_aruco_to_base_transform = tf_buffer->lookupTransform(cur_aruco_tag_data.second + "robot_arm_riser_aruco_mount_attach_link", cur_aruco_tag_data.second + "base_link", tf2::TimePointZero);
-
             // Find the position of this tag in the list of returned ones via the topic, if it exists at all
             auto pos_iterator = std::find(cur_aruco_markers.marker_ids.begin(), cur_aruco_markers.marker_ids.end(), cur_aruco_tag_data.first);
             int position = pos_iterator - cur_aruco_markers.marker_ids.begin();
-    
+            
             // If we couldn't find the marker, don't try and transform to it; it is likely not visible on the camera
             if (position == cur_aruco_markers.marker_ids.size())
             {
                 continue;
             }
+
+            // Get the transform from the base_link to robot_arm_riser_aruco_mount_attach_link
+            geometry_msgs::msg::TransformStamped cur_aruco_to_base_transform = tf_buffer->lookupTransform(cur_aruco_tag_data.second + "robot_arm_riser_aruco_mount_attach_link", cur_aruco_tag_data.second + "base_link", tf2::TimePointZero);
             
             // Start transforming from the rgb_camera_link to the tag
             geometry_msgs::msg::TransformStamped kinect_to_cur_aruco_transform;
@@ -203,7 +203,7 @@ void OarbotPosePublisher::publish_oarbot_tf()
         catch (const tf2::TransformException &e)
         {
             // We likely didn't have transforms ready yet
-            RCLCPP_INFO(this->get_logger(), "Waiting on transform from %s to %s", (cur_aruco_tag_data.second + "base_link").c_str(), (cur_aruco_tag_data.second + "robot_arm_riser_aruco_mount_attach_link").c_str());
+            RCLCPP_WARN(this->get_logger(), "Waiting on transform from %s to %s", (cur_aruco_tag_data.second + "base_link").c_str(), (cur_aruco_tag_data.second + "robot_arm_riser_aruco_mount_attach_link").c_str());
         }
     }
 }
