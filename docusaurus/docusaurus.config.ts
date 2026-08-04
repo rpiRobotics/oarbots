@@ -5,8 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
+  title: "OARBot Documentation",
   favicon: "img/favicon.ico",
   plugins: ["./src/plugins/tailwind-config.js"],
 
