@@ -122,7 +122,7 @@ const config: Config = {
         //   ],
         // },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} RPI Robotics. Licensed under the Apache License, Version 2.0.`,
     },
     prism: {
       theme: prismThemes.github,
