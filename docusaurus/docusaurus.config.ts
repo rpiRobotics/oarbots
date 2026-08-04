@@ -60,7 +60,7 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: "My Site",
+      title: "OARBots",
       logo: {
         alt: "OARBots Logo",
         src: "img/logo.svg",
