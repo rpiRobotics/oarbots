@@ -1,0 +1,19 @@
+[Unit]
+Description=Launch NUC ROS2 Nodes
+Wants=network-online.target
+After=network-online.target xorg-headless.service
+Requires=xorg-headless.service
+
+[Service]
+Type=simple
+User=nuc
+ExecStart=/usr/local/bin/nuc_launch.sh
+Restart=on-failure
+RestartSec=5
+
+KillMode=control-group
+TimeoutStopSec=10
+SendSIGKILL=yes
+
+[Install]
+WantedBy=multi-user.target
