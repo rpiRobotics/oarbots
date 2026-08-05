@@ -1,5 +1,5 @@
 [Unit]
-Description=Headless X server for Kinect GLX/depth engine
+Description=Headless X server for Kinect GLX/depth engine (NVIDIA GPU)
 
 [Service]
 Type=simple
