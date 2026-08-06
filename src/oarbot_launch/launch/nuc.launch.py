@@ -19,10 +19,10 @@ def generate_launch_description() -> LaunchDescription:
                 "azure_kinect_namespace": "nuc",
                 "frame_prefix": "nuc/",
                 "fps": "5",
-                "color_resolution": "2160P",
+                "color_resolution": "1080P",
                 "depth_mode": "NFOV_2X2BINNED",
-                "point_cloud": "false",
-                "rgb_point_cloud": "false"
+                "point_cloud": "true",
+                "rgb_point_cloud": "true"
             }.items()
         ),
         Node(
