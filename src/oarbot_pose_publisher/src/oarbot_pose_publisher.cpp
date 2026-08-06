@@ -94,12 +94,16 @@ void OarbotPosePublisher::kinect_imu_callback(sensor_msgs::msg::Imu::SharedPtr m
     {
         this->kinect_imu_average = *msg;
         this->received_imu = true;
-        return;
     }
 
     if (this->imu_sample_count > max_imu_samples)
     {
+        return;
+    }
+    else if (this->imu_sample_count == max_imu_samples)
+    {
         this->publish_kinect_tf();
+        (this->imu_sample_count)++;
         return;
     }
 
