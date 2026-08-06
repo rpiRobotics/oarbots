@@ -77,6 +77,12 @@ OarbotPosePublisher::OarbotPosePublisher() : Node("oarbot_pose_publisher")
         RCLCPP_DEBUG(this->get_logger(), "Re-sampling IMU data");
         this->imu_sample_count = 0;
     });
+
+    // Every second, publish the tf data from the Kinect IMU
+    // Even though it is updated every 60 seconds (see above), it should be published more frequently to be used by tf
+    this->kinect_tf_timer = this->create_wall_timer(std::chrono::seconds(1), [this]() -> void {
+        this->publish_kinect_tf();
+    });
 }
 
 void OarbotPosePublisher::aruco_markers_callback(aruco_interfaces::msg::ArucoMarkers::SharedPtr msg)
@@ -100,40 +106,40 @@ void OarbotPosePublisher::kinect_imu_callback(sensor_msgs::msg::Imu::SharedPtr m
     {
         return;
     }
-    else if (this->imu_sample_count == max_imu_samples)
-    {
-        this->publish_kinect_tf();
-        (this->imu_sample_count)++;
-        return;
-    }
-
+    
     // Add to the exponential average of the imu data
     // Using an average helps smooth the data out
     this->kinect_imu_average.linear_acceleration.x = this->kinect_imu_average.linear_acceleration.x * imu_avg_weight + msg->linear_acceleration.x * (1.0 - imu_avg_weight);
     this->kinect_imu_average.linear_acceleration.y = this->kinect_imu_average.linear_acceleration.y * imu_avg_weight + msg->linear_acceleration.y * (1.0 - imu_avg_weight);
     this->kinect_imu_average.linear_acceleration.z = this->kinect_imu_average.linear_acceleration.z * imu_avg_weight + msg->linear_acceleration.z * (1.0 - imu_avg_weight);
-
+    
     this->kinect_imu_average.angular_velocity.x = this->kinect_imu_average.angular_velocity.x * imu_avg_weight + msg->angular_velocity.x * (1.0 - imu_avg_weight);
     this->kinect_imu_average.angular_velocity.y = this->kinect_imu_average.angular_velocity.y * imu_avg_weight + msg->angular_velocity.y * (1.0 - imu_avg_weight);
     this->kinect_imu_average.angular_velocity.z = this->kinect_imu_average.angular_velocity.z * imu_avg_weight + msg->angular_velocity.z * (1.0 - imu_avg_weight);
-
+    
     (this->imu_sample_count)++;
+
+    // If we are done sampling, update the transformation
+    if (this->imu_sample_count == max_imu_samples)
+    {
+        this->update_kinect_tf();
+        return;
+    }
 }
 
-void OarbotPosePublisher::publish_kinect_tf()
+void OarbotPosePublisher::update_kinect_tf()
 {
     // Make local variables to prevent values being overwritten halfway through
     sensor_msgs::msg::Imu kinect_imu_latest = this->kinect_imu_average;
 
     // Set up a transform from the world to the Kinect
-    geometry_msgs::msg::TransformStamped kinect_to_world_transform;
-    kinect_to_world_transform.header.stamp = this->get_clock()->now();
-    kinect_to_world_transform.header.frame_id = "world";
-    kinect_to_world_transform.child_frame_id = kinect_base_frame;
+    this->cur_kinect_to_world_transform.header.stamp = this->get_clock()->now();
+    this->cur_kinect_to_world_transform.header.frame_id = "world";
+    this->cur_kinect_to_world_transform.child_frame_id = kinect_base_frame;
 
-    kinect_to_world_transform.transform.translation.x = world_to_camera_base_x_meters;
-    kinect_to_world_transform.transform.translation.y = world_to_camera_base_y_meters;
-    kinect_to_world_transform.transform.translation.z = world_to_camera_base_z_meters;
+    this->cur_kinect_to_world_transform.transform.translation.x = world_to_camera_base_x_meters;
+    this->cur_kinect_to_world_transform.transform.translation.y = world_to_camera_base_y_meters;
+    this->cur_kinect_to_world_transform.transform.translation.z = world_to_camera_base_z_meters;
 
     // Figure out the rotation from the imu data
     // Assuming the only force on the Kinect is gravity, which will be pointing down in the world frame
@@ -142,15 +148,19 @@ void OarbotPosePublisher::publish_kinect_tf()
     double theta = std::asin(kinect_imu_latest.linear_acceleration.x / gravity_norm);
     double phi = std::atan(kinect_imu_latest.linear_acceleration.y / kinect_imu_latest.linear_acceleration.z);
     tf2::Quaternion kinect_quaternion;
-    // Because we do not know the yaw, we assume the camera is facing forward; this requires a 90 degree rotation
-    kinect_quaternion.setRPY(phi, theta, 0);
-    kinect_to_world_transform.transform.rotation.x = kinect_quaternion.x();
-    kinect_to_world_transform.transform.rotation.y = kinect_quaternion.y();
-    kinect_to_world_transform.transform.rotation.z = kinect_quaternion.z();
-    kinect_to_world_transform.transform.rotation.w = kinect_quaternion.w();
 
+    // Because we do not know the yaw, we assume the camera is facing forward
+    kinect_quaternion.setRPY(phi, theta, 0);
+    this->cur_kinect_to_world_transform.transform.rotation.x = kinect_quaternion.x();
+    this->cur_kinect_to_world_transform.transform.rotation.y = kinect_quaternion.y();
+    this->cur_kinect_to_world_transform.transform.rotation.z = kinect_quaternion.z();
+    this->cur_kinect_to_world_transform.transform.rotation.w = kinect_quaternion.w();
+}
+
+void OarbotPosePublisher::publish_kinect_tf()
+{
     // Send the transform!
-    this->tf_broadcaster->sendTransform(kinect_to_world_transform);
+    this->tf_broadcaster->sendTransform(this->cur_kinect_to_world_transform);
 }
 
 void OarbotPosePublisher::publish_oarbot_tf()

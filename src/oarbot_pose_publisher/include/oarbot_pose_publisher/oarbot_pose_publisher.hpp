@@ -22,11 +22,13 @@ private:
     std::vector<int64_t> aruco_tag_ids;
     std::vector<std::string> oarbot_namespaces;
     std::unordered_map<int64_t, std::string> aruco_tag_data;
+    geometry_msgs::msg::TransformStamped cur_kinect_to_world_transform;
 
     bool received_imu;
     int imu_sample_count;
 
     rclcpp::TimerBase::SharedPtr imu_reset_timer;
+    rclcpp::TimerBase::SharedPtr kinect_tf_timer;
 
     aruco_interfaces::msg::ArucoMarkers aruco_marker_latest;
     sensor_msgs::msg::Imu kinect_imu_average;
@@ -41,6 +43,7 @@ private:
     void aruco_markers_callback(const aruco_interfaces::msg::ArucoMarkers::SharedPtr msg);
     void kinect_imu_callback(const sensor_msgs::msg::Imu::SharedPtr msg);
 
+    void update_kinect_tf();
     void publish_kinect_tf();
     void publish_oarbot_tf();
 };
