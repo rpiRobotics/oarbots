@@ -72,6 +72,11 @@ OarbotPosePublisher::OarbotPosePublisher() : Node("oarbot_pose_publisher")
     this->tf_listener = std::make_shared<tf2_ros::TransformListener>(*tf_buffer);
     this->tf_broadcaster = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
+    // Initialize the world to kinect base link transformation; time stamp will be added right before publishing (see this->publish_kinect_tf())
+    this->cur_kinect_to_world_transform = geometry_msgs::msg::TransformStamped();
+    this->cur_kinect_to_world_transform.header.frame_id = "world";
+    this->cur_kinect_to_world_transform.child_frame_id = kinect_base_frame;
+
     // Every 60 seconds, reset the sample count to zero; this forces a re-calibration of the pose of the azure kinect from its IMU data
     this->imu_reset_timer = this->create_wall_timer(std::chrono::seconds(60), [this]() -> void {
         RCLCPP_DEBUG(this->get_logger(), "Re-sampling IMU data");
@@ -132,11 +137,6 @@ void OarbotPosePublisher::update_kinect_tf()
     // Make local variables to prevent values being overwritten halfway through
     sensor_msgs::msg::Imu kinect_imu_latest = this->kinect_imu_average;
 
-    // Set up a transform from the world to the Kinect
-    this->cur_kinect_to_world_transform.header.stamp = this->get_clock()->now();
-    this->cur_kinect_to_world_transform.header.frame_id = "world";
-    this->cur_kinect_to_world_transform.child_frame_id = kinect_base_frame;
-
     this->cur_kinect_to_world_transform.transform.translation.x = world_to_camera_base_x_meters;
     this->cur_kinect_to_world_transform.transform.translation.y = world_to_camera_base_y_meters;
     this->cur_kinect_to_world_transform.transform.translation.z = world_to_camera_base_z_meters;
@@ -159,6 +159,9 @@ void OarbotPosePublisher::update_kinect_tf()
 
 void OarbotPosePublisher::publish_kinect_tf()
 {
+    // Update the transform timestamp
+    this->cur_kinect_to_world_transform.header.stamp = this->get_clock()->now();
+    
     // Send the transform!
     this->tf_broadcaster->sendTransform(this->cur_kinect_to_world_transform);
 }
