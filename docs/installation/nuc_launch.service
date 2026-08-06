@@ -20,4 +20,4 @@ TimeoutStopSec=10
 SendSIGKILL=yes
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target
