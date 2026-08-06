@@ -85,7 +85,7 @@ OarbotPosePublisher::OarbotPosePublisher() : Node("oarbot_pose_publisher")
 
     // Every second, publish the tf data from the Kinect IMU
     // Even though it is updated every 60 seconds (see above), it should be published more frequently to be used by tf
-    this->kinect_tf_timer = this->create_wall_timer(std::chrono::seconds(1), [this]() -> void {
+    this->kinect_tf_timer = this->create_wall_timer(std::chrono::milliseconds(100), [this]() -> void {
         this->publish_kinect_tf();
     });
 }
@@ -161,7 +161,7 @@ void OarbotPosePublisher::publish_kinect_tf()
 {
     // Update the transform timestamp
     this->cur_kinect_to_world_transform.header.stamp = this->get_clock()->now();
-    
+
     // Send the transform!
     this->tf_broadcaster->sendTransform(this->cur_kinect_to_world_transform);
 }
