@@ -12,3 +12,6 @@ WorkingDirectory=/home/oarbot_silver/ros2_ws
 KillMode=control-group
 TimeoutStopSec=10
 SendSIGKILL=yes
+
+[Install]
+WantedBy=multi-user.target
