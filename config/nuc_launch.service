@@ -1,7 +1,7 @@
 [Unit]
 Description=Launch NUC ROS2 Nodes
 Wants=network-online.target graphical.target
-After=network-online.target graphical.target
+After=network-online.target graphical.target nuc_cd.service
 
 [Service]
 Type=simple
