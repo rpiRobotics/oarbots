@@ -16,12 +16,12 @@ git pull
 echo "Updated main repository"
 
 # Pull down services and scripts
-cp oarbot_silver_helper_laptop_launch.sh /usr/local/bin/oarbot_silver_helper_laptop_launch.sh
+cp scripts/oarbot_silver_helper_laptop_launch.sh /usr/local/bin/oarbot_silver_helper_laptop_launch.sh
 chmod +x /usr/local/bin/oarbot_silver_helper_laptop_launch.sh
-cp ../config/oarbot_silver_helper_laptop_launch.service /etc/systemd/system/oarbot_silver_helper_laptop_launch.service
+cp config/oarbot_silver_helper_laptop_launch.service /etc/systemd/system/oarbot_silver_helper_laptop_launch.service
 
-cp ../config/xorg-headless.conf /etc/X11/xorg-headless.conf
-cp ../config/xorg-headless.service /etc/systemd/system/xorg-headless.service
+cp config/xorg-headless.conf /etc/X11/xorg-headless.conf
+cp config/xorg-headless.service /etc/systemd/system/xorg-headless.service
 
 echo "Updated services"
 
@@ -38,9 +38,9 @@ colcon build
 echo "Built the ROS2 packages"
 
 # Update this service and script
-cp oarbot_silver_helper_laptop_cd.sh /usr/local/bin/oarbot_silver_helper_laptop_cd.sh
+cp scripts/oarbot_silver_helper_laptop_cd.sh /usr/local/bin/oarbot_silver_helper_laptop_cd.sh
 chmod +x /usr/local/bin/oarbot_silver_helper_laptop_cd.sh
-cp ../config/oarbot_silver_helper_laptop_cd.service /etc/systemd/system/oarbot_silver_helper_laptop_cd.service
+cp config/oarbot_silver_helper_laptop_cd.service /etc/systemd/system/oarbot_silver_helper_laptop_cd.service
 
 echo "Updated CD service"
 
