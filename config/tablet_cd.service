@@ -1,0 +1,17 @@
+[Unit]
+Description=Continuous Deployment script for tablet
+Wants=network-online.target
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/tablet_cd.sh
+WorkingDirectory=/home/tablet/ros2_ws
+
+KillMode=control-group
+TimeoutStopSec=10
+SendSIGKILL=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+[Unit]
+Description=Launch NUC ROS2 Nodes
+Wants=network-online.target graphical.target
+After=network-online.target graphical.target nuc_cd.service
+
+[Service]
+Type=simple
+User=nuc
+ExecStart=/usr/local/bin/nuc_launch.sh
+Restart=on-failure
+RestartSec=5
+
+# Configure display for Azure Kinect; using built-in monitor
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/run/user/1000/gdm/Xauthority
+ExecStartPre=/bin/sh -c 'for i in $(seq 1 30); do xset -display :0 q >/dev/null 2>&1 && exit 0; sleep 1; done; exit 1'
+
+KillMode=control-group
+TimeoutStopSec=10
+SendSIGKILL=yes
+
+[Install]
+WantedBy=graphical.target

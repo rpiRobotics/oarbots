@@ -1,0 +1,17 @@
+[Unit]
+Description=Continuous Deployment script for OARBot silver laptop
+Wants=network-online.target
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/oarbot_silver_helper_laptop_cd.sh
+WorkingDirectory=/home/oarbot_silver/ros2_ws
+
+KillMode=control-group
+TimeoutStopSec=10
+SendSIGKILL=yes
+
+[Install]
+WantedBy=multi-user.target
