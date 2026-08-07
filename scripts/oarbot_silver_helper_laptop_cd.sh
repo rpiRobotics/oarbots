@@ -25,6 +25,10 @@ cp config/xorg-headless.service /etc/systemd/system/xorg-headless.service
 
 echo "Updated services"
 
+# Reload all services
+systemctl daemon-reload
+
+echo "Reloaded systemctl daemon"
 
 # Update ros-managed dependencies
 rosdep update
@@ -37,15 +41,4 @@ colcon build
 
 echo "Built the ROS2 packages"
 
-# Update this service and script
-cp scripts/oarbot_silver_helper_laptop_cd.sh /usr/local/bin/oarbot_silver_helper_laptop_cd.sh
-chmod +x /usr/local/bin/oarbot_silver_helper_laptop_cd.sh
-cp config/oarbot_silver_helper_laptop_cd.service /etc/systemd/system/oarbot_silver_helper_laptop_cd.service
-
-echo "Updated CD service"
-
-# Reload all services
-systemctl daemon-reload
-
-echo "Reloaded systemctl daemon"
 echo "Done with CD. Exiting..."
