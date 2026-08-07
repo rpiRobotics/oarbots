@@ -2,6 +2,9 @@
 
 source /opt/ros/jazzy/setup.bash
 
+# In order to pull a repository that isn't owned by root, we must add the next line
+git config --global --add safe.directory "*" # For the current user and all repositories
+
 # Update 3'rd party / externally managed packages
 cd /home/oarbot_silver/ros2_ws/src
 vcs import < ../packages.repos .
