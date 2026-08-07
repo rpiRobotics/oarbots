@@ -103,3 +103,9 @@ sudo systemctl status oarbot_silver_helper_laptop_launch.service
 ```
 
 to view the service status.
+
+Run the following to allow root to pull git repositories
+
+```bash
+git config --system --add safe.directory '*'
+```
