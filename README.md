@@ -4,4 +4,4 @@ This repository is for the Omnidirectional Assistive Robots (OARBots), built, de
 
 ## Installation
 
-For installation instructions, see [docs/installation.md](docs/installation.md).
+For installation instructions, see [docs/installation.md](old-docs/installation.md).
