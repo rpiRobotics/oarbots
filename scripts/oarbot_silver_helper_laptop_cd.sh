@@ -3,7 +3,7 @@
 source /opt/ros/jazzy/setup.bash
 
 # Update 3'rd party / externally managed packages
-cd ~/ros2_ws/src
+cd /home/oarbot_silver/ros2_ws/src
 vcs import < ../packages.repos .
 vcs pull .
 cd ..

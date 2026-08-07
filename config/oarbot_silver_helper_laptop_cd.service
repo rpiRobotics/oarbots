@@ -7,6 +7,7 @@ After=network-online.target
 [Service]
 Type=oneshot
 ExecStart=/usr/local/bin/oarbot_silver_helper_laptop_cd.sh
+WorkingDirectory=/home/oarbot_silver/ros2_ws
 
 KillMode=control-group
 TimeoutStopSec=10
