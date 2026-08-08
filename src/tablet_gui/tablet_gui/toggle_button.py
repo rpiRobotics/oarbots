@@ -14,6 +14,6 @@ class ToggleButton(QPushButton):
         self.setFont(QFont("Roboto", 16))
         self.setStyleSheet("""
             QPushButton {
-                padding: 16px 64px;
+                padding: 16px 0px;
             }
         """)

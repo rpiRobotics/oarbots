@@ -42,6 +42,15 @@ class OarbotWidget(QWidget):
         self.arm_enable_button = ToggleButton("Arm Enabled" if self.arm_enabled else "Arm Disabled", self.handle_arm_enable_button)
         layout.addWidget(self.arm_enable_button)
 
+    def resizeEvent(self, event):
+        self.arm_enable_button.setFixedWidth(int(self.width() * 0.9))
+        self.arm_enable_button.move(
+            int(self.width() * 0.05),
+            self.arm_enable_button.y()
+        )
+
+        super().resizeEvent(event)
+
     def handle_arm_enable_button(self, checked: bool) -> None:
         self.arm_enabled = checked
         self.arm_enable_button.setText("Arm Enabled" if checked else "Arm Disabled")
