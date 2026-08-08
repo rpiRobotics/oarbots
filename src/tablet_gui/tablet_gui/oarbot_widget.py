@@ -43,6 +43,8 @@ class OarbotWidget(QWidget):
         layout.addWidget(self.arm_enable_button)
 
     def resizeEvent(self, event):
+        # Capture this event to set all button widths to be 90% of the available width
+        # Each button is set to 90% width then moved over 5% of the available width to center it
         self.arm_enable_button.setFixedWidth(int(self.width() * 0.9))
         self.arm_enable_button.move(
             int(self.width() * 0.05),
