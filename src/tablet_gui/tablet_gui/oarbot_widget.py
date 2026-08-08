@@ -61,6 +61,14 @@ class OarbotWidget(QWidget):
         self.finger_position_slider_text.setFont(QFont("Roboto", 12))
         layout.addWidget(self.finger_position_slider_text)
 
+        self.body_joint_following_enabled = False
+        self.body_joint_following_enable_button = ToggleButton("Body Joint Following Disabled", self.handle_body_joint_following_toggle_button)
+        layout.addWidget(self.body_joint_following_enable_button)
+
+        self.admittance_control_enabled = False
+        self.admittance_control_enable_button = ToggleButton("Admittance Control Disabled", self.handle_admittance_control_toggle_button)
+        layout.addWidget(self.admittance_control_enable_button)
+
     def resizeEvent(self, event):
         # Capture this event to set all button widths to be 90% of the available width
         # Each button is set to 90% width then moved over 5% of the available width to center it
@@ -89,6 +97,16 @@ class OarbotWidget(QWidget):
             int(self.width() * 0.05),
             self.finger_position_slider.y()
         )
+        self.body_joint_following_enable_button.setFixedWidth(int(self.width() * 0.9))
+        self.body_joint_following_enable_button.move(
+            int(self.width() * 0.05),
+            self.body_joint_following_enable_button.y()
+        )
+        self.admittance_control_enable_button.setFixedWidth(int(self.width() * 0.9))
+        self.admittance_control_enable_button.move(
+            int(self.width() * 0.05),
+            self.admittance_control_enable_button.y()
+        )
 
         super().resizeEvent(event)
 
@@ -108,3 +126,11 @@ class OarbotWidget(QWidget):
 
     def handle_finger_slider(self, value: int) -> None:
         pass
+
+    def handle_body_joint_following_toggle_button(self, toggled: bool) -> None:
+        self.body_joint_following_enabled = toggled
+        self.body_joint_following_enable_button.setText("Body Joint Following Enabled" if toggled else "Body Joint Following Disabled")
+
+    def handle_admittance_control_toggle_button(self, toggled: bool) -> None:
+        self.admittance_control_enabled = toggled
+        self.admittance_control_enable_button.setText("Admittance Control Enabled" if toggled else "Admittance Control Disabled")
