@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            "run = tablet_gui.main:main"
+            "tablet_gui = tablet_gui.main:main"
         ],
     },
 )
