@@ -1,0 +1,31 @@
+name: Test deployment
+
+on:
+  pull_request:
+    paths:
+      - "docusaurus/**"
+    branches:
+      - main
+
+jobs:
+  test-deploy:
+    name: Test deployment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            docusaurus
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install dependencies
+        working-directory: $GITHUB_WORKSPACE/docusaurus
+        run: npm ci
+
+      - name: Test build website
+        working-directory: $GITHUB_WORKSPACE/docusaurus
+        run: npm run build
