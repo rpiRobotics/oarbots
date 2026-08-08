@@ -62,11 +62,11 @@ class OarbotWidget(QWidget):
         layout.addWidget(self.finger_position_slider_text)
 
         self.body_joint_following_enabled = False
-        self.body_joint_following_enable_button = ToggleButton("Body Joint Following Disabled", self.handle_body_joint_following_toggle_button)
+        self.body_joint_following_enable_button = ToggleButton("Body Joint Following Disabled", self.handle_body_joint_following_toggle_button, 14)
         layout.addWidget(self.body_joint_following_enable_button)
 
         self.admittance_control_enabled = False
-        self.admittance_control_enable_button = ToggleButton("Admittance Control Disabled", self.handle_admittance_control_toggle_button)
+        self.admittance_control_enable_button = ToggleButton("Admittance Control Disabled", self.handle_admittance_control_toggle_button, 14)
         layout.addWidget(self.admittance_control_enable_button)
 
     def resizeEvent(self, event):
