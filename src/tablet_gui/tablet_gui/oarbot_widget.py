@@ -39,8 +39,12 @@ class OarbotWidget(QWidget):
         layout.addWidget(self.oarbot_status)
 
         self.arm_enabled = False
-        self.arm_enable_button = ToggleButton("Arm Enabled" if self.arm_enabled else "Arm Disabled", self.handle_arm_enable_button)
+        self.arm_enable_button = ToggleButton("Arm Disabled", self.handle_arm_toggle_button)
         layout.addWidget(self.arm_enable_button)
+
+        self.base_enabled = False
+        self.base_enable_button = ToggleButton("Base Disabled", self.handle_base_toggle_button)
+        layout.addWidget(self.base_enable_button)
 
     def resizeEvent(self, event):
         # Capture this event to set all button widths to be 90% of the available width
@@ -50,9 +54,18 @@ class OarbotWidget(QWidget):
             int(self.width() * 0.05),
             self.arm_enable_button.y()
         )
+        self.base_enable_button.setFixedWidth(int(self.width() * 0.9))
+        self.base_enable_button.move(
+            int(self.width() * 0.05),
+            self.base_enable_button.y()
+        )
 
         super().resizeEvent(event)
 
-    def handle_arm_enable_button(self, checked: bool) -> None:
-        self.arm_enabled = checked
-        self.arm_enable_button.setText("Arm Enabled" if checked else "Arm Disabled")
+    def handle_arm_toggle_button(self, toggled: bool) -> None:
+        self.arm_enabled = toggled
+        self.arm_enable_button.setText("Arm Enabled" if toggled else "Arm Disabled")
+
+    def handle_base_toggle_button(self, toggled: bool) -> None:
+        self.base_enbled = toggled
+        self.base_enable_button.setText("Base Enabled" if toggled else "Base Disabled")
