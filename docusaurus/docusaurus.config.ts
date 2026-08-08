@@ -44,7 +44,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/rpirobotics/oarbots/docusaurus",
+            "https://github.com/rpirobotics/oarbots/tree/main/docusaurus",
         },
         theme: {
           customCss: "./src/css/custom.css",
