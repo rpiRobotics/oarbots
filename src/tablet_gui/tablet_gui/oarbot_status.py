@@ -60,6 +60,7 @@ class OarbotStatusItem(QWidget):
         self.timer.setInterval(1000)
         self.timer.timeout.connect(self.update_status)
         self.timer.start()
+        self.update_status()
 
     def update_status(self) -> None:
         if self.ros_gui_node.is_node_active(self.node_name):
