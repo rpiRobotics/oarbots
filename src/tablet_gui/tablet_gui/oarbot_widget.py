@@ -38,6 +38,12 @@ class OarbotWidget(QWidget):
         )
         layout.addWidget(self.oarbot_status)
 
+        self.arm_home_button = PushButton("Arm Home", self.handle_arm_home)
+        layout.addWidget(self.arm_home_button)
+
+        self.base_home_button = PushButton("Base Home", self.handle_base_home)
+        layout.addWidget(self.base_home_button)
+
         self.arm_enabled = False
         self.arm_enable_button = ToggleButton("Arm Disabled", self.handle_arm_toggle_button)
         layout.addWidget(self.arm_enable_button)
@@ -49,6 +55,16 @@ class OarbotWidget(QWidget):
     def resizeEvent(self, event):
         # Capture this event to set all button widths to be 90% of the available width
         # Each button is set to 90% width then moved over 5% of the available width to center it
+        self.arm_home_button.setFixedWidth(int(self.width() * 0.9))
+        self.arm_home_button.move(
+            int(self.width() * 0.05),
+            self.arm_home_button.y()
+        )
+        self.base_home_button.setFixedWidth(int(self.width() * 0.9))
+        self.base_home_button.move(
+            int(self.width() * 0.05),
+            self.base_home_button.y()
+        )
         self.arm_enable_button.setFixedWidth(int(self.width() * 0.9))
         self.arm_enable_button.move(
             int(self.width() * 0.05),
@@ -61,6 +77,12 @@ class OarbotWidget(QWidget):
         )
 
         super().resizeEvent(event)
+
+    def handle_arm_home(self) -> None:
+        pass
+
+    def handle_base_home(self) -> None:
+        pass
 
     def handle_arm_toggle_button(self, toggled: bool) -> None:
         self.arm_enabled = toggled
