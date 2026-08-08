@@ -19,7 +19,7 @@ jobs:
             docusaurus
 
       - name: Copy docs to workspace root
-        run: cp -a $GITHUB_WORKSPACE/docusaurus $GITHUB_WORKSPACE/
+        run: cp -a $GITHUB_WORKSPACE/docusaurus/. $GITHUB_WORKSPACE/
 
       - uses: actions/setup-node@v7
         with:
