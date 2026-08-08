@@ -5,7 +5,7 @@ from PySide6.QtGui import QColor, QPainter, QFont, QPalette
 from PySide6.QtCore import Qt
 
 class ToggleButton(QPushButton):
-    def __init__(self, text: str, on_click) -> None:
+    def __init__(self, text: str, on_click, font_size=16) -> None:
         super().__init__(text)
 
         self.setCheckable(True)
@@ -15,7 +15,7 @@ class ToggleButton(QPushButton):
         self.default_color = self.palette().button()
         self.clicked.connect(self.update_color)
 
-        self.setFont(QFont("Roboto", 16))
+        self.setFont(QFont("Roboto", font_size))
         self.setStyleSheet("""
             QPushButton {
                 padding: 16px 0px;
