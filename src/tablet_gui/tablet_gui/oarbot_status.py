@@ -1,9 +1,7 @@
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import (
     QWidget,
-    QGraphicsEllipseItem,
     QGraphicsScene,
-    QGraphicsView,
     QVBoxLayout,
     QHBoxLayout,
     QLabel
