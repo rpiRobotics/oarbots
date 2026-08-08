@@ -56,6 +56,10 @@ class OarbotWidget(QWidget):
 
         self.finger_position_slider = HorizontalSlider(0, 100, self.ros_gui_node.get_cur_finger_percent(self.oarbot_namespace), self.handle_finger_slider)
         layout.addWidget(self.finger_position_slider)
+        self.finger_position_slider_text = QLabel("Arm Finger Positions")
+        self.finger_position_slider_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.finger_position_slider_text.setFont(QFont("Roboto", 12))
+        layout.addWidget(self.finger_position_slider_text)
 
     def resizeEvent(self, event):
         # Capture this event to set all button widths to be 90% of the available width
