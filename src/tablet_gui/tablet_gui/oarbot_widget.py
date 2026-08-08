@@ -20,7 +20,7 @@ class OarbotWidget(QWidget):
 
         layout = QVBoxLayout(self)
         layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
-        layout.setContentsMargins(24, 24, 24, 24)
+        layout.setContentsMargins(0, 16, 0, 16)
 
         self.oarbot_main_text = QLabel(self.display_name)
         self.oarbot_main_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
