@@ -10,6 +10,8 @@ from tablet_gui.ros_gui_node import RosGuiNode
 from tablet_gui.oarbot_status import OarbotStatus
 from tablet_gui.push_button import PushButton
 from tablet_gui.toggle_button import ToggleButton
+from tablet_gui.horizontal_slider import HorizontalSlider
+
 class OarbotWidget(QWidget):
     def __init__(self, oarbot_namespace: str, display_name: str, ros_gui_node: RosGuiNode) -> None:
         super().__init__()
@@ -52,6 +54,9 @@ class OarbotWidget(QWidget):
         self.base_enable_button = ToggleButton("Base Disabled", self.handle_base_toggle_button)
         layout.addWidget(self.base_enable_button)
 
+        self.finger_position_slider = HorizontalSlider(0, 100, self.ros_gui_node.get_cur_finger_percent(self.oarbot_namespace), self.handle_finger_slider)
+        layout.addWidget(self.finger_position_slider)
+
     def resizeEvent(self, event):
         # Capture this event to set all button widths to be 90% of the available width
         # Each button is set to 90% width then moved over 5% of the available width to center it
@@ -91,3 +96,6 @@ class OarbotWidget(QWidget):
     def handle_base_toggle_button(self, toggled: bool) -> None:
         self.base_enbled = toggled
         self.base_enable_button.setText("Base Enabled" if toggled else "Base Disabled")
+
+    def handle_finger_slider(self, value: int) -> None:
+        pass
