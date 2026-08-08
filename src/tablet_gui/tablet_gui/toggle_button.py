@@ -6,7 +6,7 @@ from PySide6.QtCore import Qt
 
 class ToggleButton(QPushButton):
     def __init__(self, text: str, on_click) -> None:
-        super().__init__(text, self)
+        super().__init__(text)
 
         self.setCheckable(True)
         self.clicked.connect(on_click)

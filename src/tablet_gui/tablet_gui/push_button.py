@@ -6,7 +6,7 @@ from PySide6.QtCore import Qt
 
 class PushButton(QPushButton):
     def __init__(self, text: str, on_click) -> None:
-        super().__init__(text, self)
+        super().__init__(text)
 
         self.setCheckable(False)
         self.clicked.connect(on_click)
