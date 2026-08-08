@@ -29,12 +29,10 @@ def main(args=None):
     # QT will be on the main thread
     app = QApplication(sys.argv)
     window = AppWindow(ros_node, shutdown_event)
-    print("Here 1")
-    window.show()
+    
+    window.showMaximized()
+    app.exec()
 
-    print("Here 2")
-    sys.exit(app.exec())
-    print("Here 3")
     ros_thread.join()
 
     print("ROS Node and GUI have been shut down.")
