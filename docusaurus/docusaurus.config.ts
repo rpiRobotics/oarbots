@@ -15,7 +15,7 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: "https://rpiRobotics.github.io/",
+  url: "https://rpirobotics.github.io/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often "/<projectName>/"
   baseUrl: "/oarbots/",
@@ -44,7 +44,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/rpiRobotics/oarbots/docusaurus",
+            "https://github.com/rpirobotics/oarbots/docusaurus",
         },
         theme: {
           customCss: "./src/css/custom.css",
@@ -72,7 +72,7 @@ const config: Config = {
           label: "Docs",
         },
         {
-          href: "https://github.com/rpiRobotics/oarbots",
+          href: "https://github.com/rpirobotics/oarbots",
           label: "GitHub",
           position: "right",
         },
