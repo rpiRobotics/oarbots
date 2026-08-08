@@ -5,7 +5,7 @@ from threading import Event
 
 from tablet_gui.ros_gui_node import RosGuiNode
 from tablet_gui.oarbot_widget import OarbotWidget
-from tablet_gui.oarbot_status import OarbotStatusItem
+from tablet_gui.status_indicator import StatusIndicator
 
 class MainWindow(QMainWindow):
     def __init__(self, ros_gui_node: RosGuiNode, shutdown_event: Event) -> None:
@@ -27,7 +27,7 @@ class MainWindow(QMainWindow):
 
         nuc_status_layout = QHBoxLayout()
         nuc_status_layout.addStretch()
-        nuc_status_layout.addWidget(OarbotStatusItem("Overhead NUC", "nuc", self.ros_gui_node))
+        nuc_status_layout.addWidget(StatusIndicator("Overhead NUC", "nuc", self.ros_gui_node))
         nuc_status_layout.addStretch()
         screen_layout.addLayout(nuc_status_layout)
 
