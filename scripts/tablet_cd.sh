@@ -21,10 +21,10 @@ rosdep install --from-paths src --ignore-src -y
 
 echo "Updated dependencies"
 
-cp scripts/tablet_launch.sh /home/tablet/Desktop/tablet_launch.sh
-chmod +x /home/tablet/Desktop/tablet_launch.sh
+cp scripts/tablet_launch.sh /home/tablet/tablet_launch.sh
+chmod +x /home/tablet/tablet_launch.sh
 
-echo "Updated desktop tablet launch file"
+echo "Updated tablet launch file"
 
 # Build everything
 colcon build
