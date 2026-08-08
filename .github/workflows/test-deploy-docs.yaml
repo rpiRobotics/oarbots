@@ -17,15 +17,16 @@ jobs:
           sparse-checkout: |
             docusaurus
 
+      - name: Copy docs to workspace root
+        run: cp -a $GITHUB_WORKSPACE/docusaurus $GITHUB_WORKSPACE/
+
       - uses: actions/setup-node@v7
         with:
           node-version: lts/*
           cache: npm
 
       - name: Install dependencies
-        working-directory: $GITHUB_WORKSPACE/docusaurus
         run: npm ci
 
       - name: Test build website
-        working-directory: $GITHUB_WORKSPACE/docusaurus
         run: npm run build

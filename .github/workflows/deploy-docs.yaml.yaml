@@ -17,6 +17,9 @@ jobs:
         with:
           sparse-checkout: |
             docusaurus
+            
+      - name: Copy docs to workspace root
+        run: cp -a $GITHUB_WORKSPACE/docusaurus $GITHUB_WORKSPACE/
           
       - uses: actions/setup-node@v7
         with:
@@ -24,17 +27,15 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        working-directory: $GITHUB_WORKSPACE/docusaurus
         run: npm ci
-        
+
       - name: Build website
-        working-directory: $GITHUB_WORKSPACE/docusaurus
         run: npm run build
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: $GITHUB_WORKSPACE/docusaurus/build
+          path: $GITHUB_WORKSPACE/build
 
   deploy:
     name: Deploy to GitHub Pages
