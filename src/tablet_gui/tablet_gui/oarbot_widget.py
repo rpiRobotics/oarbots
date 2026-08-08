@@ -80,6 +80,11 @@ class OarbotWidget(QWidget):
             int(self.width() * 0.05),
             self.base_enable_button.y()
         )
+        self.finger_position_slider.setFixedWidth(int(self.width() * 0.9))
+        self.finger_position_slider.move(
+            int(self.width() * 0.05),
+            self.finger_position_slider.y()
+        )
 
         super().resizeEvent(event)
 
