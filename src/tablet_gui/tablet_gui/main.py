@@ -3,7 +3,7 @@ import threading
 from threading import Event
 import rclpy
 from PySide6.QtWidgets import QApplication
-from tablet_gui.gui import AppWindow
+from tablet_gui.gui import MainWindow
 from tablet_gui.ros_gui_node import RosGuiNode
 
 def spin_ros(node: RosGuiNode, shutdown_event: Event):
@@ -28,8 +28,7 @@ def main(args=None):
 
     # QT will be on the main thread
     app = QApplication(sys.argv)
-    window = AppWindow(ros_node, shutdown_event)
-    
+    window = MainWindow(ros_node, shutdown_event)
     window.showMaximized()
     app.exec()
 
