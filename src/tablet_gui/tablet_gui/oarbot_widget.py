@@ -56,10 +56,10 @@ class OarbotWidget(QWidget):
 
         self.finger_position_slider = HorizontalSlider(0, 100, self.ros_gui_node.get_cur_finger_percent(self.oarbot_namespace), self.handle_finger_slider)
         layout.addWidget(self.finger_position_slider)
-        self.finger_position_slider_text = QLabel("Arm Finger Positions")
-        self.finger_position_slider_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.finger_position_slider_text.setFont(QFont("Roboto", 12))
-        layout.addWidget(self.finger_position_slider_text)
+        finger_position_slider_text = QLabel("Arm Finger Positions")
+        finger_position_slider_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        finger_position_slider_text.setFont(QFont("Roboto", 12))
+        layout.addWidget(finger_position_slider_text)
 
         self.body_joint_following_enabled = False
         self.body_joint_following_enable_button = ToggleButton("Body Joint Following Disabled", self.handle_body_joint_following_toggle_button, 14)
