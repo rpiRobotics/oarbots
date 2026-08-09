@@ -31,7 +31,7 @@ class OarbotWidget(QWidget):
         layout.addWidget(self.oarbot_main_text)
 
         self.oarbot_status = OarbotStatus(
-            display_name_to_node_name={
+            display_name_to_topic_node_name={
                 "Dingo Base": "dingo",
                 "Kinova Arm": "kinova",
                 "Force Torque": "ft",
