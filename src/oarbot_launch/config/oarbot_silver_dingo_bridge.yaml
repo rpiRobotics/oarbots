@@ -1,0 +1,17 @@
+name: oarbot_silver_dingo_bridge
+from_domain: 1
+to_domain: 0
+topics:
+  oarbot_silver/dingo/cmd_vel:
+    type: geometry_msgs/msg/TwistStamped
+    from_domain: 0
+    to_domain: 1
+
+  /oarbot_silver/dingo/platform/emergency_stop:
+    type: std_msgs/msg/Bool
+  
+  /oarbot_silver/dingo/platform/joint_states:
+    type: sensor_msgs/msg/JointState
+  
+  /oarbot_silver/dingo/sensors/imu_0/data:
+    type: sensor_msgs/msg/Imu
