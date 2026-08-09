@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
     QLabel
 )
 from PySide6.QtGui import QFont
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 
 from tablet_gui.ros_gui_node import RosGuiNode
 from tablet_gui.status_indicators import StatusIndicators
@@ -20,6 +20,9 @@ class OarbotWidget(QWidget):
         self.oarbot_namespace = oarbot_namespace
         self.display_name = display_name
         self.ros_gui_node = ros_gui_node
+
+        # Set up the ROS2 node to know about this OARBot
+        ros_gui_node.add_oarbot(oarbot_namespace)
 
         layout = QVBoxLayout(self)
         layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
@@ -73,6 +76,14 @@ class OarbotWidget(QWidget):
         finger_position_slider_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
         finger_position_slider_text.setFont(QFont("Roboto", 12))
         layout.addWidget(finger_position_slider_text)
+
+        # Set up a slider to update the finger position slider
+        self.finger_position_timer = QTimer(self)
+        self.finger_position_timer.setInterval(100)
+        self.finger_position_timer.timeout.connect(self.update_finger_position_slider)
+        self.finger_position_timer.start()
+        self.do_finger_position_slider_update = True # If the user is clicking on the slider, this should be set to false
+        self.finger_position_slider.sliderPressed.connect(lambda : setattr(self, "do_finger_position_slider_update", False))
 
         self.body_joint_following_enabled = False
         self.body_joint_following_enable_button = ToggleButton("Body Joint Following Disabled", self.handle_body_joint_following_toggle_button, 14)
@@ -145,8 +156,15 @@ class OarbotWidget(QWidget):
         self.base_enbled = toggled
         self.base_enable_button.setText("Base Enabled" if toggled else "Base Disabled")
 
-    def handle_finger_slider(self, value: int) -> None:
-        pass
+    def handle_finger_slider(self) -> None:
+        value = self.finger_position_slider.value()
+        self.ros_gui_node.set_finger_position(self.oarbot_namespace, value)
+        self.do_finger_position_slider_update = True
+
+    def update_finger_position_slider(self) -> None:
+        if self.do_finger_position_slider_update:
+            percent_open = self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].finger_position_percent
+            self.finger_position_slider.setValue(percent_open)
 
     def handle_body_joint_following_toggle_button(self, toggled: bool) -> None:
         self.body_joint_following_enabled = toggled

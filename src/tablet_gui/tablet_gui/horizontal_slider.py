@@ -10,7 +10,7 @@ class HorizontalSlider(QSlider):
         self.setMaximum(max)
         self.setValue(initial_value)
 
-        self.valueChanged.connect(on_change)
+        self.sliderReleased.connect(on_change)
 
         self.setMinimumHeight(40)
 
