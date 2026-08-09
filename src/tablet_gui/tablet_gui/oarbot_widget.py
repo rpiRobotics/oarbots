@@ -46,11 +46,9 @@ class OarbotWidget(QWidget):
         layout.addWidget(self.oarbot_status)
 
         translation_rotation_toggle_layout = QHBoxLayout()
-        self.translation_enabled = False
         self.translation_toggle_button = ToggleButton("Translation\nEnabled", self.handle_translation_toggle_button, font_size=14)
         self.translation_toggle_button.click()
         translation_rotation_toggle_layout.addWidget(self.translation_toggle_button)
-        self.rotation_enabled = False
         self.rotation_toggle_button = ToggleButton("Rotation\nEnabled", self.handle_rotation_toggle_button, font_size=14)
         self.rotation_toggle_button.click()
         translation_rotation_toggle_layout.addWidget(self.rotation_toggle_button)
@@ -62,11 +60,9 @@ class OarbotWidget(QWidget):
         self.base_home_button = PushButton("Base Home", self.handle_base_home)
         layout.addWidget(self.base_home_button)
 
-        self.arm_enabled = False
         self.arm_enable_button = ToggleButton("Arm Disabled", self.handle_arm_toggle_button)
         layout.addWidget(self.arm_enable_button)
 
-        self.base_enabled = False
         self.base_enable_button = ToggleButton("Base Disabled", self.handle_base_toggle_button)
         layout.addWidget(self.base_enable_button)
 
@@ -85,11 +81,9 @@ class OarbotWidget(QWidget):
         self.do_finger_position_slider_update = True # If the user is clicking on the slider, this should be set to false
         self.finger_position_slider.sliderPressed.connect(lambda : setattr(self, "do_finger_position_slider_update", False))
 
-        self.body_joint_following_enabled = False
         self.body_joint_following_enable_button = ToggleButton("Body Joint Following Disabled", self.handle_body_joint_following_toggle_button, 14)
         layout.addWidget(self.body_joint_following_enable_button)
 
-        self.admittance_control_enabled = False
         self.admittance_control_enable_button = ToggleButton("Admittance Control Disabled", self.handle_admittance_control_toggle_button, 14)
         layout.addWidget(self.admittance_control_enable_button)
 
@@ -135,11 +129,11 @@ class OarbotWidget(QWidget):
         super().resizeEvent(event)
 
     def handle_translation_toggle_button(self, toggled: bool) -> None:
-        self.translation_enabled = toggled
+        self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].translation_enabled = toggled
         self.translation_toggle_button.setText("Translation\nEnabled" if toggled else "Translation\nDisabled")
 
     def handle_rotation_toggle_button(self, toggled: bool) -> None:
-        self.rotation_enabled = toggled
+        self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].rotation_enabled = toggled
         self.rotation_toggle_button.setText("Rotation\nEnabled" if toggled else "Rotation\nDisabled")
 
     def handle_arm_home(self) -> None:
@@ -149,11 +143,11 @@ class OarbotWidget(QWidget):
         pass
 
     def handle_arm_toggle_button(self, toggled: bool) -> None:
-        self.arm_enabled = toggled
+        self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].arm_enabled = toggled
         self.arm_enable_button.setText("Arm Enabled" if toggled else "Arm Disabled")
 
     def handle_base_toggle_button(self, toggled: bool) -> None:
-        self.base_enbled = toggled
+        self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].base_enabled = toggled
         self.base_enable_button.setText("Base Enabled" if toggled else "Base Disabled")
 
     def handle_finger_slider(self) -> None:
@@ -167,9 +161,9 @@ class OarbotWidget(QWidget):
             self.finger_position_slider.setValue(percent_open)
 
     def handle_body_joint_following_toggle_button(self, toggled: bool) -> None:
-        self.body_joint_following_enabled = toggled
+        self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].body_joint_following_enabled = toggled
         self.body_joint_following_enable_button.setText("Body Joint Following Enabled" if toggled else "Body Joint Following Disabled")
 
     def handle_admittance_control_toggle_button(self, toggled: bool) -> None:
-        self.admittance_control_enabled = toggled
+        self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].admittance_control_enabled = toggled
         self.admittance_control_enable_button.setText("Admittance Control Enabled" if toggled else "Admittance Control Disabled")
