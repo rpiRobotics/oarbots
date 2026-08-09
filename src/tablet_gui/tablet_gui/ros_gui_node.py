@@ -31,7 +31,7 @@ class RosGuiNode(Node):
             callback=self.deadman_callback,
             qos_profile=1
         )
-        self.e_stop_pressed = False
+        self.e_stop_pressed = True
         self.dingo_e_stop_publishers: dict[str, Publisher] = dict()
         self.e_stop_subscriber = self.create_subscription(
             msg_type=Bool,
@@ -156,13 +156,16 @@ class RosGuiNode(Node):
         self.deadman_pressed = msg.data
 
     def e_stop_callback(self, msg: Bool) -> None:
-        self.e_stop_pressed = msg.data
 
         # If the e-stop is active, publish to all dingo e-stop channels
         if msg.data:
             for e_stop_publisher in self.dingo_e_stop_publishers.values():
                 e_stop_publisher.publish(msg)
+        elif self.e_stop_pressed: # If this is the first time the e-stop is not pressed, publish as
+            for e_stop_publisher in self.dingo_e_stop_publishers.values():
+                            e_stop_publisher.publish(msg)
 
+        self.e_stop_pressed = msg.data
 
 class OarbotSettings():
     def __init__(self) -> None:
