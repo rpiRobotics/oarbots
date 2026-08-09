@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
+    QHBoxLayout,
     QLabel
 )
 from PySide6.QtGui import QFont
@@ -39,6 +40,17 @@ class OarbotWidget(QWidget):
             ros_gui_node=self.ros_gui_node
         )
         layout.addWidget(self.oarbot_status)
+
+        translation_rotation_toggle_layout = QHBoxLayout(self)
+        self.translation_enabled = False
+        self.translation_toggle_button = ToggleButton("Translation\nEnabled", self.handle_translation_toggle_button, font_size=14)
+        self.translation_toggle_button.click()
+        translation_rotation_toggle_layout.addWidget(self.translation_toggle_button)
+        self.rotation_enabled = False
+        self.rotation_toggle_button = ToggleButton("Rotation\nEnabled", self.handle_rotation_toggle_button, font_size=14)
+        self.rotation_toggle_button.click()
+        translation_rotation_toggle_layout.addWidget(self.rotation_toggle_button)
+        layout.addLayout(translation_rotation_toggle_layout)
 
         self.arm_home_button = PushButton("Arm Home", self.handle_arm_home)
         layout.addWidget(self.arm_home_button)
@@ -109,6 +121,14 @@ class OarbotWidget(QWidget):
         )
 
         super().resizeEvent(event)
+
+    def handle_translation_toggle_button(self, toggled: bool) -> None:
+        self.translation_enabled = toggled
+        self.translation_toggle_button.setText("Translation\nEnabled" if toggled else "Translation\nDisabled")
+
+    def handle_rotation_toggle_button(self, toggled: bool) -> None:
+        self.rotation_enabled = toggled
+        self.rotation_toggle_button.setText("Rotation\nEnabled" if toggled else "Rotation\nDisabled")
 
     def handle_arm_home(self) -> None:
         pass
