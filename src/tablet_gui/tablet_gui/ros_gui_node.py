@@ -1,7 +1,8 @@
 from rclpy.subscription import Subscription
 from rclpy.publisher import Publisher
 from rclpy.node import Node
-from kinova_msgs.msg import FingerPosition, PoseVelocityWithFingers
+from kinova_msgs.msg import FingerPosition, PoseVelocityWithFingers, PoseVelocity
+from geometry_msgs.msg import Twist, TwistStamped
 from math import pi
 
 class RosGuiNode(Node):
@@ -13,6 +14,15 @@ class RosGuiNode(Node):
         self.oarbot_settings_dict: dict[str, OarbotSettings] = dict()
         self.finger_position_subscribers: dict[str, Subscription] = dict()
         self.finger_position_publishers: dict[str, Publisher] = dict()
+        self.arm_velocity_publishers: dict[str, Publisher] = dict()
+        self.base_velocity_publishers: dict[str, Publisher] = dict()
+
+        self.spacenav_subscriber = self.create_subscription(
+            msg_type=Twist,
+            topic="spacenav/twist",
+            callback=self.spacenav_callback,
+            qos_profile=5
+        )
 
 
     def active_node_or_topic(self, topic_node_name: str) -> bool:
@@ -46,6 +56,16 @@ class RosGuiNode(Node):
             topic=oarbot_name + "/kinova/j2n6s300_driver/in/cartesian_velocity_with_fingers",
             qos_profile=1
         )
+        self.arm_velocity_publishers[oarbot_name] = self.create_publisher(
+            msg_type=PoseVelocity,
+            topic=oarbot_name + "/kinova/j2n6s300_driver/in/cartesian_velocity",
+            qos_profile=1
+        )
+        self.base_velocity_publishers[oarbot_name] = self.create_publisher(
+            msg_type=TwistStamped,
+            topic=oarbot_name + "/dingo/cmd_vel",
+            qos_profile=10
+        )
 
     def finger_position_callback(self, oarbot_name: str, msg) -> None:
         avg_finger_position = (msg.finger1 + msg.finger2 + msg.finger3) / 3
@@ -73,6 +93,45 @@ class RosGuiNode(Node):
 
         self.finger_position_publishers[oarbot_name].publish(msg)
         self.get_logger().info(f"Published {msg} to {oarbot_name}")
+
+    def spacenav_callback(self, msg: Twist) -> None:
+        for oarbot_namespace, oarbot in self.oarbot_settings_dict.items():
+            if oarbot.arm_enabled:
+                arm_msg = PoseVelocity()
+
+                if oarbot.translation_enabled:
+                    arm_msg.twist_linear_x = msg.linear.x
+                    arm_msg.twist_linear_y = msg.linear.y
+                    arm_msg.twist_linear_z = msg.linear.z
+
+                    # For some reason, oarbot_silver has x-y values flipped
+                    if oarbot_namespace == "/oarbot_silver":
+                        arm_msg.twist_linear_x *= -1
+                        arm_msg.twist_linear_y *= -1
+                if oarbot.rotation_enabled:
+                    # Here, we need to swap the x and y angular values; just how the kinova is set up, I guess...
+                    arm_msg.twist_angular_x = msg.angular.y
+                    arm_msg.twist_angular_y = msg.angular.x
+                    arm_msg.twist_angular_z = msg.angular.z
+
+                    # For some reason, oarbot_blue has x-y values flipped
+                    if oarbot_namespace == "/oarbot_blue":
+                        arm_msg.twist_angular_x *= -1
+                        arm_msg.twist_angular_y *= -1
+    
+                self.arm_velocity_publishers[oarbot_namespace].publish(arm_msg)
+
+            if oarbot.base_enabled:
+                base_msg = TwistStamped()
+                base_msg.header.stamp = self.get_clock().now().to_msg()
+
+                if oarbot.translation_enabled:
+                    base_msg.twist.linear = msg.linear
+                if oarbot.rotation_enabled:
+                    base_msg.twist.angular = msg.angular
+
+                self.base_velocity_publishers[oarbot_namespace].publish(base_msg)
+
 
 class OarbotSettings():
     def __init__(self) -> None:
