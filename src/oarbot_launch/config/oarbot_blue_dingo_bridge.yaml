@@ -9,6 +9,8 @@ topics:
 
   /oarbot_blue/dingo/platform/emergency_stop:
     type: std_msgs/msg/Bool
+    from_domain: 0
+    to_domain: 2
   
   /oarbot_blue/dingo/platform/joint_states:
     type: sensor_msgs/msg/JointState
