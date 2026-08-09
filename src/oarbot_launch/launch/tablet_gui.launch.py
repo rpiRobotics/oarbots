@@ -23,6 +23,17 @@ def generate_launch_description() -> LaunchDescription:
             name="spacenav_node",
             namespace="tablet_gui",
         ),
+        Node(
+            package="tablet_arduino_publisher",
+            executable="tablet_arduino_publisher",
+            name="tablet_arduino_publisher",
+            namespace="tablet_gui",
+            parameters=[{
+                "com_port": "/dev/ttyACM0",
+                "arduino_deadman_switch_topic": "deadman",
+                "arduino_e_stop_topic": "e_stop"
+            }]
+        ),
         RegisterEventHandler(
             OnProcessExit(
                 target_action=tablet_gui_node,
