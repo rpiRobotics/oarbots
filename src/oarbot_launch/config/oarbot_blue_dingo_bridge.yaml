@@ -1,0 +1,17 @@
+name: oarbot_blue_dingo_bridge
+from_domain: 2
+to_domain: 0
+topics:
+  oarbot_blue/dingo/cmd_vel:
+    type: geometry_msgs/msg/TwistStamped
+    from_domain: 0
+    to_domain: 2
+
+  /oarbot_blue/dingo/platform/emergency_stop:
+    type: std_msgs/msg/Bool
+  
+  /oarbot_blue/dingo/platform/joint_states:
+    type: sensor_msgs/msg/JointState
+  
+  /oarbot_blue/dingo/sensors/imu_0/data:
+    type: sensor_msgs/msg/Imu
