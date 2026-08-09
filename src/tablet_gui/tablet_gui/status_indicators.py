@@ -12,8 +12,8 @@ from PySide6.QtCore import Qt
 from tablet_gui.ros_gui_node import RosGuiNode
 from tablet_gui.status_indicator import StatusIndicator
 
-class OarbotStatus(QWidget):
-    def __init__(self, display_name_to_topic_node_name: dict[str, str], ros_gui_node: RosGuiNode) -> None:
+class StatusIndicators(QWidget):
+    def __init__(self, display_name_to_topic_node_name: dict[str, str], ros_gui_node: RosGuiNode, vertical=True) -> None:
         super().__init__()
 
         self.display_name_to_topic_node_name = display_name_to_topic_node_name
@@ -24,7 +24,7 @@ class OarbotStatus(QWidget):
         self.scene = QGraphicsScene(self)
 
         # Add each status item to the layout
-        main_layout = QVBoxLayout(self)
+        main_layout = QVBoxLayout(self) if vertical else QHBoxLayout(self)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.status_items: list[StatusIndicator] = []
         for display_name, node_name in self.display_name_to_topic_node_name.items():

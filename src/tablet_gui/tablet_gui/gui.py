@@ -5,7 +5,7 @@ from threading import Event
 
 from tablet_gui.ros_gui_node import RosGuiNode
 from tablet_gui.oarbot_widget import OarbotWidget
-from tablet_gui.status_indicator import StatusIndicator
+from tablet_gui.status_indicators import StatusIndicators
 
 class MainWindow(QMainWindow):
     def __init__(self, ros_gui_node: RosGuiNode, shutdown_event: Event) -> None:
@@ -20,14 +20,17 @@ class MainWindow(QMainWindow):
         screen_widget = QWidget()
         screen_layout = QVBoxLayout()
         oarbot_widgets_layout = QHBoxLayout()
-        oarbot_widgets_layout.addWidget(OarbotWidget("oarbot_blue", "OARBot Blue", self.ros_gui_node))
-        oarbot_widgets_layout.addWidget(OarbotWidget("oarbot_silver", "OARBot Silver", self.ros_gui_node))
+        oarbot_widgets_layout.addWidget(OarbotWidget("/oarbot_blue", "OARBot Blue", self.ros_gui_node))
+        oarbot_widgets_layout.addWidget(OarbotWidget("/oarbot_silver", "OARBot Silver", self.ros_gui_node))
         screen_layout.addLayout(oarbot_widgets_layout)
         screen_layout.addStretch(1)
 
         nuc_status_layout = QHBoxLayout()
         nuc_status_layout.addStretch()
-        nuc_status_layout.addWidget(StatusIndicator("Overhead NUC", "nuc", self.ros_gui_node))
+        nuc_status_layout.addWidget(StatusIndicators({
+            "NUC Azure Kinect": "/nuc/k4a_bridge",
+            "NUC Pose Estimation": "/aruco/markers"
+        }, self.ros_gui_node, vertical=False))
         nuc_status_layout.addStretch()
         screen_layout.addLayout(nuc_status_layout)
 

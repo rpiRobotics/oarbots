@@ -8,7 +8,7 @@ from PySide6.QtGui import QFont
 from PySide6.QtCore import Qt
 
 from tablet_gui.ros_gui_node import RosGuiNode
-from tablet_gui.oarbot_status import OarbotStatus
+from tablet_gui.status_indicators import StatusIndicators
 from tablet_gui.push_button import PushButton
 from tablet_gui.toggle_button import ToggleButton
 from tablet_gui.horizontal_slider import HorizontalSlider
@@ -30,18 +30,19 @@ class OarbotWidget(QWidget):
         self.oarbot_main_text.setFont(QFont("Roboto", 24))
         layout.addWidget(self.oarbot_main_text)
 
-        self.oarbot_status = OarbotStatus(
+        self.oarbot_status = StatusIndicators(
             display_name_to_topic_node_name={
-                "Dingo Base": "dingo",
-                "Kinova Arm": "kinova",
-                "Force Torque": "ft",
-                "MoveIt": "moveit"
+                "Dingo Base": oarbot_namespace + "/dingo/sensors/imu_0/data",
+                "Kinova Arm": oarbot_namespace + "/kinova/kinova_arm",
+                "Azure Kinect": oarbot_namespace + "/azure_kinect/k4a_bridge",
+                "Force Torque": oarbot_namespace + "/rokubi_force_torque_publisher",
+                "MoveIt": oarbot_namespace + "/move_group"
             },
             ros_gui_node=self.ros_gui_node
         )
         layout.addWidget(self.oarbot_status)
 
-        translation_rotation_toggle_layout = QHBoxLayout(self)
+        translation_rotation_toggle_layout = QHBoxLayout()
         self.translation_enabled = False
         self.translation_toggle_button = ToggleButton("Translation\nEnabled", self.handle_translation_toggle_button, font_size=14)
         self.translation_toggle_button.click()
