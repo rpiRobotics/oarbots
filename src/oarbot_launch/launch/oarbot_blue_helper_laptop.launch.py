@@ -12,6 +12,18 @@ def generate_launch_description() -> LaunchDescription:
                 PathJoinSubstitution([
                     FindPackageShare("oarbot_launch"),
                     "launch",
+                    "dingo_bridge.launch.py"
+                ])
+            ),
+            launch_arguments={
+                "oarbot_name": "oarbot_blue"
+            }.items()
+        ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution([
+                    FindPackageShare("oarbot_launch"),
+                    "launch",
                     "kinova_bringup.launch.py"
                 ])
             ),
