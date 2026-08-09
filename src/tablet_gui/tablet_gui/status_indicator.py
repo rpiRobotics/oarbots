@@ -11,11 +11,11 @@ from tablet_gui.ros_gui_node import RosGuiNode
 
 
 class StatusIndicator(QWidget):
-    def __init__(self, display_name: str, node_name: str, ros_gui_node: RosGuiNode) -> None:
+    def __init__(self, display_name: str, topic_node_name: str, ros_gui_node: RosGuiNode) -> None:
         super().__init__()
 
         self.display_name = display_name
-        self.node_name = node_name
+        self.topic_node_name = topic_node_name
         self.ros_gui_node = ros_gui_node
 
         layout = QHBoxLayout(self)
@@ -37,7 +37,7 @@ class StatusIndicator(QWidget):
         self.update_status()
 
     def update_status(self) -> None:
-        if self.ros_gui_node.is_node_active(self.node_name):
+        if self.ros_gui_node.active_node_or_topic(self.topic_node_name):
             self.status_indicator.update_color("#00FF00")
         else:
             self.status_indicator.update_color("#FF0000")
