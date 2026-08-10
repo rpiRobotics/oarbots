@@ -72,7 +72,7 @@ RokubiForceTorquePublisher::RokubiForceTorquePublisher() : rclcpp::Node("rokubi_
     // Initialize the object
     this->ft_sensor = std::make_unique<BotaForceTorqueSensorComm>(serial_port);
     
-    // Set timer to read the data every 100 Hz
+    // Set timer to read the data at 100 Hz
     this->publish_timer = this->create_wall_timer(std::chrono::milliseconds(10), [this]() -> void {
         this->publish_ft_data();
     });
