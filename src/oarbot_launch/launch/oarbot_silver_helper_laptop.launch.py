@@ -87,7 +87,7 @@ def generate_launch_description() -> LaunchDescription:
             name="rokubi_force_torque_publisher",
             namespace="oarbot_silver",
             parameters=[{
-                "publish_topic": "force_torque"
+                "publish_topic": "force_torque_raw"
             }]
         )
     ])
