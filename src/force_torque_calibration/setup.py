@@ -11,7 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', "numpy"],
     zip_safe=True,
     maintainer="Aidan O'Connor",
     maintainer_email='oconna4@rpi.edi',
@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            "force_torque_calibration = force_torque_calibration.main:main"
         ],
     },
 )
