@@ -1,19 +1,23 @@
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 export default function Home() {
-    const { siteConfig } = useDocusaurusContext();
-    
     return (
         <Layout>
             <main>
                 <div className="flex flex-col justify-center items-center w-screen py-24 bg-gray-100 dark:bg-gray-800">
                     <h1 className="text-5xl">OARBots Documentation</h1>
                     <span className="h-2"></span>
-                    <Link className="hover:no-underline text-2xl bg-blue-300 dark:bg-blue-900 hover:bg-blue-400 hover:dark:bg-blue-800 px-6 py-2 text-black dark:text-white rounded-xl font-semibold border-1 border-blue-200 dark:border-blue-800 transition hover:-translate-y-0.5 hover:drop-shadow-md" to="/docs/getting-started">
-                        View the Docs
-                    </Link>
+                    <div className="flex flex-row justify-center items-center gap-4">
+                        <Link className="hover:no-underline text-2xl bg-blue-300 dark:bg-blue-900 hover:bg-blue-400 hover:dark:bg-blue-800 px-6 py-2 text-black dark:text-white rounded-xl font-semibold border-1 border-blue-200 dark:border-blue-800 transition hover:-translate-y-0.5 hover:drop-shadow-md" to="/docs/getting-started">
+                            View the Docs
+                        </Link>
+                        <Link className="hover:no-underline text-2xl bg-gray-800 dark:bg-gray-950 hover:bg-gray-900 hover:dark:bg-gray-900 px-6 py-2 text-white rounded-xl font-semibold border-1 border-gray-700 dark:border-gray-800 transition hover:-translate-y-0.5 hover:drop-shadow-md flex flex-row justify-center items-center gap-2" to="https://github.com/rpiRobotics/oarbots/">
+                            <img className="size-6" src={useBaseUrl("/img/GitHub_Invertocat_White.svg")} alt="GitHub Logo" />
+                            View on GitHub
+                        </Link>
+                    </div>
                 </div>
                 <div className="flex flex-col py-6 px-12">
                     <p className="font-medium text-md ">
