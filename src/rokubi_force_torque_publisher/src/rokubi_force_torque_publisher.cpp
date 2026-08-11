@@ -10,11 +10,11 @@ RokubiForceTorquePublisher::RokubiForceTorquePublisher() : rclcpp::Node("rokubi_
     // Read in parameter values
     rcl_interfaces::msg::ParameterDescriptor raw_publish_topic_description = rcl_interfaces::msg::ParameterDescriptor();
     raw_publish_topic_description.description = "Topic to publish raw geometry_msgs/WrenchStamped messages from the force torque sensor on";
-    this->raw_publish_topic = this->declare_parameter<std::string>("raw_publish_topic", "raw_ft_data", raw_publish_topic_description);
+    this->raw_publish_topic = this->declare_parameter<std::string>("raw_publish_topic", "force_torque_raw", raw_publish_topic_description);
 
     rcl_interfaces::msg::ParameterDescriptor calibrated_publish_topic_description = rcl_interfaces::msg::ParameterDescriptor();
     calibrated_publish_topic_description.description = "Topic to publish calibrated geometry_msgs/WrenchStamped messages from the force torque sensor on";
-    this->calibrated_publish_topic = this->declare_parameter<std::string>("calibrated_publish_topic", "calibrated_ft_data", calibrated_publish_topic_description);
+    this->calibrated_publish_topic = this->declare_parameter<std::string>("calibrated_publish_topic", "force_torque_calibrated", calibrated_publish_topic_description);
 
     rcl_interfaces::msg::ParameterDescriptor tf_prefix_description = rcl_interfaces::msg::ParameterDescriptor();
     tf_prefix_description.description = "TF prefix used for frame IDs";
