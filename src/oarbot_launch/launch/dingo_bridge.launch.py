@@ -1,5 +1,3 @@
-from typing import cast
-
 from launch import LaunchDescription, LaunchContext
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
