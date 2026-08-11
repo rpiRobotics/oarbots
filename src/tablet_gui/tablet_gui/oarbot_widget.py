@@ -130,10 +130,16 @@ class OarbotWidget(QWidget):
 
     def handle_translation_toggle_button(self, toggled: bool) -> None:
         self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].translation_enabled = toggled
+        if self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].admittance_control_enabled:
+            self.ros_gui_node.disable_admittance_control(self.oarbot_namespace)
+            self.ros_gui_node.enable_admittance_control(self.oarbot_namespace)
         self.translation_toggle_button.setText("Translation\nEnabled" if toggled else "Translation\nDisabled")
 
     def handle_rotation_toggle_button(self, toggled: bool) -> None:
         self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].rotation_enabled = toggled
+        if self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].admittance_control_enabled:
+            self.ros_gui_node.disable_admittance_control(self.oarbot_namespace)
+            self.ros_gui_node.enable_admittance_control(self.oarbot_namespace)
         self.rotation_toggle_button.setText("Rotation\nEnabled" if toggled else "Rotation\nDisabled")
 
     def handle_arm_home(self) -> None:
@@ -165,5 +171,8 @@ class OarbotWidget(QWidget):
         self.body_joint_following_enable_button.setText("Body Joint Following Enabled" if toggled else "Body Joint Following Disabled")
 
     def handle_admittance_control_toggle_button(self, toggled: bool) -> None:
-        self.ros_gui_node.oarbot_settings_dict[self.oarbot_namespace].admittance_control_enabled = toggled
+        if toggled:
+            self.ros_gui_node.enable_admittance_control(self.oarbot_namespace)
+        else:
+            self.ros_gui_node.disable_admittance_control(self.oarbot_namespace)
         self.admittance_control_enable_button.setText("Admittance Control Enabled" if toggled else "Admittance Control Disabled")

@@ -116,7 +116,7 @@ class RosGuiNode(Node):
     def spacenav_callback(self, msg: Twist) -> None:
         if not self.e_stop_pressed and self.deadman_pressed:
             for oarbot_namespace, oarbot in self.oarbot_settings_dict.items():
-                if oarbot.arm_enabled:
+                if oarbot.arm_enabled and not self.oarbot_settings_dict[oarbot_namespace].admittance_control_enabled:
                     arm_msg = PoseVelocity()
 
                     if oarbot.translation_enabled:
@@ -166,6 +166,50 @@ class RosGuiNode(Node):
                             e_stop_publisher.publish(msg)
 
         self.e_stop_pressed = msg.data
+
+    def enable_admittance_control(self, oarbot_namespace: str) -> None:
+        self.oarbot_settings_dict[oarbot_namespace].admittance_control_enabled = True
+
+        # Send message to admittance control node to start publishing
+        enable_topic = self.create_publisher(
+            msg_type=Bool,
+            topic=oarbot_namespace + "admittance_enable",
+            qos_profile=1
+        )
+        translation_enable_topic = self.create_publisher(
+            msg_type=Bool,
+            topic=oarbot_namespace + "admittance_translation_enable",
+            qos_profile=1
+        )
+        rotation_enable_topic = self.create_publisher(
+            msg_type=Bool,
+            topic=oarbot_namespace + "admittance_rotation_enable",
+            qos_profile=1
+        )
+
+        msg = Bool()
+
+        msg.data = True
+        enable_topic.publish(msg)
+
+        msg.data = self.oarbot_settings_dict[oarbot_namespace].translation_enabled
+        translation_enable_topic.publish(msg)
+
+        msg.data = self.oarbot_settings_dict[oarbot_namespace].rotation_enabled
+        rotation_enable_topic.publish(msg)
+
+    def disable_admittance_control(self, oarbot_namespace: str) -> None:
+        enable_topic = self.create_publisher(
+            msg_type=Bool,
+            topic=oarbot_namespace + "admittance_enable",
+            qos_profile=1
+        )
+
+        msg = Bool()
+        msg.data = False
+        enable_topic.publish(msg)
+
+        self.oarbot_settings_dict[oarbot_namespace].admittance_control_enabled = False
 
 class OarbotSettings():
     def __init__(self) -> None:
