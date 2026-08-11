@@ -34,6 +34,24 @@ def generate_launch_description() -> LaunchDescription:
                 "arduino_e_stop_topic": "e_stop"
             }]
         ),
+        Node(
+            package="admittance_control",
+            executable="admittance_control",
+            name="admittance_control",
+            namespace="oarbot_silver",
+            parameters=[{
+                "tf_prefix": "oarbot_silver/"
+            }]
+        ),
+        Node(
+            package="admittance_control",
+            executable="admittance_control",
+            name="admittance_control",
+            namespace="oarbot_blue",
+            parameters=[{
+                "tf_prefix": "oarbot_blue/"
+            }]
+        ),
         RegisterEventHandler(
             OnProcessExit(
                 target_action=tablet_gui_node,
