@@ -8,16 +8,20 @@ from force_torque_calibration.force_torque_calibration_node import ForceTorqueCa
 def main(args=None) -> None:
     rclpy.init(args=args)
 
-    print("-----------WARNING-----------")
-    print("Unplug the Azure Kinect camera (this requires a restart of the node after running this calibration) and remove the both the Azure Kinect and force torque cables from the Zip-Tie")
-    input("Press Enter to continue...")
 
     node = ForceTorqueCalibration()
     matrix_stack = np.zeros((0, 10))
     vector_stack = np.zeros((0, 1))
 
+    node.get_logger().warn("-----------WARNING-----------")
+    node.get_logger().warn("Unplug the Azure Kinect camera (this requires a restart of the node after running this calibration) and remove the both the Azure Kinect and force torque cables from the Zip-Tie")
+    node.get_logger().warn("-----------------------------")
+
+    node.get_logger().info("Continuing in 5 seconds...")
+    time.sleep(5)
+
     for i, joint_angles in enumerate(node.joint_angles_list):
-        node.get_logger().info(f"Moving arm to position #{i}")
+        node.get_logger().info(f"Moving arm to position {i + 1} of {len(node.joint_angles_list)}")
         node.move_arm_to_state(joint_angles)
 
         node.get_logger().info("Waiting for arm to finish shaking")
