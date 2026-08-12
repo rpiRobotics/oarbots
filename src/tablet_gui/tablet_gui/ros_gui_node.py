@@ -174,10 +174,11 @@ class RosGuiNode(Node):
                     enable_topic.publish(msg)
                     self.destroy_publisher(enable_topic)
 
-        elif self.e_stop_pressed: # If this is the first time the e-stop is not pressed, publish as
+        elif not msg.data and self.e_stop_pressed: # If this is the first time the e-stop is disengaged
             for e_stop_publisher in self.dingo_e_stop_publishers.values():
                 e_stop_publisher.publish(msg)
 
+        if not msg.data:
             # Re-enable any external controls if they were previously disabled
             for oarbot_namespace, oarbot_settings in self.oarbot_settings_dict.items():
                 if oarbot_settings.admittance_control_enabled:
