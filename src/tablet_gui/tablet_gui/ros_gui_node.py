@@ -170,20 +170,22 @@ class RosGuiNode(Node):
     def enable_admittance_control(self, oarbot_namespace: str) -> None:
         self.oarbot_settings_dict[oarbot_namespace].admittance_control_enabled = True
 
-        # Send message to admittance control node to start publishing
+        # Publish to the admittance control node in the same namespace as the robot.
+        # The C++ subscriber is created under /oarbot_silver or /oarbot_blue, so the
+        # topic must be fully namespaced to match.
         enable_topic = self.create_publisher(
             msg_type=Bool,
-            topic=oarbot_namespace + "admittance_enable",
+            topic=oarbot_namespace + "/admittance_enable",
             qos_profile=1
         )
         translation_enable_topic = self.create_publisher(
             msg_type=Bool,
-            topic=oarbot_namespace + "admittance_translation_enable",
+            topic=oarbot_namespace + "/admittance_translation_enable",
             qos_profile=1
         )
         rotation_enable_topic = self.create_publisher(
             msg_type=Bool,
-            topic=oarbot_namespace + "admittance_rotation_enable",
+            topic=oarbot_namespace + "/admittance_rotation_enable",
             qos_profile=1
         )
 
@@ -198,16 +200,22 @@ class RosGuiNode(Node):
         msg.data = self.oarbot_settings_dict[oarbot_namespace].rotation_enabled
         rotation_enable_topic.publish(msg)
 
+        self.destroy_publisher(enable_topic)
+        self.destroy_publisher(translation_enable_topic)
+        self.destroy_publisher(rotation_enable_topic)
+
     def disable_admittance_control(self, oarbot_namespace: str) -> None:
         enable_topic = self.create_publisher(
             msg_type=Bool,
-            topic=oarbot_namespace + "admittance_enable",
+            topic=oarbot_namespace + "/admittance_enable",
             qos_profile=1
         )
 
         msg = Bool()
         msg.data = False
         enable_topic.publish(msg)
+
+        self.destroy_publisher(enable_topic)
 
         self.oarbot_settings_dict[oarbot_namespace].admittance_control_enabled = False
 
