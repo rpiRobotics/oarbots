@@ -18,8 +18,8 @@ RokubiForceTorquePublisher::RokubiForceTorquePublisher() : rclcpp::Node("rokubi_
 
     rcl_interfaces::msg::ParameterDescriptor tf_prefix_description = rcl_interfaces::msg::ParameterDescriptor();
     tf_prefix_description.description = "TF prefix used for frame IDs";
-    this->tf_prefix = this->declare_parameter<std::string>("tf_prefix", "", tf_prefix_description);
-    if (*(this->tf_prefix.end() - 1) != '/' || (this->tf_prefix.size() > 1 && *(this->tf_prefix.begin()) == '/'))
+    this->tf_prefix = this->declare_parameter<std::string>("tf_prefix", "/", tf_prefix_description);
+    if (this->tf_prefix.empty() || *(this->tf_prefix.end() - 1) != '/' || (this->tf_prefix.size() > 1 && *(this->tf_prefix.begin()) == '/'))
     {
         RCLCPP_ERROR(this->get_logger(), "tf_prefix should end in a trailing slash and should not have a leading slash");
         throw std::exception();
