@@ -157,40 +157,72 @@ class RosGuiNode(Node):
 
     def e_stop_callback(self, msg: Bool) -> None:
 
-        # If the e-stop is active, publish to all dingo e-stop channels
+        # If the e-stop is active, publish to all dingo e-stop channels and disable any external controls if they are active
         if msg.data:
             for e_stop_publisher in self.dingo_e_stop_publishers.values():
                 e_stop_publisher.publish(msg)
-        elif self.e_stop_pressed: # If this is the first time the e-stop is not pressed, publish as
+
+            for oarbot_namespace, oarbot_settings in self.oarbot_settings_dict.items():
+                if oarbot_settings.admittance_control_enabled:
+                    enable_topic = self.create_publisher(
+                        msg_type=Bool,
+                        topic=oarbot_namespace + "/admittance_enable",
+                        qos_profile=1
+                    )
+                    pub_msg = Bool()
+                    pub_msg.data = False
+                    enable_topic.publish(pub_msg)
+                    self.destroy_publisher(enable_topic)
+
+        elif not msg.data and self.e_stop_pressed: # If this is the first time the e-stop is disengaged
             for e_stop_publisher in self.dingo_e_stop_publishers.values():
-                            e_stop_publisher.publish(msg)
+                e_stop_publisher.publish(msg)
+
+        if not msg.data:
+            # Re-enable any external controls if they were previously disabled
+            for oarbot_namespace, oarbot_settings in self.oarbot_settings_dict.items():
+                if oarbot_settings.admittance_control_enabled:
+                    enable_topic = self.create_publisher(
+                        msg_type=Bool,
+                        topic=oarbot_namespace + "/admittance_enable",
+                        qos_profile=1
+                    )
+                    pub_msg = Bool()
+                    pub_msg.data = True
+                    enable_topic.publish(pub_msg)
+                    self.destroy_publisher(enable_topic)
+            
 
         self.e_stop_pressed = msg.data
 
     def enable_admittance_control(self, oarbot_namespace: str) -> None:
         self.oarbot_settings_dict[oarbot_namespace].admittance_control_enabled = True
 
-        # Send message to admittance control node to start publishing
+        # Publish to the admittance control node in the same namespace as the robot.
+        # The C++ subscriber is created under /oarbot_silver or /oarbot_blue, so the
+        # topic must be fully namespaced to match.
         enable_topic = self.create_publisher(
             msg_type=Bool,
-            topic=oarbot_namespace + "admittance_enable",
+            topic=oarbot_namespace + "/admittance_enable",
             qos_profile=1
         )
         translation_enable_topic = self.create_publisher(
             msg_type=Bool,
-            topic=oarbot_namespace + "admittance_translation_enable",
+            topic=oarbot_namespace + "/admittance_translation_enable",
             qos_profile=1
         )
         rotation_enable_topic = self.create_publisher(
             msg_type=Bool,
-            topic=oarbot_namespace + "admittance_rotation_enable",
+            topic=oarbot_namespace + "/admittance_rotation_enable",
             qos_profile=1
         )
 
         msg = Bool()
 
         msg.data = True
-        enable_topic.publish(msg)
+        # Only publish to the enable topic if the E-stop is off; it will be published when the E-stop is turned off if it is pressed down currently
+        if not self.e_stop_pressed:
+            enable_topic.publish(msg)
 
         msg.data = self.oarbot_settings_dict[oarbot_namespace].translation_enabled
         translation_enable_topic.publish(msg)
@@ -198,16 +230,22 @@ class RosGuiNode(Node):
         msg.data = self.oarbot_settings_dict[oarbot_namespace].rotation_enabled
         rotation_enable_topic.publish(msg)
 
+        self.destroy_publisher(enable_topic)
+        self.destroy_publisher(translation_enable_topic)
+        self.destroy_publisher(rotation_enable_topic)
+
     def disable_admittance_control(self, oarbot_namespace: str) -> None:
         enable_topic = self.create_publisher(
             msg_type=Bool,
-            topic=oarbot_namespace + "admittance_enable",
+            topic=oarbot_namespace + "/admittance_enable",
             qos_profile=1
         )
 
         msg = Bool()
         msg.data = False
         enable_topic.publish(msg)
+
+        self.destroy_publisher(enable_topic)
 
         self.oarbot_settings_dict[oarbot_namespace].admittance_control_enabled = False
 
