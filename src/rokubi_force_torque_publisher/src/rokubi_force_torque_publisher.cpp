@@ -222,6 +222,16 @@ void RokubiForceTorquePublisher::publish_calibrated_ft_data()
     cur_latest_raw_force_torque_data.wrench.torque.x *= -1;
     cur_latest_raw_force_torque_data.wrench.torque.z *= -1;
 
+    // For OARBot Blue, the force torque sensor is mounted upside down, so flip the forces and torques about the z-axis
+    if (this->tf_prefix == "oarbot_blue/")
+    {
+        cur_latest_raw_force_torque_data.wrench.force.x *= -1;
+        cur_latest_raw_force_torque_data.wrench.force.y *= -1;
+
+        cur_latest_raw_force_torque_data.wrench.torque.x *= -1;
+        cur_latest_raw_force_torque_data.wrench.torque.y *= -1;
+    }
+
     tf2::Vector3 tf2_gravity_in_ft_frame = this->get_gravity_in_ft_frame();
     RCLCPP_DEBUG(this->get_logger(), "gravity_in_ft_frame: x=%f y=%f z=%f", tf2_gravity_in_ft_frame.x(), tf2_gravity_in_ft_frame.y(), tf2_gravity_in_ft_frame.z());
     RCLCPP_DEBUG(this->get_logger(), "end_effector_mass=%f force_bias=(%f,%f,%f) torque_bias=(%f,%f,%f)", this->end_effector_mass,
