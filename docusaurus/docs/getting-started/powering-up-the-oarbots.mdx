@@ -15,11 +15,17 @@ It is important to follow this order when booting up the OARBots. Failure to fol
 Each dingo base holds a maximum of 12 rechargeable batteries. The batteries can be found at the back of the room. A blinking green light indicates the battery is charging; a solid green light indicates the battery is fully charged. 
 
 
-[//]: # (TODO: Add photo of battery location here)
+<div className="flex flex-col justify-center items-center">
+    <img className="w-xl max-w-full" src={useBaseUrl("img/chargers-location.jpg")} alt="Location of Dingo battery chargers" />
+    <p>Location of the batteries and their chargers</p>
+</div>
 
 To install the batteries, ensure the port is facing into the Dingo and that the ridges are facing inward towards the center of the robot (see photo). Start from the end of the battery case and move inward. For each battery, slide it in. You may need to wiggle it around to make sure it goes into the port, and you may need to use some *slight* force. To ensure the battery is properly seated, gently pull on the tag. The battery should remain seated. If not, try again.
 
-[//]: # (TODO: Add photos of the battery ridges and adding them into the Dingo)
+<div className="flex flex-col justify-center items-center">
+    <img className="w-xl max-w-full" src={useBaseUrl("img/installing-dingo-battery.jpg")}/>
+    <p>Ensure the ridges of the battery are facing towards the center of the robot</p>
+</div>
 
 For stability, the number of batteries in one case should be the same as the number of batteries in the other case.
 
@@ -35,7 +41,10 @@ Each laptop should have two USB-C connections: one directly to the [Azure Kinect
 The OARBot Silver built-in power brick doesn't always charge the laptop. If this is the case, monitor the battery level of the laptop and use the offboard power brick when needed.
 :::
 
-[//]: # (TODO: Add photos of the back of the laptop)
+<div className="flex flex-col justify-center items-center">
+    <img className="w-xl max-w-full" src={useBaseUrl("img/laptop-ports.jpg")}/>
+    <p>The two USB-C cables should be plugged into the back of the laptop</p>
+</div>
 
 ## Powering on the Dingo Base
 
@@ -45,33 +54,48 @@ On the front HMI panel, press the <img className="size-5 translate-y-1 dark:inve
     <img src={useBaseUrl("img/dingo-hmi-panel.png")} alt="Dingo HMI Panel" />
 </div>
 
-The HMI panel lights should cycle on and then off, with the power button staying green and the battery button (to the left of the power button) staying red. Wait until all lights except the motor enable button (on the left side: <img className="size-5 translate-y-1 dark:invert-100" src={useBaseUrl("img/dingo-motor-enable.png")} alt="Dingo HMI Panel" />) are green and the four status indicator lights on the corners of the Dingo base are flashing red. If a light is not green or some other issue is observed, consult the [Dingo user manual](https://docs.clearpathrobotics.com/docs_robots/indoor_robots/dingo/user_manual_dingo/#dc-shore-power) for more information.
+The HMI panel lights should cycle on and then off, with the power button staying blue and the battery button (to the left of the power button) staying red. Wait until the power button is solid blue and all the other lights except the motor enable button (on the left side: <img className="size-5 translate-y-1 dark:invert-100" src={useBaseUrl("img/dingo-motor-enable.png")} alt="Dingo HMI Panel" />) are green and the four status indicator lights on the corners of the Dingo base are flashing red. If a light is not green or some other issue is observed, consult the [Dingo user manual](https://docs.clearpathrobotics.com/docs_robots/indoor_robots/dingo/user_manual_dingo/#dc-shore-power) for more information.
 
 :::warning[Current Issue]
 OARBot Blue's Dingo base is having trouble booting the internal computer after it has been off for a while. As a temporary workaround, if OARBot Blue's Dingo base is not booting up, power the system off and back on. This allows the CMOS battery to be charged during boot.
 :::
+
+<div className="flex flex-col justify-center items-center">
+    <img className="w-xl max-w-full" src={useBaseUrl("img/dingo-operating-lights.jpg")} alt="Location of Dingo battery chargers" />
+    <p>Dingo HMI in its operational state</p>
+</div>
 
 ## Powering on the Kinova Jaco v2
 
 Flip the power switch near the bottom of the Kinova arm.
 
 <div className="flex justify-center pb-4">
-    <img className="w-xl max-w-full" src={useBaseUrl("img/kinova-ports.png")} alt="Kinova HMI Panel" />
+    <img className="w-xl max-w-full" src={useBaseUrl("img/kinova-ports.png")} alt="Kinova ports" />
 </div>
 
 The arm power lights on the Kinova HMI should start flashing green. Wait until they turn steady green.
 
 <div className="flex justify-center pb-4">
-    <img className="w-xl max-w-full" src={useBaseUrl("img/kinova-hmi.png")} alt="Kinova HMI Panel" />
+    <img className="w-xl max-w-full" src={useBaseUrl("img/kinova-hmi.png")} alt="Kinova HMI panel" />
 </div>
 
 Hold down the retract / home position button until the arm is not moving and the leftmost blue light on the HMI appears. If any issues occur, consult the [Kinova Jaco v2 user guide](https://drive.google.com/file/d/1HvUappwP035ivHueCWrANHF12fu9dIHf/view). For more info on teleoperating the Kinova arm, see TODO
 
-[//]: # (TODO: Have photo of HMI in operational state)
+<div className="flex flex-col justify-center items-center">
+    <img className="w-xl max-w-full" src={useBaseUrl("img/kinova-hmi-operational.jpg")}/>
+    <p>HMI lights in their operational state. The green lights are not flashing</p>
+</div>
 
 ## Powering on the Helper Laptop
 
-Ensure the USB-C cable is properly plugged in to the Azure Kinect. This frequently comes out when raising the arm. If needed, loosen the USB-C cable. Open the lid of the helper laptop and press the power button. Wait until the laptop boots up. This may take several minutes. The laptop should automatically log in, and the desktop should be showing. If the laptop has not logged in automatically, do so. The password is `1234`. 
+Ensure the USB-C cable is properly plugged in to the Azure Kinect. This frequently comes out when raising the arm. If needed, loosen the USB-C cable.
+
+<div className="flex flex-col justify-center items-center">
+    <img className="w-xl max-w-full" src={useBaseUrl("img/kinect-port.jpg")}/>
+    <p>The USB-C port on the back of the Azure Kinect</p>
+</div>
+
+Open the lid of the helper laptop and press the power button. Wait until the laptop boots up. This may take several minutes. The laptop should automatically log in, and the desktop should be showing. If the laptop has not logged in automatically, do so. The password is `1234`. 
 
 :::info
 Sometimes the laptop gets stuck booting or powering off. If the screen is black but the display panel remains on for several minutes, press and hold the laptop power button. Disconnect and reconnect all peripherals and power plugs, and try again.
@@ -94,8 +118,8 @@ The Azure Kinect connection is frequently corrupted. If the light at the front o
 
 ## Powering on the Tablet
 
-Press the power button on the bottom left side of the tablet. Ensure the E-stop button is disengaged by twisting it **TODO**. 
+Press the power button on the bottom left side of the tablet. Ensure the E-stop button is disengaged by twisting it clockwise.
 
 ### Launching the Teleoperation GUI
 
-Open the home directory by double-clicking the `Home` folder on the desktop. Locate the `tablet_launch.sh` file. Press and hold on that file until a menu shows up. Select **TODO**. The GUI should launch. To exit the GUI, press the X in the top right corner of the GUI.
+Open the home directory by double-clicking the `Home` folder on the desktop. Locate the `tablet_launch.sh` file. Press and hold on that file until a menu shows up. Select `Run as a Program`. The GUI should launch. To exit the GUI, press the X in the top right corner of the GUI.
