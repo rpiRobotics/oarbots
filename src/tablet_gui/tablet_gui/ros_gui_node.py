@@ -169,9 +169,9 @@ class RosGuiNode(Node):
                         topic=oarbot_namespace + "/admittance_enable",
                         qos_profile=1
                     )
-                    msg = Bool()
-                    msg.data = False
-                    enable_topic.publish(msg)
+                    pub_msg = Bool()
+                    pub_msg.data = False
+                    enable_topic.publish(pub_msg)
                     self.destroy_publisher(enable_topic)
 
         elif not msg.data and self.e_stop_pressed: # If this is the first time the e-stop is disengaged
@@ -187,9 +187,9 @@ class RosGuiNode(Node):
                         topic=oarbot_namespace + "/admittance_enable",
                         qos_profile=1
                     )
-                    msg = Bool()
-                    msg.data = True
-                    enable_topic.publish(msg)
+                    pub_msg = Bool()
+                    pub_msg.data = True
+                    enable_topic.publish(pub_msg)
                     self.destroy_publisher(enable_topic)
             
 
