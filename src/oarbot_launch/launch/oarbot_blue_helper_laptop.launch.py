@@ -87,7 +87,11 @@ def generate_launch_description() -> LaunchDescription:
             name="rokubi_force_torque_publisher",
             namespace="oarbot_blue",
             parameters=[{
-                "publish_topic": "force_torque_raw"
+                "tf_prefix": "oarbot_blue/",
+                "end_effector_mass": 1.1936317,
+                "center_of_mass_vector": [-0.03988221,-0.00383832,-0.0523659],
+                "force_bias_vector": [-1.98321924,-5.31865946,1.63274343],
+                "torque_bias_vector": [-0.02886351,-0.11731537,0.09439291]
             }]
         )
     ])
