@@ -54,7 +54,7 @@ On the front HMI panel, press the <img className="size-5 translate-y-1 dark:inve
     <img src={useBaseUrl("img/dingo-hmi-panel.png")} alt="Dingo HMI Panel" />
 </div>
 
-The HMI panel lights should cycle on and then off, with the power button staying blue and the battery button (to the left of the power button) staying red. Wait until the power button is solid blue and all the other lights except the motor enable button (on the left side: <img className="size-5 translate-y-1 dark:invert-100" src={useBaseUrl("img/dingo-motor-enable.png")} alt="Dingo HMI Panel" />) are green and the four status indicator lights on the corners of the Dingo base are flashing red. If a light is not green or some other issue is observed, consult the [Dingo user manual](https://docs.clearpathrobotics.com/docs_robots/indoor_robots/dingo/user_manual_dingo/#dc-shore-power) for more information.
+The HMI panel lights should cycle on and then off, with the power button staying blue and the battery button (to the left of the power button) staying red. Wait until the power button is solid blue and all the other lights except the motor enable button (on the left side: <img className="size-5 translate-y-1 dark:invert-100" src={useBaseUrl("img/dingo-motor-enable.png")} alt="Dingo HMI Panel" />) are green and the four status indicator lights on the corners of the Dingo base are flashing red. If a light is not green or some other issue is observed, consult the [Dingo user manual](https://docs.clearpathrobotics.com/docs_robots/indoor_robots/dingo/user_manual_dingo/#dc-shore-power) for more information. For info on teleoperating the Dingo base, see [Teleoperation](teleoperation.mdx)
 
 :::warning[Current Issue]
 OARBot Blue's Dingo base is having trouble booting the internal computer after it has been off for a while. As a temporary workaround, if OARBot Blue's Dingo base is not booting up, power the system off and back on. This allows the CMOS battery to be charged during boot.
@@ -79,7 +79,7 @@ The arm power lights on the Kinova HMI should start flashing green. Wait until t
     <img className="w-xl max-w-full" src={useBaseUrl("img/kinova-hmi.png")} alt="Kinova HMI panel" />
 </div>
 
-Hold down the retract / home position button until the arm is not moving and the leftmost blue light on the HMI appears. If any issues occur, consult the [Kinova Jaco v2 user guide](https://drive.google.com/file/d/1HvUappwP035ivHueCWrANHF12fu9dIHf/view). For more info on teleoperating the Kinova arm, see TODO
+Hold down the retract / home position button until the arm is not moving and the leftmost blue light on the HMI appears. If any issues occur, consult the [Kinova Jaco v2 user guide](https://drive.google.com/file/d/1HvUappwP035ivHueCWrANHF12fu9dIHf/view). For info on teleoperating the Kinova arm, see [Teleoperation](teleoperation.mdx)
 
 <div className="flex flex-col justify-center items-center">
     <img className="w-xl max-w-full" src={useBaseUrl("img/kinova-hmi-operational.jpg")}/>
@@ -122,4 +122,4 @@ Press the power button on the bottom left side of the tablet. Ensure the E-stop 
 
 ### Launching the Teleoperation GUI
 
-Open the home directory by double-clicking the `Home` folder on the desktop. Locate the `tablet_launch.sh` file. Press and hold on that file until a menu shows up. Select `Run as a Program`. The GUI should launch. To exit the GUI, press the X in the top right corner of the GUI.
+Open the home directory by double-clicking the `Home` folder on the desktop. Locate the `tablet_launch.sh` file. Press and hold on that file until a menu shows up. Select *Run as a Program*. The GUI should launch. To exit the GUI, press the X in the top right corner of the GUI.

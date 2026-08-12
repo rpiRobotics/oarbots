@@ -1,0 +1,118 @@
+---
+sidebar_position: 4
+---
+
+# Personal Device Setup
+
+## Connecting to the OARBOt Wi-Fi Network
+
+ROS2 Nodes communicate over a local network and are not visible on the internet. Therefore, any device that wishes to communicate with the OARBots needs to connect to the local Wi-Fi network. Look for the network SSID: `CII8218-oarbots`. The password should be on a piece of paper next to the router, which is at the back of the room on a shelf near the desk. If you cannot find it or the paper is gone, message someone for the password.
+
+## Installing ROS2 Jazzy
+
+The OARBot system runs on [ROS2 Jazzy](https://docs.ros.org/en/jazzy/index.html). Official support is provided for the following operating systems:
+
+- Ubuntu Linux (amd64 / aarch64) - Noble Numbat (24.04)
+- Red Hat Enterprise Linux 9 (amd64)
+- Windows 10 (amd64)
+
+Follow the [installation guide](https://docs.ros.org/en/jazzy/Installation.html) on the ROS2 Jazzy website. It is highly recommended to [install ROS development tools](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html#install-development-tools-optional) and to install the desktop version.
+
+## Sourcing ROS2 (Ubuntu Only)
+
+To access ROS2 commands, you must run
+
+```bash
+source /opt/ros/jazzy/setup.bash
+```
+
+in each terminal in which you use ROS2. It is recommended to add this line to your `.bashrc` file (found at `~/.bashrc`) to automatically source the ROS2 files when launching a new terminal. To add this line automatically, run
+
+```bash
+echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+```
+
+## Switching DDS Provider
+
+ROS2 nodes communicate over the local internet using [Data Distribution Service](https://design.ros2.org/articles/ros_on_dds.html) as its middleware. The default DDS provider is [eProsima Fast DDS](https://www.eprosima.com/middleware/fast-dds), but the OARBot system uses [Eclipse Cyclone DDS](https://projects.eclipse.org/projects/iot.cyclonedds). DDS providers are not inter-compatible. Therefore, the DDS provider on your device must be switched.
+
+### Download CycloneDDS
+
+To download, run
+
+```bash
+sudo apt install ros-jazzy-rmw-cyclonedds-cpp
+```
+
+If you are not on Ubuntu, consider [building from source](https://docs.ros.org/en/jazzy/Installation/RMW-Implementations/DDS-Implementations/Working-with-Eclipse-CycloneDDS.html#build-from-source-code). 
+
+### Set CycloneDDS as ROS2 Middleware
+
+To tell ROS2 to use CycloneDDS, run
+
+```bash
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+```
+
+This sets the `RMW_IMPLEMENTATION` environment variable, which only lasts for the current terminal session. To use setup using CycloneDDS without running the above command for every terminal window, add export the `RMW_IMPLEMENTATION` varaible in your `.bashrc` file by running
+
+```bash
+echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> ~/.bashrc
+```
+
+### Verify Connection to OARBots
+
+If the OARBots are up and your device is connected to the `CII8218-oarbots` network, run
+
+```bash
+ros2 topic list
+```
+
+Many lines of output should appear, with many containing the prefix `/oarbot_blue` and `/oarbot_silver`. Congratulations, you have connected to the OARBots using ROS2!
+
+### Common Issue: Switching Networks & Multi-Network Setups
+
+ROS2 has trouble when your device switches networks when it is up or when a device is connected to multiple networks at once (e.x. one via ethernet, one via Wi-Fi). If you only see the following output:
+
+```bash
+$ ros2 topic list
+/parameter_events
+/rosout
+```
+
+then ROS2 is not picking up the OARBot topics. Try restating your computer. If you need to be connected to multiple networks at once, consider adding a [configuration profile](https://cyclonedds.io/docs/cyclonedds/latest/config/index.html) to tell CycloneDDS to use a specific network. Run
+
+```bash
+ip -br addr
+```
+
+You might see:
+
+```bash
+lo               UNKNOWN        127.0.0.1/8
+enp3s0           UP             192.168.10.42/24
+wlan0            UP             192.168.10.55/24
+```
+
+Wireless network interfaces typically begin with a "w", and wired interfaces typically begin with an "e". 
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<CycloneDDS
+    xmlns="https://cdds.io/config"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
+
+  <Domain Id="any">
+    <General>
+      <Interfaces>
+        <!-- Change enp3s0 to the network interface ROS 2 should use -->
+        <NetworkInterface name="enp3s0" priority="default" multicast="default" />
+      </Interfaces>
+
+      <!-- Use the normal DDS multicast behavior on the selected interface -->
+      <AllowMulticast>true</AllowMulticast>
+    </General>
+  </Domain>
+</CycloneDDS>
+```
