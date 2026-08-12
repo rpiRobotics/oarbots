@@ -29,7 +29,7 @@ def main(args=None) -> None:
 
         node.get_logger().info("Collecting force torque data")
         node.collect_force_torque_data()
-        avg_force_torque = get_avg_force_torque(node.force_torque_data)
+        avg_force_torque = get_avg_force_torque(node.force_torque_data, node.tf_prefix)
         
         node.get_logger().debug(avg_force_torque)
 
@@ -103,7 +103,7 @@ def main(args=None) -> None:
     node.get_logger().info(f"Torque bias: {torque_bias}")
 
 
-def get_avg_force_torque(force_torque_data: list[WrenchStamped]) -> WrenchStamped:
+def get_avg_force_torque(force_torque_data: list[WrenchStamped], tf_prefix: str) -> WrenchStamped:
     avg_force_torque = WrenchStamped()
     avg_force_torque.header = force_torque_data[0].header
 
@@ -116,5 +116,13 @@ def get_avg_force_torque(force_torque_data: list[WrenchStamped]) -> WrenchStampe
         avg_force_torque.wrench.torque.x += - data_point.wrench.torque.x / len(force_torque_data)
         avg_force_torque.wrench.torque.y += data_point.wrench.torque.y / len(force_torque_data)
         avg_force_torque.wrench.torque.z += - data_point.wrench.torque.z / len(force_torque_data)
+
+        # For OARBot Blue, the force torque sensor is rotated relative to the above transformation about the z-axis by 180 degrees
+        if tf_prefix == "oarbot_blue/":
+            avg_force_torque.wrench.force.x *= -1
+            avg_force_torque.wrench.force.y *= -1
+
+            avg_force_torque.wrench.torque.x *= -1
+            avg_force_torque.wrench.torque.y *= -1
 
     return avg_force_torque
