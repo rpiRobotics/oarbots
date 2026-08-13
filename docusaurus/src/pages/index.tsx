@@ -22,7 +22,7 @@ export default function Home() {
                 <div className="flex flex-col py-6 px-12">
                     <p className="font-medium text-md ">
                         Rensselaer Polytechnic Institute's Center for Smart Convergent Manufacturing Systems (CSCMS)
-                        developed and built two omni-directional assistive robots, or OARBots, for use in various
+                        developed and built two omnidirectional assistive robots, or OARBots, for use in various
                         research projects and industrial applications. The OARBot system runs ROS2 and consists of
                         sensors and external computers in addition to the OARBots themselves. This site serves
                         to:
