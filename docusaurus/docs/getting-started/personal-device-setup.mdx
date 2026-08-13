@@ -26,13 +26,25 @@ To access ROS2 commands, you must run
 source /opt/ros/jazzy/setup.bash
 ```
 
-in each terminal in which you use ROS2. It is recommended to add this line to your `.bashrc` file (found at `~/.bashrc`) to automatically source the ROS2 files when launching a new terminal. To add this line automatically, run
+in each terminal in which you use ROS2. It is recommended to add this line to your `.bashrc` file (found at `~/.bashrc`) to automatically source the ROS2 files when launching a new terminal. To do so, edit the file manually or run
 
 ```bash
 echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 ```
 
+followed by
+
+```bash
+source ~/.bashrc
+```
+
+to reload the Bash configuration file in the current terminal.
+
 ## Switching DDS Provider
+
+:::note
+These instructions are for Ubuntu only. It is still necessary to use CycloneDDS if you are not using Ubuntu, but setup instructions are not provided in this documentation. Consider looking [here](https://docs.ros.org/en/jazzy/Installation/RMW-Implementations/DDS-Implementations/Working-with-Eclipse-CycloneDDS.html).
+:::
 
 ROS2 nodes communicate over the local internet using [Data Distribution Service](https://design.ros2.org/articles/ros_on_dds.html) as its middleware. The default DDS provider is [eProsima Fast DDS](https://www.eprosima.com/middleware/fast-dds), but the OARBot system uses [Eclipse Cyclone DDS](https://projects.eclipse.org/projects/iot.cyclonedds). DDS providers are not inter-compatible. Therefore, the DDS provider on your device must be switched.
 
@@ -44,7 +56,15 @@ To download, run
 sudo apt install ros-jazzy-rmw-cyclonedds-cpp
 ```
 
-If you are not on Ubuntu, consider [building from source](https://docs.ros.org/en/jazzy/Installation/RMW-Implementations/DDS-Implementations/Working-with-Eclipse-CycloneDDS.html#build-from-source-code). 
+:::note
+If you are using a server in the robotics lab, it is likely CycloneDDS is already installed. To verify, run
+
+```bash
+dpkg -l | grep ros-jazzy-rmw-cyclonedds-cpp
+```
+
+and you should see the package listed.
+:::
 
 ### Set CycloneDDS as ROS2 Middleware
 
@@ -60,7 +80,13 @@ This sets the `RMW_IMPLEMENTATION` environment variable, which only lasts for th
 echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> ~/.bashrc
 ```
 
-### Verify Connection to OARBots
+followed by
+
+```bash
+source ~/.bashrc
+```
+
+## Verify Connection to OARBots
 
 If the OARBots are up and your device is connected to the `CII8218-oarbots` network, run
 
@@ -68,11 +94,29 @@ If the OARBots are up and your device is connected to the `CII8218-oarbots` netw
 ros2 topic list
 ```
 
-Many lines of output should appear, with many containing the prefix `/oarbot_blue` and `/oarbot_silver`. Congratulations, you have connected to the OARBots using ROS2!
+Many lines of output should appear, with many containing the prefix `/oarbot_blue` and `/oarbot_silver`. If may take more than one Congratulations, you have connected to the OARBots using ROS2!
 
-### Common Issue: Switching Networks & Multi-Network Setups
+### Issue: No Connection to the OARBots
 
-ROS2 has trouble when your device switches networks when it is up or when a device is connected to multiple networks at once (e.x. one via ethernet, one via Wi-Fi). If you only see the following output:
+If instead you see the following output:
+
+```bash
+$ ros2 topic list
+/parameter_events
+/rosout
+```
+
+then ROS2 is not detecting the OARBot topics over the network. The two topics listed are internal to the command being run. First, verify you are able to access the OARBot machines py pinging one---or several---of them:
+
+```bash
+ping <address> -c 5
+```
+
+You can find the static IP addresses of the OARBot devices in [Device Credentials](device-credentials.mdx). If you are not receiving messages, verify your device is connected to `CII8218-oarbots` and that the device you are attempting to ping is online. If your device is connected to multiple Wi-Fi networks or you had to switch networks (this is likely the case for the servers in the robotics lab), see [Common Issue: Switching Networks & Multi-Network Setups](personal-device-setup.mdx#common-issue-switching-networks--multi-network-setups). Additionally, you can try SSH'ing into one of the OARBot devices and running `ros2 topic list` to check if that device detects any nodes. 
+
+## Common Issue: Switching Networks & Multi-Network Setups
+
+ROS2 has trouble when your device switches networks or when a device is connected to multiple networks at once (for example, one connection via ethernet, another via Wi-Fi). If you only see the following output:
 
 ```bash
 $ ros2 topic list
@@ -94,25 +138,38 @@ enp3s0           UP             192.168.10.42/24
 wlan0            UP             192.168.10.55/24
 ```
 
-Wireless network interfaces typically begin with a "w", and wired interfaces typically begin with an "e". 
+Wireless network interfaces typically begin with a "w", and wired interfaces typically begin with an "e". Copy the following file to `~/.ros/cyclonedds.xml`, making sure to set `<YOUR NETWORK INTERFACE HERE>` to the name of the interface you want ROS2 to use.
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<CycloneDDS
-    xmlns="https://cdds.io/config"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
-
-  <Domain Id="any">
-    <General>
-      <Interfaces>
-        <!-- Change enp3s0 to the network interface ROS 2 should use -->
-        <NetworkInterface name="enp3s0" priority="default" multicast="default" />
-      </Interfaces>
-
-      <!-- Use the normal DDS multicast behavior on the selected interface -->
-      <AllowMulticast>true</AllowMulticast>
-    </General>
-  </Domain>
+```xml title="cyclonedds.xml"
+<?xml version="1.0" encoding="UTF-8" ?>
+<CycloneDDS xmlns="https://cdds.io/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
+    <Domain Id="any">
+        <General>
+            <Interfaces>
+                <!-- highlight-next-line-->
+                <NetworkInterface autodetermine="false" name="<YOUR NETWORK INTERFACE HERE>" />
+            </Interfaces>
+        </General>
+    </Domain>
 </CycloneDDS>
 ```
+
+To tell CycloneDDS to use this configuration file, either run
+
+```bash
+export CYCLONEDDS_URI=file://$HOME/.ros/cyclonedds.xml
+```
+
+for each terminal session or run
+
+```bash
+echo "export CYCLONEDDS_URI=file://$HOME/.ros/cyclonedds.xml" >> ~/.bashrc
+```
+
+to set the `CYCLONEDDS_URI` environment variable automatically, followed by
+
+```bash
+source ~/.bashrc
+```
+
+to load the configuration in your current terminal.
