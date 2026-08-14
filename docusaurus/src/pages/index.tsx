@@ -32,7 +32,7 @@ export default function Home() {
                             Document their physical makeup, including parts, electronics, and sensors
                         </li>
                         <li>
-                            Provide usage instructions to others
+                            Provide usage instructions
                         </li>
                         <li>
                             Document common troubleshooting steps
