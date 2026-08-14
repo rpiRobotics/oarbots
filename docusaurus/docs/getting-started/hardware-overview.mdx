@@ -1,6 +1,113 @@
 ---
 sidebar_position: 1
+toc_max_heading_level: 4
 ---
+
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 
 # Hardware Overview
 
+The omnidirectional assistive robot (OARBot) system consists of the following major pieces of hardware:
+
+1. Two OARBot robots
+2. An Intel NUC, connected to an overhead Microsoft Azure Kinect
+3. A Microsoft Surface Go 2 tablet for [teleoperation](https://en.wikipedia.org/wiki/Teleoperation)
+
+## OARBot robots
+
+The two OARBot robots are labeled OARBot Blue and OARBot Silver. They are identifiable by their arm home positon and the writing on the Dingo base:
+
+- OARBot Blue has ① written on its Dingo base, and OARBot Silver has ② written on its Dingo Base
+- OARBot Blue's arm is to the 
+
+### Dingo Base
+
+The base of each OARBot robot is the [Clearpath Dingo DO-100] base. Using [mechanum wheels](https://en.wikipedia.org/wiki/Mecanum_wheel), this base is capable of omnidirectional travel.
+
+<div className="flex justify-center pb-4">
+    <img className="w-xl max-w-full" src={useBaseUrl("img/DingoO_Website_1.png")} alt="Clearpath Dingo DO-100" />
+</div>
+
+The Dingo has a built-in computer and runs ROS2 jazzy on its own, communicating with the [helper laptop](hardware-overview.mdx#helper-laptop). 
+
+:::note
+For those looking to write programs for the OARBots in ROS2, you should know both Dingo computers have a different [ROS Domain ID](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Domain-ID.html) than both each other and the default value used by the rest of the OARBot system. This is due to network performance problems encountered. Specifically:
+
+- OARBot Blue's Dingo uses `ROS_DOMAIN_ID=2`
+- OARBot Silver's Dingo uses `ROS_DOMAIN_ID=1`
+
+while the default value is `ROS_DOMAIN_ID=0` (or blank when echo'ing the environment variable). A [ROS Domain Bridge](https://index.ros.org/p/domain_bridge/#jazzy) is then used to send only the necessary topics to the OARBot domain. 
+:::
+
+### Helper Laptop
+
+Mounted on each Dingo base is a Lenovo ThinkPad laptop. Its purpose is to connect to all devices on an OARBot robot and to run essential nodes for interacting with the robot. Most, if not all, interaction done with an OARBot passes through its laptop.
+
+### Kinova Arm
+
+Mounted on a PVC pipe is a [Kinova Jaco Gen2 6DOF](https://www.kinovarobotics.com/product/gen2-robots) robotic arm. On its side-mounted port panel near the bottom of the arm, three cables are connected:
+
+- A USB-B cable is connected to a USB hub, which then connects to the helper laptop
+- A screwable power cable connects to the inside of the Dingo, whose batteries provide power to the arm
+- A screwable data cable connects to the HMI/joystick, which is mounted next to the arm
+
+<div className="flex justify-center pb-4">
+    <img className="w-md max-w-full" src={useBaseUrl("img/kinova-jaco-gen2-6dof.jpg")} alt="Kinova Jaco Gen2 6DOF" />
+</div>
+
+### ArUco Tag
+
+Each OARBOt has a 36x36cm [ArUco tag](https://www.solomon-3d.com/blog/aruco-robot-localization-automation/) mounted flat above its Dingo base. AruCo tags are used for [pose estimation](https://en.wikipedia.org/wiki/3D_pose_estimation) from the overhead Kinect camera. They should be kept covered when not in use to avoid damage. Each cover plate has the same ArUco tag that its robot has (if the plates are switched, switch them back to match the robot tag).
+
+#### OARBot ArUco Tag IDs
+
+Both ArUco tags use the 4x4(50) tag library, and the tag ID's are:
+
+- OARBot Blue: 0
+- OARBot Silver: 4
+
+<div className="flex flex-row items-center justify-center pb-4">
+    <div className="w-xl max-w-1/2 pr-4 flex flex-col items-center justify-center">
+        <img className="w-xl max-w-full" src={useBaseUrl("img/4x4_1000-0.svg")} alt="ArUco Tag ID 0" />
+        <p>OARBot Blue ArUco Tag</p>
+    </div>
+
+    <div className="w-xl max-w-1/2 pl-4 flex flex-col items-center justify-center">
+        <img className="w-xl max-w-full" src={useBaseUrl("img/4x4_1000-4.svg")} alt="ArUco Tag ID 4" />
+        <p>OARBot Silver ArUco Tag</p>
+    </div>
+</div>
+
+
+### Ultra-Wideband Sensors
+
+Mounted on wings that extend from the PVC pipe holding up the Kinova arm are two [DecaWave MDEK1001](https://www.digikey.com/en/products/detail/qorvo/MDEK1001/7394534) ultra-wideband sensors used for positioning. **Currently, the sensors are inoperable**, but in the future they will be used for less accurate pose estimation (±10cm accuracy) when the ArUco tags are blocked.
+
+### Azure Kinect
+
+A [Microsoft Azure Kinect](https://azure.microsoft.com/en-us/products/kinect-dk) is mounted on the end of each arm. The Kinect has an RGB camera as well as a laser scanner for depth. Additionally, the Kinect includes enough compute to perform body tracking and output body poses in ROS2. 
+
+### Force Torque Sensor
+
+A [Bota Systems Rokubi Gen0](https://shop.botasys.com/shop/rokubi-medusa-gen-0-series-kit-1877?attribute_values=41%2C42%2C46%2C141%2C149) force torque sensor is also mounted near the end effector of the arm. 
+
+<div className="flex justify-center pb-4">
+    <img className="w-xl max-w-full" src={useBaseUrl("img/bota-rokubi-gen0.jpg")} alt="Bota Systems Rokubi Gen0" />
+</div>
+
+## NUC & Overhead Azure Kinect
+
+An [Intel NUC](https://en.wikipedia.org/wiki/Next_Unit_of_Computing) sits on a shelf above and to the right of the desk. Its purpose is to connect to the overhead Azure Kinect camera to provide pose estimation using the ArUco tags. The data from the overhead Kinect can also be used for SLAM algorithms. 
+
+<div className="flex justify-center pb-4">
+    <img className="w-xl max-w-full" src={useBaseUrl("img/intel-nuc.jpg")} alt="Intel NUC" />
+</div>
+
+## Tablet
+
+A [Microsoft Surface Go 2](https://support.microsoft.com/en-us/surface/models/surface-go-2-specs-and-features) tablet connects to a [3Dconnexion SpaceMouse Compact](https://3dconnexion.com/us/product/spacemouse-compact/), a deadman switch, and an emergency stop (E-stop) button. The tablet is used for teleoperating one or both OARBots. 
+
+### Internal Arduino 
+
+An [Arduino Nano Every](https://store-usa.arduino.cc/products/nano-every) sits inside the green 3D printed casing and provides a serial data stream for the deadman switch and E-stop button to the tablet.
