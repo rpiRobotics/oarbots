@@ -124,7 +124,7 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} RPI. Licensed under the Apache License, Version 2.0.`,
     },
     prism: {
-      additionalLanguages: ['bash'],
+      additionalLanguages: ["bash", "powershell"],
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
