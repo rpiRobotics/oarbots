@@ -30,12 +30,12 @@ To install the batteries, ensure the port is facing into the Dingo and that the 
 For stability, the number of batteries in one case should be the same as the number of batteries in the other case.
 
 :::note
-Although you can use as little as one battery to power the Dingo, it is recommended to never go below four batteries.
+Although you can theoretically use as little as one battery to power the Dingo, it is recommended to never go below four batteries.
 :::
 
 ## Checking Connections
 
-Each laptop should have two USB-C connections: one directly to the [Azure Kinect](https://azure.microsoft.com/en-us/products/kinect-dk) on the Kinova arm, and one to the USB hub on the PVC pipe. The laptop may also be plugged in, either to an offboard power brick or to the built-in power brick
+Each laptop should have two USB-C connections: one directly to the [Azure Kinect](https://azure.microsoft.com/en-us/products/kinect-dk) on the Kinova arm, and one to the USB hub on the PVC pipe. The laptop may also be plugged in, either to an offboard power brick or to the built-in power brick.
 
 :::warning[Current Issue]
 The OARBot Silver built-in power brick doesn't always charge the laptop. If this is the case, monitor the battery level of the laptop and use the offboard power brick when needed.
@@ -54,7 +54,7 @@ On the front HMI panel, press the <img className="size-5 translate-y-1 dark:inve
     <img src={useBaseUrl("img/dingo-hmi-panel.png")} alt="Dingo HMI Panel" />
 </div>
 
-The HMI panel lights should cycle on and then off, with the power button staying blue and the battery button (to the left of the power button) staying red. Wait until the power button is solid blue and all the other lights except the motor enable button (on the left side: <img className="size-5 translate-y-1 dark:invert-100" src={useBaseUrl("img/dingo-motor-enable.png")} alt="Dingo HMI Panel" />) are green and the four status indicator lights on the corners of the Dingo base are flashing red. If a light is not green or some other issue is observed, consult the [Dingo user manual](https://docs.clearpathrobotics.com/docs_robots/indoor_robots/dingo/user_manual_dingo/#dc-shore-power) for more information. For info on teleoperating the Dingo base, see [Teleoperation](teleoperation.mdx)
+The HMI panel lights should cycle on and then off, with the power button staying blue and the battery button (to the left of the power button) staying red. Wait until the power button is solid blue and all the other lights except the motor enable button (on the left side: <img className="size-5 translate-y-1 dark:invert-100" src={useBaseUrl("img/dingo-motor-enable.png")} alt="Dingo HMI Panel" />) are green and the four status indicator lights on the corners of the Dingo base are flashing red. If a light is not green or some other issue is observed, consult the [Dingo user manual](https://docs.clearpathrobotics.com/docs_robots/indoor_robots/dingo/user_manual_dingo/#dc-shore-power) for more information. For info on teleoperating the Dingo base, see [Teleoperation](teleoperation.mdx).
 
 :::warning[Current Issue]
 OARBot Blue's Dingo base is having trouble booting the internal computer after it has been off for a while. As a temporary workaround, if OARBot Blue's Dingo base is not booting up, power the system off and back on. This allows the CMOS battery to be charged during boot.
@@ -79,7 +79,7 @@ The arm power lights on the Kinova HMI should start flashing green. Wait until t
     <img className="w-xl max-w-full" src={useBaseUrl("img/kinova-hmi.png")} alt="Kinova HMI panel" />
 </div>
 
-Hold down the retract / home position button until the arm is not moving and the leftmost blue light on the HMI appears. If any issues occur, consult the [Kinova Jaco v2 user guide](https://drive.google.com/file/d/1HvUappwP035ivHueCWrANHF12fu9dIHf/view). For info on teleoperating the Kinova arm, see [Teleoperation](teleoperation.mdx)
+Hold down the retract / home position button until the arm is not moving. Release the button, and the leftmost blue light on the HMI should appear. If any issues occur, consult the [Kinova Jaco v2 user guide](https://drive.google.com/file/d/1HvUappwP035ivHueCWrANHF12fu9dIHf/view). For info on teleoperating the Kinova arm, see [Teleoperation](teleoperation.mdx).
 
 <div className="flex flex-col justify-center items-center">
     <img className="w-xl max-w-full" src={useBaseUrl("img/kinova-hmi-operational.jpg")}/>
@@ -88,7 +88,7 @@ Hold down the retract / home position button until the arm is not moving and the
 
 ## Powering on the Helper Laptop
 
-Ensure the USB-C cable is properly plugged in to the Azure Kinect. This frequently comes out when raising the arm. If needed, loosen the USB-C cable.
+Ensure the USB-C cable is properly plugged in to the Azure Kinect. This frequently comes out when raising the arm. If needed, loosen the zip-tie holding the USB-C cable.
 
 <div className="flex flex-col justify-center items-center">
     <img className="w-xl max-w-full" src={useBaseUrl("img/kinect-port.jpg")}/>
@@ -108,12 +108,12 @@ Shortly after the laptop successfully boots, the ROS nodes should start. Connect
 
 ## Powering on the Overhead NUC
 
-Unplug and plug back in the Azure Kinect USB cable connected to the front of the NUC. Power on the NUC by pressing the power button at the front. If the `nuc` user is not automatically logged in, then log in manually. The password is `1234`. Shortly after the NUC boots up, the ROS nodes should start. A good connection to the Azure Kinect can be verified:
+Unplug and plug back in the Azure Kinect USB cable connected to the front of the NUC. Power on the NUC by pressing the power button at the front. If the `nuc` user is not automatically logged in, then log in manually; the password is `1234`. Shortly after the NUC boots up, the ROS nodes should start. A good connection to the Azure Kinect can be verified:
 
 - The Azure Kinect at the front of the room should have a small solid white light at the front
 
 :::warning[Frequent Issue]
-The Azure Kinect connection is frequently corrupted. If the light at the front of the Azure Kinect is not white after a minute of the NUC booting up, this is likely the case. Unplug the Azure Kinect cable, plug it back in, and see **TODO** for instructions on restarting the ROS2 nodes.
+The Azure Kinect connection is frequently corrupted. If the light at the front of the Azure Kinect is not white after a minute of the NUC booting up, this is likely the case. Unplug the Azure Kinect cable, plug it back in, and see **[COMING SOON]** for instructions on restarting the ROS2 nodes.
 :::
 
 ## Powering on the Tablet
@@ -122,8 +122,8 @@ Press the power button on the bottom left side of the tablet. Ensure the E-stop 
 
 ### Launching the Teleoperation GUI
 
-Open the home directory by double-clicking the `Home` folder on the desktop. Locate the `tablet_launch.sh` file. Press and hold on that file until a menu shows up. Select *Run as a Program*. The GUI should launch. To exit the GUI, press the X in the top right corner of the GUI.
+Open the home directory by double-clicking the `Home` folder on the desktop. Locate the `tablet_launch.sh` file. Press and hold on the file until a menu shows up. Select *Run as a Program*. The GUI should launch. To exit the GUI, press the X in the top right corner of the GUI.
 
 ## Uncovering the ArUco Tags
 
-Remove the yellow cover plates from each ArUco tag on the OARBot and set them aside. The tags on the plates should not be visible to the overhead Kinect.
+Remove the yellow cover plates from each ArUco tag on the OARBot and set them aside. The tags on the cover plates should not be visible to the overhead Kinect.
