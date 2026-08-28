@@ -16,6 +16,10 @@ The OARBot system runs on [ROS2 Jazzy](https://docs.ros.org/en/jazzy/index.html)
 - Red Hat Enterprise Linux 9 (amd64)
 - Windows 10 (amd64)
 
+:::warning
+It is highly recommended to either use Ubuntu 24.04 (either standalone or as a dual-boot) or to use [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/), which provides Ubuntu 24.04 inside a virtual machine on Windows. Instructions for setting up WSL can be found [here](https://learn.microsoft.com/en-us/windows/wsl/install). For the most reliable setup, use Ubuntu 24.04 without a virtual machine.
+:::
+
 Follow the [installation guide](https://docs.ros.org/en/jazzy/Installation.html) on the ROS2 Jazzy website. It is highly recommended to [install ROS development tools](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html#install-development-tools-optional) and to install the desktop version.
 
 ## Sourcing ROS2 (Ubuntu Only)
@@ -84,6 +88,34 @@ followed by
 
 ```bash
 source ~/.bashrc
+```
+
+## Modify Firewall Settings (WSL Only)
+
+:::danger
+These instructions are only for WSL setups. If you are not using WSL, continue to the next section
+:::
+
+By default, all WSL internet traffic flows through the Windows [Hyper-V Firewall](https://learn.microsoft.com/en-us/windows/security/operating-system-security/network-security/windows-firewall/hyper-v-firewall) before reaching the WSL instance. In this configuration, ROS2 running in WSL is unable to send or receive any data from external nodes.
+
+### Edit .wslconfig
+
+Edit `%UserProfile%\.wslconfig` in Windows to include the following lines:
+
+```wslconfig title=".wslconfig"
+[wsl2]
+networkingMode=Mirrored
+firewall=false
+```
+
+This will enable the [mirrored](https://learn.microsoft.com/en-us/windows/wsl/networking#mirrored-mode-networking) networking mode and partially disable the Windows Hyper-V Firewall for WSL traffic. 
+
+### Disable Firewall for Incoming Traffic
+
+Even after setting `firewall=false` in the above section, WSL does not allow some incoming traffic without going through the Windows Hyper-V Firewall. As disabling the firewall entirely is not reasonable, we will allow incoming traffic to WSL instances to bypass the firewall. To do so, open a PowerShell terminal as Administrator and run
+
+```powershell
+Set-NetFirewallHyperVVMSetting -Name '{40E0AC32-46A5-438A-A0B2-2B479E8F2E90}' -DefaultInboundAction Allow
 ```
 
 ## Verify Connection to OARBots
