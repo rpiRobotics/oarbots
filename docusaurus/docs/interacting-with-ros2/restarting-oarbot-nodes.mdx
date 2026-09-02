@@ -1,0 +1,37 @@
+---
+sidebar_position: 4
+---
+
+# Restarting OARBot Nodes
+
+On each OARBot device, ROS2 nodes are launched via a systemd script at boot (for more "under the hood" info, see *TODO*). The following reasons are some common causes for these nodes to crash, requiring a restart:
+
+- A peripheral (Azure Kinect, force torque sensor, etc.) is unplugged from the computer running the node(s)
+- A node is unable to handle bad data passed in via a topic
+- The network is overloaded, causing a device to lose connection
+
+You can tell a node has crashed through the following ways
+
+- The teleoperation tablet lists a node as offline that you expect to be online
+- Running `ros2 node list` in a terminal does not return the nodes you expect to be online (check in OARBot nodes for a list of nodes that should be online for each device)
+- A topic you expect data from is not being received (this could be a network issue too; check `ros2 topic info <ACTION_NAME> -v` for a list of publishers for more info)
+
+All nodes started at boot on an OARBot device must be restarted together (they are all launched from a single launch file). To restart all nodes, SSH into the OARBot device and run matching command:
+
+| Device Name             | Restart Command                                                     |
+|-------------------------|---------------------------------------------------------------------|
+| Dingo 1 (OARBot Blue)   | `sudo systemctl restart clearpath-platform.service`                 |
+| Dingo 2 (OARBot Silver) | `sudo systemctl restart clearpath-platform.service`                 |
+| OARBot Blue Laptop      | `sudo systemctl restart oarbot_blue_helper_laptop_launch.service`   |
+| OARBot Silver Laptop    | `sudo systemctl restart oarbot_silver_helper_laptop_launch.service` |
+| Overhead NUC            | `sudo systemctl restart nuc_launch.service`                         |
+| Tablet                  | Close and restart the GUI                                           |
+
+
+After you restart the nodes, you can monitor the progress with
+
+```bash
+sudo journalctl <SERVICE NAME> -n 500
+```
+
+This only views the latest 500 log messages as these logs accumulate over all time as loading the entire log (the same command as above without `-n  500`) may take a while. You can navigate to the bottom by pressing the `END` key on your keyboard, and you can exit with `CTRL+C`.
