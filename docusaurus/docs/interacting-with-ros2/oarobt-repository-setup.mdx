@@ -1,0 +1,209 @@
+---
+sidebar_position: 1
+toc_max_heading_level: 4
+
+---
+
+# OARBot Repository Setup
+
+## Personal Device Setup
+
+:::note
+This setup does not need to be performed on the OARBot Wi-Fi network or while any OARBot devices are online.
+:::
+
+### Choosing a Filesystem Location
+
+The location of the ROS2 directory should be easily accessible. For Linux systems, the most common convention is to create the directory `ros2_ws` in the `home/<USERNAME>` (also called `~`) directory, where `<USERNAME>` is your Linux account username. To create this directory, run
+
+```bash
+mkdir ~/ros2_ws`
+```
+
+### Cloning the Repository
+
+For any nodes that use custom ROS2 message types or need your personal device to be plugged into any OARBot hardware, the OARBot repository should be cloned and built on your personal device. Although this is not required for all projects using the OARBot system, <u>it is highly recommended to prevent errors</u>.
+
+:::warning
+Before moving on, ensure the directory you wish to clone into is empty.
+:::
+
+Open a terminal and move into the directory you wish to clone the OARBot repository to. Run
+
+```bash
+git clone https://github.com/rpiRobotics/oarbots.git .
+```
+
+By running `ls` (or equivalent if not on Linux/Windows), you should be able to see many folders and directories present.
+
+
+### Installing Additional Packages
+
+Some additional packages reside in separate GitHub repositories. For more info on the specific packages and links to their GitHub, see [packages.repos](https://github.com/rpiRobotics/oarbots/blob/main/packages.repos).
+
+To install these packages, run
+
+```bash
+cd src
+vcs import < ../packages.repos .
+cd ..
+```
+
+If the command `vcs` is not found (this may happen on Windows but should not happen on Linux), you can try installing it or manually clone each repository from [packages.repos](https://github.com/rpiRobotics/oarbots/blob/main/packages.repos) into the `src` directory of your `ros2_ws` directory.
+
+### Installing Azure Kinect Drivers
+
+If you wish to build the Azure Kinect ROS2 package, you must install drivers. 
+
+#### Ubuntu
+
+To download the Azure Kinect SDK, from the `ros2_ws` directory, run
+
+```bash
+sudo bash scripts/install-azure-kinect-drivers.sh
+```
+
+This downloads several GB of data and (depending on your network speed) may take several minutes. Be patient!
+
+#### Windows
+
+Download instructions can be found [here](https://www.microsoft.com/en-us/download/details.aspx?id=101454).
+
+
+### Setting Permissions
+
+:::warning
+This section only applies to Ubuntu systems, including WSL.
+:::
+
+To interact with OARBot hardware over USB (as opposed to over the ROS2 network), permissions must be set on the device. If you will only be communicating with OARBot hardware over the ROS2 network, you can skip this section.
+
+#### Kinova Jaco2 Arm
+
+To update USB permission rules, run
+
+```bash
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="22cd", ATTRS{idProduct}=="0000", MODE="0666"' | sudo tee /etc/udev/rules.d/99-kinova-usb.rules
+```
+
+followed by
+
+```bash
+sudo udevadm control --reload
+```
+
+and then
+
+```bash
+sudo udevadm trigger
+```
+
+to reload the udev rules. Then, disconnect and reconnect the Jaco2 arm if it was plugged in to your personal device.
+
+#### Azure Kinect
+
+To allow Azure Kinect access without root permissions, copy the following file into the directory `/etc/udev/rules.d/`:
+
+```file title="rules.d"
+# Bus 002 Device 116: ID 045e:097a Microsoft Corp.  - Generic Superspeed USB Hub
+# Bus 001 Device 015: ID 045e:097b Microsoft Corp.  - Generic USB Hub
+# Bus 002 Device 118: ID 045e:097c Microsoft Corp.  - Azure Kinect Depth Camera
+# Bus 002 Device 117: ID 045e:097d Microsoft Corp.  - Azure Kinect 4K Camera
+# Bus 001 Device 016: ID 045e:097e Microsoft Corp.  - Azure Kinect Microphone Array
+
+BUS!="usb", ACTION!="add", SUBSYSTEM!=="usb_device", GOTO="k4a_logic_rules_end"
+
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097a", MODE="0666", GROUP="plugdev"
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097b", MODE="0666", GROUP="plugdev"
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097c", MODE="0666", GROUP="plugdev"
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097d", MODE="0666", GROUP="plugdev"
+ATTRS{idVendor}=="045e", ATTRS{idProduct}=="097e", MODE="0666", GROUP="plugdev"
+
+LABEL="k4a_logic_rules_end"
+```
+
+After adding this file, run
+
+```bash
+sudo udevadm control --reload
+```
+
+followed by
+
+```bash
+sudo udevadm trigger
+```
+
+To verify the driver is properly installed and to learn more, follow the [usage guide](https://github.com/rpiRobotics/Azure_Kinect_ROS_Driver/blob/jazzy/docs/usage.md). To view the Azure Kinect output without ROS2, use the command
+
+```bash
+k4aviewer
+```
+
+This launches an application that allows you to view Kinect sensor data. If you are SSH'ed into the machine connected to the Azure Kinect, make sure to SSH with the `-X` flag to enable graphics passthrough.
+
+
+#### Rokubi Force Torque Sensor
+
+To update USB permission rules, run
+
+```bash
+echo 'KERNEL=="ttyUSB*", ATTRS{idVendor}=="0403", SYMLINK+="sensor_bota_rokubi_ft_0", MODE:="666"' | sudo tee /etc/udev/rules.d/99-bota-rokubi-ft.rules
+```
+
+followed by
+
+```bash
+sudo udevadm control --reload
+```
+
+and then
+
+```bash
+sudo udevadm trigger
+```
+
+to reload the udev rules. Then, disconnect and reconnect the force torque sensor if it was plugged in to your personal device.
+
+### Building the Repository
+
+At this point, you should be able to build the repository locally. In a terminal opened in the `ros2_ws` directory, run
+
+```bash
+colcon build
+```
+
+To be able to run any of these nodes, use custom message types, view custom robot description meshes, etc., run
+
+```bash
+source install/local_setup.bash
+```
+
+to allow your current terminal session to "find" these files. **You will need to do this in each terminal and after each build**. Most users find it easier to run the single command
+
+```bash
+colcon build && source install/local_setup.bash
+```
+
+
+## Adding Project Files to an OARBot Device
+
+Certain projects require custom files not just on a personal device but on an OARBot device. An example is a node that requires reliable access to Azure Kinect camera frames. These can be tough to send over the network due to their large size, so it may be beneficial to have the node that processes these frames run locally. 
+
+
+### Creating a user workspace on the OARBot Device
+
+Each user (or project) should work in their own ROS2 workspace directory. This avoids clutter in the OARBot device's `ros2_ws` directory. <u>Additionally, the `ros2_ws` directory is updated by Continuous Deployment, so any changes made may be removed automatically</u>.
+
+To create the new directory, SSH into the device (see [Device Credentials](../getting-started/device-credentials.mdx)), navigate to `home/<OARBOT_DEVICE_USERNAME>` (also called `~`) where `<OARBOT_DEVICE_USERNAME>` is the username of the OARBot device, and run
+
+```bash
+mkdir -p <NAME>_ros2_ws/src
+```
+
+where `<NAME>` is your name or a project name. For example, `aidan_ros2_ws` or `obstacle_avoidance_ros2_ws`.
+
+All files for your project will live in this directory.
+
+:::info
+If you are looking to add a global ROS2 node, view instructions in [Fixing Bugs & Adding Features](../getting-started/fixing-bugs-and-adding-features.mdx).
