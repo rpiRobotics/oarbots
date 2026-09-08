@@ -1,0 +1,25 @@
+---
+sidebar_position: 1
+---
+
+# OARBot Helper Laptops
+
+:::note
+If you create a new node and configure it to automatically launch (see [Fixing Bugs & Adding Features](../../getting-started/fixing-bugs-and-adding-features.mdx) for more info on this process), be sure to update this page as well
+:::
+
+The following nodes are automatically launched on *both* OARBot laptops. They may launch additional nodes. All nodes are namespaced under the name of the OARBot launching it.
+
+| Node Name                      | Purpose                                                                                                                                                                                                                |
+|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| domain_bridge                  | Bridges ROS2 topics from Dingo domain IDs into the default domain ID of 0. For more info, see [Hardware Overview](../../getting-started/hardware-overview.mdx#dingo-base).                                             |
+| kinova_driver                  | Communicates with the Kinova arm. Publishes and subscribes to topics/actions to view arm state and move the arm.                                                                                                       |
+| azure_kinect_ros_driver        | Communicates with the Azure Kinect camera. Publishes camera and IMU data.                                                                                                                                              |
+| joint_state_publisher          | Takes in joint_state topics from the Dingo base and Kinova arm and publishes them in a single topic.                                                                                                                   |
+| dingo_joint_state_renamer      | Takes the Dingo joint_state topic as input and adds the `oarbot_<NAME>/` prefix to all joint names. This node is necessary as joint_state and tf frame names should be identical, and tf frames are already prefixed.  |
+| kinova_joint_state_renamer     | Takes the Kinova joint_state topic as input and adds the `oarbot_<NAME>/` prefix to all joint names. This node is necessary as joint_state and tf frame names should be identical, and tf frames are already prefixed. |
+| robot_state_publisher          | Combines joint_state info and a robot description urdf file to publish tf frames and the robot description over a topic.                                                                                               |
+| moveit_ros_move_group          | Allows for interaction with [MoveIt](https://moveit.picknik.ai/main/index.html) for inverse kinematics and motion planning on the Kinova arm.                                                                          |
+| joint_trajectory_action_server | Allows publishing joint trajectories (sets of joint angles) for the Kinova arm to use. Used for MoveIt motion planning.                                                                                                |
+| gripper_command_action_server  | Allows publishing commands to open & close the gripper on the Kinova end effector.                                                                                                                                     |
+| rokubi_force_torque_publisher  | Takes force-torque data and tf frames to publish raw force torque values and calibrated force torque values (force torque value without gravity on the end effector).                                                  |

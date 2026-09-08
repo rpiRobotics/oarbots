@@ -1,0 +1,15 @@
+---
+sidebar_position: 2
+---
+
+# Intel NUC
+
+:::note
+If you create a new node and configure it to automatically launch (see [Fixing Bugs & Adding Features](../../getting-started/fixing-bugs-and-adding-features.mdx) for more info on this process), be sure to update this page as well
+:::
+
+| Node Name               | Purpose                                                                                                                                                                                                                                 |
+|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| azure_kinect_ros_driver | Communicates with the Azure Kinect camera. Publishes camera and IMU data.                                                                                                                                                               |
+| aruco_pose_estimation   | Takes RGB and depth frames from the overhead Azure Kinect to detect ArUco tags on the OARBots. Publishes results via topics.                                                                                                            |
+| oarbot_pose_publisher   | Takes ArUco tag positions published from `aruco_pose_estimation` as well as IMU data from the Azure Kinect (for the tilt angle) to publish transformations from `world` to the Azure Kinect and then to both OARBot `base_link` frames. |

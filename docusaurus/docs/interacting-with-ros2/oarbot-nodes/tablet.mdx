@@ -1,0 +1,17 @@
+---
+sidebar_position: 3
+---
+
+# Tablet
+
+:::note
+If you create a new node and configure it to automatically launch (see [Fixing Bugs & Adding Features](../../getting-started/fixing-bugs-and-adding-features.mdx) for more info on this process), be sure to update this page as well
+:::
+
+| Node Name                          | Purpose                                                                                                                                                                                            |
+|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| tablet_gui                         | Launches the GUI for the tablet.                                                                                                                                                                   |
+| spacenav_node                      | Reads and publishes transformations from the [SpaceMouse Compact](https://3dconnexions.com/3dconnexion-spacemouse-compact/) to a ROS2 topic.                                                       |
+| tablet_arduino_publisher           | Reads and publishes data for the buttons on the teleop tablet, which are send via an [Arduino Nano](https://store-usa.arduino.cc/products/arduino-nano).                                           |
+| admittance_control (OARBot Blue)   | Reads force torque data from the force torque sensor on OARBot Blue, performs a discrete time integral to convert to linear and angular velocities, and publishes the results to the Kinova arm.   |
+| admittance_control (OARBot Silver) | Reads force torque data from the force torque sensor on OARBot Silver, performs a discrete time integral to convert to linear and angular velocities, and publishes the results to the Kinova arm. |
