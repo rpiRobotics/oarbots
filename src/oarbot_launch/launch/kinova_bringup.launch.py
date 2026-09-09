@@ -27,7 +27,7 @@ def generate_launch_description() -> LaunchDescription:
         {"name": "kinova_robotSerial",    "default": "not_set"},
         {"name": "use_jaco_v1_fingers",   "default": False},
         {"name": "feedback_publish_rate", "default": 0.01},
-        {"name": "tolerance",             "default": 2.0},
+        {"name": "tolerance",             "default": 0.25},
     ]
 
     return LaunchDescription([

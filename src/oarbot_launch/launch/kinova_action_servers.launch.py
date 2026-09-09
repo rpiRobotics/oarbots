@@ -20,7 +20,11 @@ def generate_launch_description() -> LaunchDescription:
             arguments=[
                 "j2n6s300",
                 LaunchConfiguration(joint_prefix_string)
-            ]
+            ],
+            parameters=[{
+                "tolerance": 0.25,
+                 "rate_hz": 50
+            }]
         ),
         Node(
             package="kinova_driver",
@@ -30,6 +34,10 @@ def generate_launch_description() -> LaunchDescription:
             arguments=[
                 "j2n6s300",
                 LaunchConfiguration(joint_prefix_string)
-            ]
+            ],
+            parameters=[{
+                "tolerance": 0.25,
+                "rate_hz": 50
+            }]
         )
     ])
