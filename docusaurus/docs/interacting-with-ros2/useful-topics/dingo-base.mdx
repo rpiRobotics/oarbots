@@ -2,21 +2,108 @@
 sidebar-position: 1
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Dingo Bases
 
 :::note
-All topics in this file are namespaced with the appropriate OARBot namespace. For example `cmd_vel` becomes `oarbot_blue/cmd_vel` and `oarbot_silver/cmd_vel` respectively.
+All topics in this file are namespaced with the appropriate OARBot namespace. For example `dingo/cmd_vel` becomes `oarbot_blue/dingo/cmd_vel` and `oarbot_silver/dingo/cmd_vel` respectively.
 :::
 
 ## Input Topics
 
 ### cmd_vel
 
-#### Message Type
+**Message type**: [geometry_msgs/msg/TwistStamped](https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/TwistStamped.html)\
+**Recommended publish rate**: 20 Hz
+
+By publishing to this topic, the dingo base will move/rotate in the direction specified.
+
+<Tabs>
+    <TabItem value="py" label="Python">
+        ```py
+        import rclpy
+        from rclpy.node import Node
+        from geometry_msgs.msg import TwistStamped
+
+        class CmdVelPython(Node):
+            def __init__(self):
+                super().__init__('cmd_vel_python')
+                self.publisher_ = self.create_publisher(TwistStamped, '/oarbot_blue/dingo/cmd_vel', 1)
+        
+                # Create a timer to publish at 50ms (20 Hz) intervals
+                self.timer = self.create_timer(0.05, self.timer_callback)
+                self.get_logger().info("CmdVelPython Node initialized. Publishing velocity commands.")
+
+            def timer_callback(self):
+                msg = TwistStamped()
+                msg.header.frame_id = "base_link"
+                msg.header.stamp = self.get_clock().now().to_msg()
+        
+                # Set linear X velocity (e.g., moving forward at 0.5 m/s)
+                msg.twist.linear.x = 0.5
+        
+                self.publisher_.publish(msg)
+                self.get_logger().info('Publishing velocity command to /oarbot_blue/dingo/cmd_vel')
 
 
+        def main(args=None):
+            rclpy.init(args=args)
+            rclpy.spin(CmdVelPython())
+        
+            node.destroy_node()
+            rclpy.shutdown()
 
-#### Description
+        
+        if __name__ == '__main__':
+            main()
+        ```
+    </TabItem>
+    
+    <TabItem value="cpp" label="C++">
+        ```cpp
+        #include <cstdlib>
+        #include <chrono>
+        
+        #include "geometry_msgs/msg/twist_stamped.hpp"
+        #include "rclcpp/rclcpp.hpp"
+
+        class CmdVelCpp : public rclcpp::Node
+        {
+        public:
+            CmdVelCpp() : Node("cmd_vel_cpp")
+            {
+                cmd_vel_publisher = this->create_publisher<geometry_msgs::msg::TwistStamped>("/oarbot_blue/dingo/cmd_vel", 1);
+    
+                this->timer = create_wall_timer(std::chrono::milliseconds(50), [this]() -> void {
+                    geometry_msgs::msg::TwistStamped msg = geometry_msgs::msg::TwistStamped();
+                    msg.header.frame_id = "base_link";
+                    msg.header.stamp = this->get_clock()->now();
+                    msg.twist.linear.x = 0.5;
+            
+                    RCLCPP_INFO(this->get_logger(), "Publishing to /oarbot_blue/dingo/cmd_vel");
+                    this->cmd_vel_publisher->publish(msg);
+                });
+            }
+            
+        private:
+            rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr cmd_vel_publisher;
+            rclcpp::TimerBase::SharedPtr timer;
+        };
+        
+
+        int main(int argc, char **argv)
+        {
+            rclcpp::init(argc, argv);
+            rclcpp::spin(std::make_shared<CmdVelCpp>());
+
+            rclcpp::shutdown();
+            return EXIT_SUCCESS;
+        }
+        ```
+    </TabItem>
+</Tabs>
 
 
 
