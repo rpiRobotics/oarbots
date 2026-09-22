@@ -50,6 +50,30 @@ cd ..
 
 If the command `vcs` is not found (this may happen on Windows but should not happen on Linux), you can try installing it or manually clone each repository from [packages.repos](https://github.com/rpiRobotics/oarbots/blob/main/packages.repos) into the `src` directory of your `ros2_ws` directory.
 
+### Installing Dependencies with rosdep
+
+[rosdep](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Rosdep.html) is a package manager for dependencies listed in the [package.xml](https://docs.ros.org/en/foxy/Concepts/About-Build-System.html#term-package.xml) files of ROS2 nodes. To initialize rosdep, run
+
+```bash
+sudo rosdep init
+```
+
+If you are on a shared computer, this previous step may not be necessary. To update the internal package list of rosdep, run
+
+```bash
+rosdep update
+```
+
+Next, run
+
+```bash
+rosdep install --from-paths src --ignore-src
+```
+
+to install packages required by the ROS2 nodes in your workspace. You may need to confirm installations several times during the process.
+
+
+
 ### Installing Azure Kinect Drivers
 
 If you wish to build the Azure Kinect ROS2 package, you must install drivers. 
