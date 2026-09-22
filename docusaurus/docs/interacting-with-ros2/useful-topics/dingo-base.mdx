@@ -31,7 +31,7 @@ By publishing to this topic, the dingo base will move/rotate in the direction sp
             def __init__(self):
                 super().__init__('cmd_vel_python')
                 self.publisher_ = self.create_publisher(TwistStamped, '/oarbot_blue/dingo/cmd_vel', 1)
-        
+
                 # Create a timer to publish at 50ms (20 Hz) intervals
                 self.timer = self.create_timer(0.05, self.timer_callback)
                 self.get_logger().info("CmdVelPython Node initialized. Publishing velocity commands.")
@@ -40,22 +40,23 @@ By publishing to this topic, the dingo base will move/rotate in the direction sp
                 msg = TwistStamped()
                 msg.header.frame_id = "base_link"
                 msg.header.stamp = self.get_clock().now().to_msg()
-        
+
                 # Set linear X velocity (e.g., moving forward at 0.5 m/s)
                 msg.twist.linear.x = 0.5
-        
+
                 self.publisher_.publish(msg)
                 self.get_logger().info('Publishing velocity command to /oarbot_blue/dingo/cmd_vel')
 
 
         def main(args=None):
             rclpy.init(args=args)
-            rclpy.spin(CmdVelPython())
-        
+            node = CmdVelPython()
+            rclpy.spin(node)
+
             node.destroy_node()
             rclpy.shutdown()
 
-        
+
         if __name__ == '__main__':
             main()
         ```
