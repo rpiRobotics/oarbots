@@ -1,4 +1,3 @@
-import rclpy
 from rclpy.action import ActionClient
 from rclpy.client import Future
 from rclpy.subscription import Subscription
@@ -127,19 +126,19 @@ class RosGuiNode(Node):
         goal_msg = ArmJointAngles.Goal()
 
         if oarbot_name == "/oarbot_blue":
-            goal_msg.angles.joint1 = -1.4774338884599887
-            goal_msg.angles.joint2 = 2.9247900355686225
-            goal_msg.angles.joint3 = 0.9923351677394475
-            goal_msg.angles.joint4 = -2.074164931804627
-            goal_msg.angles.joint5 = 1.4422766999615257
-            goal_msg.angles.joint6 = 1.323276941918806
+            goal_msg.angles.joint1 = 180.0 / pi * -1.4774338884599887
+            goal_msg.angles.joint2 = 180.0 / pi * 2.9247900355686225
+            goal_msg.angles.joint3 = 180.0 / pi * 0.9923351677394475
+            goal_msg.angles.joint4 = 180.0 / pi * -2.074164931804627
+            goal_msg.angles.joint5 = 180.0 / pi * 1.4422766999615257
+            goal_msg.angles.joint6 = 180.0 / pi * 1.323276941918806
         elif oarbot_name == "/oarbot_silver":
-            goal_msg.angles.joint1 = 1.489946484525617
-            goal_msg.angles.joint2 = 3.358340676808617
-            goal_msg.angles.joint3 = 5.285075141195329
-            goal_msg.angles.joint4 = 2.0765452651869394
-            goal_msg.angles.joint5 = -1.445846667402777
-            goal_msg.angles.joint6 = -1.301857004113245
+            goal_msg.angles.joint1 = 180.0 / pi * 1.489946484525617
+            goal_msg.angles.joint2 = 180.0 / pi * 3.358340676808617
+            goal_msg.angles.joint3 = 180.0 / pi * 5.285075141195329
+            goal_msg.angles.joint4 = 180.0 / pi * 2.0765452651869394
+            goal_msg.angles.joint5 = 180.0 / pi * -1.445846667402777
+            goal_msg.angles.joint6 = 180.0 / pi * -1.301857004113245
         else:
             self.get_logger().error(f"arm_home() called with bad oarbot_namespace {oarbot_name}")
             return
