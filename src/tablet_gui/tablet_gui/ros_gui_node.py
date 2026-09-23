@@ -1,10 +1,11 @@
 import rclpy
 from rclpy.action import ActionClient
+from rclpy.client import Future
 from rclpy.subscription import Subscription
 from rclpy.publisher import Publisher
 from rclpy.node import Node
-from kinova_msgs.msg import FingerPosition, PoseVelocityWithFingers, PoseVelocity
-from kinova_msgs.action import SetFingersPosition
+from kinova_msgs.msg import FingerPosition, PoseVelocity
+from kinova_msgs.action import SetFingersPosition, ArmJointAngles
 from geometry_msgs.msg import Twist, TwistStamped
 from std_msgs.msg import Bool
 from math import pi
@@ -18,6 +19,7 @@ class RosGuiNode(Node):
         self.oarbot_settings_dict: dict[str, OarbotSettings] = dict()
         self.finger_position_subscribers: dict[str, Subscription] = dict()
         self.finger_position_actions: dict[str, ActionClient] = dict()
+        self.arm_joint_angle_actions: dict[str, ActionClient] = dict()
         self.arm_velocity_publishers: dict[str, Publisher] = dict()
         self.base_velocity_publishers: dict[str, Publisher] = dict()
 
@@ -71,6 +73,7 @@ class RosGuiNode(Node):
             qos_profile=3
         )
         self.finger_position_actions[oarbot_name] = ActionClient(self, SetFingersPosition, oarbot_name + "/kinova/j2n6s300_driver/finger_positions")
+        self.arm_joint_angle_actions[oarbot_name] = ActionClient(self, ArmJointAngles, oarbot_name + "/kinova/j2n6s300_driver/joint_angles")
         self.arm_velocity_publishers[oarbot_name] = self.create_publisher(
             msg_type=PoseVelocity,
             topic=oarbot_name + "/kinova/j2n6s300_driver/in/cartesian_velocity",
@@ -115,11 +118,39 @@ class RosGuiNode(Node):
         future = self.finger_position_actions[oarbot_name].send_goal_async(goal_msg)
         future.add_done_callback(self.finger_goal_done)
 
-    def finger_goal_done(self, future):
+    def finger_goal_done(self, future: Future):
         goal_handle = future.result()
         if not goal_handle:
             self.get_logger().error("Action goal was rejected")
+
+    def arm_home(self, oarbot_name: str) -> None:
+        goal_msg = ArmJointAngles.Goal()
+
+        if oarbot_name == "/oarbot_blue":
+            goal_msg.angles.joint1 = -1.4774338884599887
+            goal_msg.angles.joint2 = 2.9247900355686225
+            goal_msg.angles.joint3 = 0.9923351677394475
+            goal_msg.angles.joint4 = -2.074164931804627
+            goal_msg.angles.joint5 = 1.4422766999615257
+            goal_msg.angles.joint6 = 1.323276941918806
+        elif oarbot_name == "/oarbot_silver":
+            goal_msg.angles.joint1 = 1.489946484525617
+            goal_msg.angles.joint2 = 3.358340676808617
+            goal_msg.angles.joint3 = 5.285075141195329
+            goal_msg.angles.joint4 = 2.0765452651869394
+            goal_msg.angles.joint5 = -1.445846667402777
+            goal_msg.angles.joint6 = -1.301857004113245
+        else:
+            self.get_logger().error(f"arm_home() called with bad oarbot_namespace {oarbot_name}")
             return
+
+        future = self.arm_joint_angle_actions[oarbot_name].send_goal_async(goal_msg)
+        future.add_done_callback(self.arm_home_goal_done)
+
+    def arm_home_goal_done(self, future: Future) -> None:
+        goal_handle = future.result()
+        if not goal_handle:
+            self.get_logger().error("Action goal was rejected")
 
     def spacenav_callback(self, msg: Twist) -> None:
         if not self.e_stop_pressed and self.deadman_pressed:

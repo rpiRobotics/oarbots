@@ -143,7 +143,7 @@ class OarbotWidget(QWidget):
         self.rotation_toggle_button.setText("Rotation\nEnabled" if toggled else "Rotation\nDisabled")
 
     def handle_arm_home(self) -> None:
-        pass
+        self.ros_gui_node.arm_home(self.oarbot_namespace)
 
     def handle_base_home(self) -> None:
         pass
