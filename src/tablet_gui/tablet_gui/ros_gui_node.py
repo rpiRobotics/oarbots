@@ -107,9 +107,9 @@ class RosGuiNode(Node):
         clamped_percent = max(0, min(100, finger_position_percent))
 
         goal_msg = SetFingersPosition.Goal()
-        goal_msg.fingers.finger1 = float(clamped_percent) / 100.0
-        goal_msg.fingers.finger2 = float(clamped_percent) / 100.0
-        goal_msg.fingers.finger3 = float(clamped_percent) / 100.0
+        goal_msg.fingers.finger1 = float(clamped_percent)
+        goal_msg.fingers.finger2 = float(clamped_percent)
+        goal_msg.fingers.finger3 = float(clamped_percent)
 
         future = self.finger_position_actions[oarbot_name].send_goal_async(goal_msg)
         future.add_done_callback(self.finger_goal_done)
