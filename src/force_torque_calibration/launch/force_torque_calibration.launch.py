@@ -1,8 +1,7 @@
 from launch import LaunchDescription, LaunchContext
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
 
 def verify_oarbot_namespace(context: LaunchContext, *args, **kwargs) -> list[Node]:
     oarbot_namespace_text = LaunchConfiguration("oarbot_namespace").perform(context)
