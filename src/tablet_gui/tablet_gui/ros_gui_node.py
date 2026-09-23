@@ -1,7 +1,10 @@
+import rclpy
+from rclpy.action import ActionClient
 from rclpy.subscription import Subscription
 from rclpy.publisher import Publisher
 from rclpy.node import Node
 from kinova_msgs.msg import FingerPosition, PoseVelocityWithFingers, PoseVelocity
+from kinova_msgs.action import SetFingersPosition
 from geometry_msgs.msg import Twist, TwistStamped
 from std_msgs.msg import Bool
 from math import pi
@@ -14,7 +17,7 @@ class RosGuiNode(Node):
         self.get_logger().info("Started ROS2 Node")
         self.oarbot_settings_dict: dict[str, OarbotSettings] = dict()
         self.finger_position_subscribers: dict[str, Subscription] = dict()
-        self.finger_position_publishers: dict[str, Publisher] = dict()
+        self.finger_position_actions: dict[str, ActionClient] = dict()
         self.arm_velocity_publishers: dict[str, Publisher] = dict()
         self.base_velocity_publishers: dict[str, Publisher] = dict()
 
@@ -67,11 +70,10 @@ class RosGuiNode(Node):
             callback=lambda msg : self.finger_position_callback(oarbot_name, msg),
             qos_profile=3
         )
-        self.finger_position_publishers[oarbot_name] = self.create_publisher(
-            msg_type=PoseVelocityWithFingers,
-            topic=oarbot_name + "/kinova/j2n6s300_driver/in/cartesian_velocity_with_fingers",
-            qos_profile=1
-        )
+        self.finger_position_actions[oarbot_name] = ActionClient(self, SetFingersPosition, oarbot_name + "/kinova/j2n6s300_driver/finger_positions")
+        if not self.finger_position_actions[oarbot_name].wait_for_server(timeout_sec=5.0):
+            self.get_logger().error(f"Finger positions action server for {oarbot_name} is not available")
+            raise RuntimeError(f"Finger positions action server for {oarbot_name} is not available")
         self.arm_velocity_publishers[oarbot_name] = self.create_publisher(
             msg_type=PoseVelocity,
             topic=oarbot_name + "/kinova/j2n6s300_driver/in/cartesian_velocity",
@@ -108,10 +110,21 @@ class RosGuiNode(Node):
         # Ensure the value is clamped between 100 and 0
         clamped_percent = max(0, min(100, finger_position_percent))
 
-        msg = PoseVelocityWithFingers()
-        msg.fingers_closure_percentage = float(clamped_percent)
+        goal_msg = SetFingersPosition.Goal()
+        goal_msg.fingers.finger1 = clamped_percent
+        goal_msg.fingers.finger2 = clamped_percent
+        goal_msg.fingers.finger3 = clamped_percent
 
-        self.finger_position_publishers[oarbot_name].publish(msg)
+        future = self.finger_position_actions[oarbot_name].send_goal_async(goal_msg)
+        rclpy.spin_until_future_complete(self, future)
+
+        goal_handle = future.result()
+        if not goal_handle:
+            self.get_logger().error("Action goal was rejected by the server")
+            return
+
+        result_future = goal_handle.get_result_async()
+        rclpy.spin_until_future_complete(self, result_future)
 
     def spacenav_callback(self, msg: Twist) -> None:
         if not self.e_stop_pressed and self.deadman_pressed:
