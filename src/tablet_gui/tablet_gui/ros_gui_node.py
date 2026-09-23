@@ -104,12 +104,13 @@ class RosGuiNode(Node):
         self.oarbot_settings_dict[oarbot_name].finger_position_percent = finger_position_open_percent
 
     def set_finger_position(self, oarbot_name: str, finger_position_percent: int) -> None:
-        clamped_percent = max(0, min(100, finger_position_percent))
+        clamped_percent = 100 - max(0, min(100, finger_position_percent))
 
         goal_msg = SetFingersPosition.Goal()
-        goal_msg.fingers.finger1 = float(clamped_percent) * 60.0
-        goal_msg.fingers.finger2 = float(clamped_percent) * 60.0
-        goal_msg.fingers.finger3 = float(clamped_percent) * 60.0
+        # Min and max finger positions (from the docs) is 0 to 6800
+        goal_msg.fingers.finger1 = float(clamped_percent) * 68.0
+        goal_msg.fingers.finger2 = float(clamped_percent) * 68.0
+        goal_msg.fingers.finger3 = float(clamped_percent) * 68.0
 
         future = self.finger_position_actions[oarbot_name].send_goal_async(goal_msg)
         future.add_done_callback(self.finger_goal_done)
