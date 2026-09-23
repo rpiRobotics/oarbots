@@ -104,7 +104,6 @@ class RosGuiNode(Node):
         self.oarbot_settings_dict[oarbot_name].finger_position_percent = finger_position_open_percent
 
     def set_finger_position(self, oarbot_name: str, finger_position_percent: int) -> None:
-        # Ensure the value is clamped between 100 and 0
         clamped_percent = max(0, min(100, finger_position_percent))
 
         goal_msg = SetFingersPosition.Goal()
@@ -113,15 +112,13 @@ class RosGuiNode(Node):
         goal_msg.fingers.finger3 = float(clamped_percent) / 100.0
 
         future = self.finger_position_actions[oarbot_name].send_goal_async(goal_msg)
-        rclpy.spin_until_future_complete(self, future)
+        future.add_done_callback(self.finger_goal_done)
 
+    def finger_goal_done(self, future):
         goal_handle = future.result()
         if not goal_handle:
-            self.get_logger().error("Action goal was rejected by the server")
+            self.get_logger().error("Action goal was rejected")
             return
-
-        result_future = goal_handle.get_result_async()
-        rclpy.spin_until_future_complete(self, result_future)
 
     def spacenav_callback(self, msg: Twist) -> None:
         if not self.e_stop_pressed and self.deadman_pressed:
