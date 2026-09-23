@@ -71,9 +71,6 @@ class RosGuiNode(Node):
             qos_profile=3
         )
         self.finger_position_actions[oarbot_name] = ActionClient(self, SetFingersPosition, oarbot_name + "/kinova/j2n6s300_driver/finger_positions")
-        if not self.finger_position_actions[oarbot_name].wait_for_server(timeout_sec=5.0):
-            self.get_logger().error(f"Finger positions action server for {oarbot_name} is not available")
-            raise RuntimeError(f"Finger positions action server for {oarbot_name} is not available")
         self.arm_velocity_publishers[oarbot_name] = self.create_publisher(
             msg_type=PoseVelocity,
             topic=oarbot_name + "/kinova/j2n6s300_driver/in/cartesian_velocity",
