@@ -43,7 +43,8 @@ def generate_launch_description() -> LaunchDescription:
                 "azure_kinect_namespace": "oarbot_silver/azure_kinect",
                 "frame_prefix": "oarbot_silver/",
                 "fps": "15",
-                "color_resolution": "1080P"
+                "color_resolution": "1080P",
+                "body_tracking_enabled": "true"
             }.items()
         ),
         IncludeLaunchDescription(
