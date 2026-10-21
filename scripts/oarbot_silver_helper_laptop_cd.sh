@@ -41,4 +41,8 @@ colcon build
 
 echo "Built the ROS2 packages"
 
+sudo chown -R oarbot_silver: ~/ros2_ws/
+
+echo "Updated permissions"
+
 echo "Done with CD. Exiting..."
